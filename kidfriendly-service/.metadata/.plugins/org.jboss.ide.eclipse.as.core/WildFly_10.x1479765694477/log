@@ -1,0 +1,64 @@
+!SESSION 
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2016-11-21 20:54:41.592
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2016-11-21 20:54:57.633
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.wtp.core 1 16973825 2016-11-21 20:56:42.166
+!MESSAGE Server processes have been terminated.
+
+!ENTRY org.jboss.ide.eclipse.as.core 4 1644298244 2016-11-21 20:56:48.358
+!MESSAGE Full publish failed for module kidfriendly-internet
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 20:56:48.358
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 20:56:48.358
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/maven/com.holictechnology.kidfriendly.web/kidfriendly-internet/pom.properties
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 20:56:48.359
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/maven/com.holictechnology.kidfriendly.web/kidfriendly-internet/pom.xml
+
+!ENTRY org.jboss.ide.eclipse.as.core 4 1644298244 2016-11-21 20:56:49.532
+!MESSAGE Full publish failed for module kidfriendly-internet
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 20:56:49.532
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 20:56:49.532
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/maven/com.holictechnology.kidfriendly.web/kidfriendly-internet/pom.properties
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 20:56:49.532
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/maven/com.holictechnology.kidfriendly.web/kidfriendly-internet/pom.xml
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2016-11-21 20:56:49.797
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2016-11-21 20:56:55.660
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.wtp.core 1 16973825 2016-11-21 21:00:21.017
+!MESSAGE Server processes have been terminated.
+
+!ENTRY org.jboss.ide.eclipse.as.core 4 1644298244 2016-11-21 21:00:26.628
+!MESSAGE Full publish failed for module kidfriendly-internet
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 21:00:26.628
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 21:00:26.629
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/maven/com.holictechnology.kidfriendly.web/kidfriendly-internet/pom.properties
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 21:00:26.629
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/maven/com.holictechnology.kidfriendly.web/kidfriendly-internet/pom.xml
+
+!ENTRY org.jboss.ide.eclipse.as.core 4 1644298244 2016-11-21 21:00:28.000
+!MESSAGE Full publish failed for module kidfriendly-internet
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 21:00:28.001
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 21:00:28.001
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/maven/com.holictechnology.kidfriendly.web/kidfriendly-internet/pom.properties
+!SUBENTRY 1 org.jboss.ide.eclipse.as.wtp.core 4 1644298251 2016-11-21 21:00:28.001
+!MESSAGE Error reading file /home/paulo/Documentos/Projetos/workspace-kid/kidfriendly-service/kidfriendly-web/kidfriendly-internet/target/m2e-wtp/web-resources/META-INF/maven/com.holictechnology.kidfriendly.web/kidfriendly-internet/pom.xml
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842760 2016-11-21 21:00:28.137
+!MESSAGE Server Starting
+
+!ENTRY org.jboss.ide.eclipse.as.core 1 16842769 2016-11-21 21:00:33.153
+!MESSAGE Server Startup Succeeded
+
+!ENTRY org.jboss.ide.eclipse.as.wtp.core 1 16973825 2016-11-21 21:21:50.816
+!MESSAGE Server processes have been terminated.
