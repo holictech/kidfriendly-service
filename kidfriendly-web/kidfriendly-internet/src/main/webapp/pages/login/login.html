@@ -1,1 +1,18 @@
-<input type="button" value="Entrar"/>
+<body>
+</body>
+<div class="container" ng-controller="loginController">
+	<section id="content">
+		<form action="">
+			<h1>Administrador</h1>
+			<div>
+				<input type="text" placeholder="Username" required="" id="username" ng-model="username"/>
+			</div>
+			<div>
+				<input type="password" placeholder="Password" required="" id="password" ng-model="password"/>
+			</div>
+			<div>
+				<input type="button" value="Log in" ng-click="login()"/>
+			</div>
+		</form><!-- form -->
+	</section><!-- content -->
+</div><!-- container -->

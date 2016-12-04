@@ -1,0 +1,101 @@
+	<link rel="stylesheet" href="vendor/css/app.css" type="text/css" />
+	<link rel="stylesheet" href="vendor/css/form.css" type="text/css" />
+		<script type="text/javascript" src="vendor/js/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="vendor/js/jquery.flow.1.2.js"></script>
+		<script type="text/javascript" src="vendor/js/jquery.cycle.js"></script>
+		<script type="text/javascript" src="vendor/js/custom.js"></script>
+		
+		<link rel="stylesheet" href="vendor/css/component.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/demo.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/normalize.css" type="text/css" />
+<body>
+<div id="wrap">
+	<div ng-controller="abstractController"><menu></menu></div>
+	
+	<div class="text-app-titulo">| Estabelecimento | Pesquisar</div>
+		
+  <form ng-controller="companyController">
+    <div class="contentform">
+    	<div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
+    	
+    	<div class="leftcontact" style="margin-bottom: 50px;">
+	      <div class="form-group">
+	        <p>Nome</p>
+		        <input type="text" name="nom" id="nom" data-rule="required" placeholder="Nome da empresa/Razão Social"/>
+              <div class="validation"></div>
+     	  </div>
+     	  <div class="form-group">
+	        <p>Responsável</p>
+		        <input type="text" name="nom" id="nom" data-rule="required" placeholder="Nome da empresa/Razão Social"/>
+              <div class="validation"></div>
+     	  </div>
+     	  
+     	  <div class="form-group">
+	        <p>Cnpj</p>
+		        <input type="text" name="nom" id="nom" data-rule="required" placeholder="Nome da empresa/Razão Social"/>
+              <div class="validation"></div>
+     	  </div>
+     	</div>
+     	
+     	<div class="rightcontact" style="margin-bottom: 15px;">
+     	  <div class="form-group">
+			<p>Estado <span>*</span></p>
+				<div class="styled-select blue semi-square">
+				  <select>
+				    <option>Estado</option>
+				    <option>Teste</option>
+				  </select>
+				</div>
+                <div class="validation"></div>
+			</div><br>	
+
+			<div class="form-group">
+			<p>Cidade <span>*</span></p>	
+				<div class="styled-select blue semi-square">
+				  <select>
+				    <option>Cidade</option>
+				    <option>Teste1</option>
+				  </select>
+				</div>
+                <div class="validation"></div>
+			</div><br>
+     	</div>
+     	
+     	<div style="margin-top: 250px;">
+     		<button type="button" class="bouton-pesquisar-peq">Pesquisar</button>
+     	</div>
+		
+		<div style="width:650px; height:300px; overflow: auto; margin-top: 40px;">
+		<table>
+					<thead>
+						<tr>
+							<th>Nome</th>
+							<th>Responsável</th>
+							<th>Email</th>
+							<th>Fixo</th>
+							<th>Celular</th>
+							<th>Patrocinado</th>
+							<th>Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="user-name">Empresa Teste</td>
+							<td class="user-name">gary coleman</td>
+							<td class="user-email">gary.coleman21@example.com</td>
+							<td class="user-phone">(99) 9999-5385</td>
+							<td class="user-mobile">(99) 99677-3719</td>
+							<td class="user-mobile">Sim</td>
+							<td class="user-mobile">
+								<button type="button" class="acoes-excluir">Remove</button><br>
+								<button type="button" class="acoes-editar" ng-click="edit()">&nbsp;&nbsp;Editar&nbsp;&nbsp;</button>
+							</td>
+						</tr>
+					</tbody>
+		</table>
+		</div>
+		<button type="button" class="bouton-back" ng-click="back()">Voltar</button>
+		
+	</form>
+</div>
+</body>
