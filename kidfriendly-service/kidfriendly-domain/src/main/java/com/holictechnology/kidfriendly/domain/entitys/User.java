@@ -18,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
@@ -70,7 +69,6 @@ public class User implements Serializable {
         this.imgUser = imgUser;
     }
 
-    @JsonIdentityReference(alwaysAsId = true)
     public Login getLogin() {
         return login;
     }

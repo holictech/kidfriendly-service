@@ -13,13 +13,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.holictechnology.kidfriendly.service</groupId>
-			<artifactId>kidfriendly-domain</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-web-api</artifactId>
 			<version>${javaee-web-api.version}</version>
@@ -30,6 +23,12 @@
     		<artifactId>jackson-datatype-hibernate5</artifactId>
     		<version>${jackson.version}</version>
     		<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate-core.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

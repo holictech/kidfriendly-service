@@ -37,12 +37,13 @@ public class Login implements Serializable {
     @Column(name = "ST_ACTIVE", nullable = false)
     private Boolean stActive;
 
-    @Column(name = "NUM_CNPJ", nullable = true)
-    private Long numCNPJ;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USER", nullable = true)
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_COMPANY", nullable = false)
+    private Company company;
 
     public String getIdLogin() {
         return idLogin;
@@ -70,14 +71,6 @@ public class Login implements Serializable {
         this.stActive = stActive;
     }
 
-    public Long getNumCNPJ() {
-        return numCNPJ;
-    }
-
-    public void setNumCNPJ(Long numCNPJ) {
-        this.numCNPJ = numCNPJ;
-    }
-
     @JsonIdentityReference(alwaysAsId = true)
     public User getUser() {
         return user;
@@ -87,5 +80,14 @@ public class Login implements Serializable {
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @JsonIdentityReference(alwaysAsId = true)
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

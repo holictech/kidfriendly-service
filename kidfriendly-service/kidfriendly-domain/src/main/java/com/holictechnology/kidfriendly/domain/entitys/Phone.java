@@ -13,9 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.holictechnology.kidfriendly.domain.enums.TypePhoneEnum;
+import com.holictechnology.kidfriendly.library.hibernate.EnumUserType;
 
 
 @Entity
@@ -30,10 +35,15 @@ public class Phone implements Serializable {
     @Column(name = "ID_PHONE", nullable = false, unique = true)
     private Integer idPhone;
 
-    @Column(name = "DES_TYPE_PHONE", nullable = false, length = 45)
-    private String desTypePhone;
+    @Type(type = "com.holictechnology.kidfriendly.library.hibernate.EnumUserType", parameters = {
+            @Parameter(name = EnumUserType.PACKAGE_ENUM, value = "com.holictechnology.kidfriendly.domain.enums.TypePhoneEnum"),
+            @Parameter(name = EnumUserType.GET_VALUE_METHOD, value = "getValue"),
+            @Parameter(name = EnumUserType.VALUE_OF_METHOD, value = "valueOf")
+    })
+    @Column(name = "NUM_TYPE_PHONE", nullable = false)
+    private TypePhoneEnum typePhoneEnum;
 
-    @Column(name = "NUM_PHONE", nullable = false, unique = true)
+    @Column(name = "NUM_PHONE", nullable = false, length = 15)
     private String numPhone;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,12 +58,12 @@ public class Phone implements Serializable {
         this.idPhone = idPhone;
     }
 
-    public String getDesTypePhone() {
-        return desTypePhone;
+    public TypePhoneEnum getTypePhoneEnum() {
+        return typePhoneEnum;
     }
 
-    public void setDesTypePhone(String desTypePhone) {
-        this.desTypePhone = desTypePhone;
+    public void setTypePhoneEnum(TypePhoneEnum typePhoneEnum) {
+        this.typePhoneEnum = typePhoneEnum;
     }
 
     public String getNumPhone() {

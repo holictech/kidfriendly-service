@@ -4,17 +4,20 @@ package com.holictechnology.kidfriendly.domain.enums;
 import com.holictechnology.kidfriendly.domain.enums.interfaces.IEnum;
 
 
-public enum StatusKidFriendlyEnum implements IEnum {
+public enum TypePhoneEnum implements IEnum {
 
-    NOTHING(Short.valueOf("1")), A_LITTLE(Short.valueOf("2")), NORMAL(Short.valueOf("3")), SUPER(Short.valueOf("4"));
+    CELL_PHONE(Short.valueOf("1"), "Celular"), COMMERCIAL(Short.valueOf("2"), "Comercial"), RESIDENTIAL(Short.valueOf("3"), "Residencial");
 
     private Short value;
+    private String description;
 
     /**
      * @param value
+     * @param description
      */
-    private StatusKidFriendlyEnum(final Short value) {
+    private TypePhoneEnum(final Short value, final String description) {
         this.value = value;
+        this.description = description;
     }
 
     /*
@@ -36,25 +39,25 @@ public enum StatusKidFriendlyEnum implements IEnum {
      */
     @Override
     public String getDescription() {
-        return null;
+        return description;
     }
 
     /**
      * @param value
      * @return
      */
-    public static StatusKidFriendlyEnum valueOf(Short value) {
-        StatusKidFriendlyEnum statusKidFriendlyEnum = null;
+    public static TypePhoneEnum valueOf(Short value) {
+        TypePhoneEnum typePhoneEnum = null;
 
         if (value != null) {
-            for (StatusKidFriendlyEnum _statusKidFriendlyEnum : StatusKidFriendlyEnum.values()) {
-                if (_statusKidFriendlyEnum.getValue().equals(value)) {
-                    statusKidFriendlyEnum = _statusKidFriendlyEnum;
+            for (TypePhoneEnum _typePhoneEnum : TypePhoneEnum.values()) {
+                if (_typePhoneEnum.getValue().equals(value)) {
+                    typePhoneEnum = _typePhoneEnum;
                     break;
                 }
             }
         }
 
-        return statusKidFriendlyEnum;
+        return typePhoneEnum;
     }
 }

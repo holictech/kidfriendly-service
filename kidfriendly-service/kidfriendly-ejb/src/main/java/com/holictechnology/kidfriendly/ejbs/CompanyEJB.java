@@ -24,8 +24,12 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
     private static final long serialVersionUID = 1389485495399887684L;
 
-    /* (non-Javadoc)
-     * @see com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal#find(java.lang.Long)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal#find(java.
+     * lang.Long)
      */
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
@@ -196,7 +200,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         query.setParameter("idCategory", companyFilterDto.getIdCategory());
 
         if (companyFilterDto.isSuperKidFriendly()) {
-            query.setParameter("superKidFriendly", StatusKidFriendlyEnum.SUPER.getIdStatusKidFriendly());
+            query.setParameter("superKidFriendly", StatusKidFriendlyEnum.SUPER.getValue());
         }
 
         if (companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null) {
@@ -239,5 +243,4 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
         return listCompanyDto;
     }
-
 }

@@ -62,6 +62,9 @@ public class Company implements Serializable {
     @Column(name = "ST_HIGHLIGHT", nullable = true)
     private Boolean stHighlight;
 
+    @Column(name = "DES_NAME_RESPONSIBLE", nullable = true, length = 150)
+    private String desNameResponsible;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_ADDRESS", nullable = true)
     private Address address;
@@ -139,6 +142,14 @@ public class Company implements Serializable {
 
     public void setStHighlight(Boolean stHighlight) {
         this.stHighlight = stHighlight;
+    }
+
+    public String getDesNameResponsible() {
+        return desNameResponsible;
+    }
+
+    public void setDesNameResponsible(String desNameResponsible) {
+        this.desNameResponsible = desNameResponsible;
     }
 
     public Address getAddress() {

@@ -1,4 +1,4 @@
-package com.holictechnology.kidfriendly.domain.dtos.exception;
+package com.holictechnology.kidfriendly.library.exceptions;
 
 
 import java.io.Serializable;

@@ -4,7 +4,7 @@ package com.holictechnology.kidfriendly.library.resteasy;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 
-import com.holictechnology.kidfriendly.domain.dtos.exception.ExceptionDto;
+import com.holictechnology.kidfriendly.library.exceptions.ExceptionDto;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
