@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;kidfriendly-internet/src/main/webapp/holicshare.js&apos; to &apos;kid.js&apos;" description="Rename resource &apos;holicshare.js&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/webapp/holicshare.js" name="kid.js" stamp="1479766634083" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;kidfriendly-internet/src/main/webapp/pages/inicial&apos; to &apos;initial&apos;" description="Rename resource &apos;inicial&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/main/webapp/pages/inicial" name="initial" stamp="1479766904329" updateReferences="true"/>
-</session>
