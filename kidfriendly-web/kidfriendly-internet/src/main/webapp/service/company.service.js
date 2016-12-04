@@ -1,4 +1,4 @@
-kid.service('loginService', ['$http', 
+kid.service('companyService', ['$http', 
                                 function($http){
 	
 	

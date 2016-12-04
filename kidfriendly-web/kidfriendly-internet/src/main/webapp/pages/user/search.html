@@ -1,0 +1,56 @@
+	<link rel="stylesheet" href="vendor/css/app.css" type="text/css" />
+	<link rel="stylesheet" href="vendor/css/form.css" type="text/css" />
+		<script type="text/javascript" src="vendor/js/jquery-1.2.6.min.js"></script>
+		<script type="text/javascript" src="vendor/js/jquery.flow.1.2.js"></script>
+		<script type="text/javascript" src="vendor/js/jquery.cycle.js"></script>
+		<script type="text/javascript" src="vendor/js/custom.js"></script>
+		
+		<link rel="stylesheet" href="vendor/css/component.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/demo.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/normalize.css" type="text/css" />
+<body>
+<div id="wrap">
+	<div ng-controller="abstractController"><menu></menu></div>
+	
+	<div class="text-app-titulo">| Administrador Usuário | Pesquisar</div>
+		
+  <form ng-controller="userController">
+    <div class="contentform">
+    	<div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
+    	
+    	<div style="margin-bottom: 50px;">
+	      <div class="form-group">
+	        <p>Login</p>
+		        <input type="text" name="nom" id="nom" data-rule="required" placeholder="Login do usuário"/>
+              <div class="validation"></div>
+     	  </div>
+     	</div>
+     	
+     	<div style="margin-top: 20px;">
+     		<button type="button" class="bouton-pesquisar-peq">Pesquisar</button>
+     	</div>
+		
+		<div style="width:650px; height:200px; overflow: auto; margin-top: 40px;">
+		<table>
+					<thead>
+						<tr>
+							<th>Login</th>
+							<th>Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="user-name">teste.teste</td>
+							<td class="user-mobile">
+								<button type="button" class="acoes-excluir">Remove</button><br>
+								<button type="button" class="acoes-editar" ng-click="edit()">&nbsp;&nbsp;Editar&nbsp;&nbsp;</button>
+							</td>
+						</tr>
+					</tbody>
+		</table>
+		</div>
+		<button type="button" class="bouton-back" ng-click="back()">Voltar</button>
+		
+	</form>
+</div>
+</body>
