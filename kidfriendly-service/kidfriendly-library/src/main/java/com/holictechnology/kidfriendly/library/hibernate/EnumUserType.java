@@ -2,7 +2,6 @@ package com.holictechnology.kidfriendly.library.hibernate;
 
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.sql.PreparedStatement;
@@ -48,7 +47,7 @@ public final class EnumUserType implements UserType, ParameterizedType {
 
         try {
             getValueMethod = enumClass.getMethod(getValueMethodName, new Class[BigInteger.ZERO.intValue()]);
-        } catch (NoSuchMethodException | SecurityException e) {
+        } catch (Exception e) {
             throw new HibernateException("Failed to obtain value method.", e);
         }
 
@@ -61,7 +60,7 @@ public final class EnumUserType implements UserType, ParameterizedType {
             valueOfMethod = enumClass.getMethod(valueOfMethodName, new Class[] {
                     getValueMethod.getReturnType()
             });
-        } catch (NoSuchMethodException | SecurityException e) {
+        } catch (Exception e) {
             throw new HibernateException("Failed to obtain 'valueOf' method.", e);
         }
     }
@@ -95,7 +94,7 @@ public final class EnumUserType implements UserType, ParameterizedType {
                 return valueOfMethod.invoke(enumClass, new Object[] {
                         value
                 });
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            } catch (Exception e) {
                 throw new HibernateException("Exception while invoking valueOf method '" + valueOfMethod.getName() + "' of " + "enumeration class '"
                         + enumClass + "'", e);
 
@@ -112,7 +111,7 @@ public final class EnumUserType implements UserType, ParameterizedType {
         } else {
             try {
                 basicType.nullSafeSet(st, getValueMethod.invoke(value, new Object[BigInteger.ZERO.intValue()]), index, session);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            } catch (Exception e) {
                 throw new HibernateException("Exception while invoking value '" + getValueMethod.getName() + "' of " + "enumeration class '"
                         + enumClass + "'", e);
 

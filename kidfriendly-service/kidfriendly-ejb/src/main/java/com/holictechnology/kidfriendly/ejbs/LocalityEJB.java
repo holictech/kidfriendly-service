@@ -26,7 +26,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
      * com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal#listAll()
      */
     @Override
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public List<Country> listAllCountries() {
         StringBuffer hql = new StringBuffer();
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Country country ORDER BY country.desCountry ASC");
@@ -42,7 +42,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
      * listStateByCountry(java.lang.Integer)
      */
     @Override
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public List<State> listStateByCountry(Integer idCountry) {
         StringBuffer hql = new StringBuffer();
         hql.append(
@@ -60,7 +60,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
      * listCityByState(java.lang.Integer)
      */
     @Override
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public List<City> listCityByState(Integer idState) {
         StringBuffer hql = new StringBuffer();
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.City city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");

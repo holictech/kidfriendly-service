@@ -24,7 +24,7 @@ public class CategoryEJB extends AbstractEJB implements CategoryLocal {
      * com.holictechnology.kidfriendly.ejbs.interfaces.CategoryLocal#listAll()
      */
     @Override
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public List<Category> listAll() {
         StringBuffer hql = new StringBuffer();
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Category category ORDER BY category.desCategory ASC");

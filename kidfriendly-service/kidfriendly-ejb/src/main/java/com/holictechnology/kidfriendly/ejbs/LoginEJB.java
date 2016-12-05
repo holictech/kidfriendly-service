@@ -19,7 +19,7 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 //     * java.lang.String)
 //     */
 //    @Override
-//    @Transactional(value = TxType.NOT_SUPPORTED)
+//    @Transactional(value = TxType.SUPPORTS)
 //    public UserDto authenticate(String email) throws Exception {
 //        UserDto userDto = null;
 //

@@ -32,9 +32,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * lang.Long)
      */
     @Override
-    @Transactional(value = TxType.NOT_SUPPORTED)
-    public Company find(Long primaryKey) {
-        return entityManager.find(Company.class, primaryKey);
+    @Transactional(value = TxType.SUPPORTS)
+    public Company find(Long primaryKey, String ... lazyAttributes) throws Exception {
+        return findWithLazyInitialization(Company.class, primaryKey, lazyAttributes);
     }
 
     /*
@@ -44,7 +44,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * listLatestResearch(java.lang.Integer, java.lang.Long)
      */
     @Override
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public List<CompanyDto> listLatestResearch(Integer limit, Long idUser) {
         return Collections.emptyList();
     }
@@ -57,7 +57,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public List<CompanyDto> listSuggestions(Integer limit) {
         StringBuffer sql = new StringBuffer();
         sql.append(
@@ -97,7 +97,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public List<CompanyDto> listNextToMe(Integer limit, Double longitude, Double latitude) {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
@@ -126,7 +126,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public ResultDto<CompanyDto> search(CompanyFilterDto companyFilterDto) {
         Query query = entityManager.createNativeQuery(createSqlCount(createSqlSearch(companyFilterDto, Boolean.FALSE)).toString());
         setParametersSqlSearch(query, companyFilterDto);

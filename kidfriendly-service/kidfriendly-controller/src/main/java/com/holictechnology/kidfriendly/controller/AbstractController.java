@@ -17,8 +17,8 @@ import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyUniqueEnum;
 
 
-@Transactional(value = TxType.NOT_SUPPORTED)
 @TransactionManagement
+@Transactional(value = TxType.NOT_SUPPORTED)
 public abstract class AbstractController implements Serializable {
 
     private static final long serialVersionUID = -7183158366724998348L;
@@ -54,6 +54,7 @@ public abstract class AbstractController implements Serializable {
 
     /**
      * TODO - REMOVER HEADER
+     * 
      * @param object
      * @return
      */
@@ -83,34 +84,4 @@ public abstract class AbstractController implements Serializable {
 
         return constraintViolationException;
     }
-
-    // protected Logger createLogger(Class<?> clazz) {
-    // return LoggerFactory.getLogger(clazz);
-    // }
-    //
-    // protected Response createResponse(Object object) {
-    // ResponseBuilder responseBuilder = null;
-    //
-    // if (!KidFriendlyException.getMessageError().isEmpty()) {
-    // responseBuilder =
-    // Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(new
-    // ExceptionDto(KidFriendlyException.getMessageError()));
-    // KidFriendlyException.setMessageError("");
-    // } else {
-    // responseBuilder = Response.status(Response.Status.OK).entity(object);
-    // }
-    //
-    // /*
-    // * TODO - RETIRAR OS HEADER AO DISPONIBILIZAR AOS DEVICES
-    // */
-    // return responseBuilder
-    // .header("Access-Control-Allow-Origin", "*")
-    // .header("Access-Control-Allow-Headers", "origin, content-type, accept,
-    // authorization")
-    // .header("Access-Control-Allow-Credentials", "true")
-    // .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS,
-    // HEAD")
-    // .header("Access-Control-Max-Age", "1209600")
-    // .build();
-    // }
 }

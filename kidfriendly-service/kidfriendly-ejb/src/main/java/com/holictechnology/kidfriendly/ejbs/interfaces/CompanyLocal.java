@@ -18,9 +18,10 @@ public interface CompanyLocal {
      * TODO - COLOCAR O COMENTÁRIO.
      * 
      * @param primaryKey
+     * @param lazyAttributes
      * @return
      */
-    Company find(Long primaryKey);
+    Company find(Long primaryKey, final String ... lazyAttributes) throws Exception;
 
     /**
      * TODO - COLOCAR O COMENTÁRIO.

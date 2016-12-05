@@ -24,7 +24,7 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
      * listByCategory(java.lang.Integer)
      */
     @Override
-    @Transactional(value = TxType.NOT_SUPPORTED)
+    @Transactional(value = TxType.SUPPORTS)
     public List<Characteristic> listByCategory(Integer idCategory) {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT characteristic ");
