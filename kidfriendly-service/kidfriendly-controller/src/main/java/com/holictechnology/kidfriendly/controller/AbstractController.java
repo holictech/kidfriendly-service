@@ -44,8 +44,7 @@ public abstract class AbstractController implements Serializable {
             KidFriendlyUniqueEnum kidFriendlyUniqueEnum = KidFriendlyUniqueEnum.valueOf(constraintViolationException.getConstraintName());
 
             if (kidFriendlyUniqueEnum != null) {
-                kidFriendlyException = new KidFriendlyException(kidFriendlyException.getMessage() + " " + kidFriendlyUniqueEnum.getMessage(),
-                        kidFriendlyException);
+                kidFriendlyException = new KidFriendlyException(kidFriendlyUniqueEnum.getMessage(), kidFriendlyException);
             }
         }
 

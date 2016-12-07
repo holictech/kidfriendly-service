@@ -39,10 +39,10 @@ public final class ReflectionUtilites implements Serializable {
 
         try {
             object = clazz.newInstance();
-        } catch (InstantiationException e) {
-            error(e);
-        } catch (IllegalAccessException e) {
-            error(e);
+        } catch (InstantiationException exception) {
+            error(exception);
+        } catch (IllegalAccessException exception) {
+            error(exception);
         }
 
         return object;
@@ -59,8 +59,8 @@ public final class ReflectionUtilites implements Serializable {
 
         try {
             object = newInstance(Class.forName(className));
-        } catch (ClassNotFoundException e) {
-            error(e);
+        } catch (ClassNotFoundException exception) {
+            error(exception);
         }
 
         return object;
@@ -96,7 +96,7 @@ public final class ReflectionUtilites implements Serializable {
 
         try {
             field = clazz.getDeclaredField(getDeclaredFieldName(clazz, fieldName));
-        } catch (NoSuchFieldException e) {
+        } catch (NoSuchFieldException exception) {
             field = getDeclaredField(object, clazz.getSuperclass(), fieldName);
         }
 
@@ -134,10 +134,10 @@ public final class ReflectionUtilites implements Serializable {
 
         try {
             field.set(object, cast(field.getType(), value));
-        } catch (IllegalArgumentException e) {
-            error(e);
-        } catch (IllegalAccessException e) {
-            error(e);
+        } catch (IllegalArgumentException exception) {
+            error(exception);
+        } catch (IllegalAccessException exception) {
+            error(exception);
         }
     }
 
@@ -170,10 +170,10 @@ public final class ReflectionUtilites implements Serializable {
 
         try {
             value = field.get(object);
-        } catch (IllegalArgumentException e) {
-            error(e);
-        } catch (IllegalAccessException e) {
-            error(e);
+        } catch (IllegalArgumentException exception) {
+            error(exception);
+        } catch (IllegalAccessException exception) {
+            error(exception);
         }
 
         return value;
@@ -440,7 +440,7 @@ public final class ReflectionUtilites implements Serializable {
 
         try {
             method = clazz.getDeclaredMethod(methodName);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException exception) {
             method = getDeclaredMethod(clazz.getSuperclass(), methodName);
         }
 
@@ -467,7 +467,7 @@ public final class ReflectionUtilites implements Serializable {
 
         try {
             method = clazz.getDeclaredMethod(methodName, parameters);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException exception) {
             method = getDeclaredMethod(clazz.getSuperclass(), methodName, parameters);
         }
 

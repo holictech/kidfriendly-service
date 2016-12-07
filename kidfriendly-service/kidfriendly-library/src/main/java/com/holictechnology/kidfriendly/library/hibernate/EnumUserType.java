@@ -39,16 +39,16 @@ public final class EnumUserType implements UserType, ParameterizedType {
 
         try {
             enumClass = Class.forName(packageEnum).asSubclass(Enum.class);
-        } catch (ClassNotFoundException e) {
-            throw new HibernateException("Enum class not found.", e);
+        } catch (ClassNotFoundException exception) {
+            throw new HibernateException("Enum class not found.", exception);
         }
 
         String getValueMethodName = parameters.getProperty(GET_VALUE_METHOD, DEFAULT_GET_VALUE_METHOD);
 
         try {
             getValueMethod = enumClass.getMethod(getValueMethodName, new Class[BigInteger.ZERO.intValue()]);
-        } catch (Exception e) {
-            throw new HibernateException("Failed to obtain value method.", e);
+        } catch (Exception exception) {
+            throw new HibernateException("Failed to obtain value method.", exception);
         }
 
         basicType = new TypeResolver().basic(getValueMethod.getReturnType().getName());
@@ -60,8 +60,8 @@ public final class EnumUserType implements UserType, ParameterizedType {
             valueOfMethod = enumClass.getMethod(valueOfMethodName, new Class[] {
                     getValueMethod.getReturnType()
             });
-        } catch (Exception e) {
-            throw new HibernateException("Failed to obtain 'valueOf' method.", e);
+        } catch (Exception exception) {
+            throw new HibernateException("Failed to obtain 'valueOf' method.", exception);
         }
     }
 
@@ -94,9 +94,9 @@ public final class EnumUserType implements UserType, ParameterizedType {
                 return valueOfMethod.invoke(enumClass, new Object[] {
                         value
                 });
-            } catch (Exception e) {
+            } catch (Exception exception) {
                 throw new HibernateException("Exception while invoking valueOf method '" + valueOfMethod.getName() + "' of " + "enumeration class '"
-                        + enumClass + "'", e);
+                        + enumClass + "'", exception);
 
             }
         }
@@ -111,9 +111,9 @@ public final class EnumUserType implements UserType, ParameterizedType {
         } else {
             try {
                 basicType.nullSafeSet(st, getValueMethod.invoke(value, new Object[BigInteger.ZERO.intValue()]), index, session);
-            } catch (Exception e) {
+            } catch (Exception exception) {
                 throw new HibernateException("Exception while invoking value '" + getValueMethod.getName() + "' of " + "enumeration class '"
-                        + enumClass + "'", e);
+                        + enumClass + "'", exception);
 
             }
         }

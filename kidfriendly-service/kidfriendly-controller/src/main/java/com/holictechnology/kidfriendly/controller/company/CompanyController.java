@@ -11,8 +11,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
+import com.holictechnology.kidfriendly.domain.dtos.RatingDto;
+import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
+import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
+import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
@@ -25,6 +29,9 @@ public class CompanyController extends AbstractController {
 
     @EJB
     private CompanyLocal companyLocal;
+
+    @EJB
+    private RatingLocal ratingLocal;
 
     @GET
     @Path(value = "{primaryKey}")
@@ -41,6 +48,7 @@ public class CompanyController extends AbstractController {
         return ok(company);
     }
 
+    @SuppressWarnings("unused")
     @GET
     @Path(value = "/details/{primaryKey}")
     public Response details(@PathParam(value = "primaryKey") Long primaryKey) throws KidFriendlyException {
@@ -49,6 +57,7 @@ public class CompanyController extends AbstractController {
         Company company = null;
 
         try {
+            ResultDto<RatingDto> resultDto = ratingLocal.listByCompany(1L, new PaginatorDto(0L, 20L));
             company = companyLocal.find(primaryKey, "address.city.state.country", "phones");
         } catch (Exception exception) {
             error(getClass(), new KidFriendlyException(KidFriendlyMessages.ERROR_COMPANY_BY_PRIMARY_KEY, exception));

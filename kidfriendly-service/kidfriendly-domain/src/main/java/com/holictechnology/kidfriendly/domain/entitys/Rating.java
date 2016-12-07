@@ -42,7 +42,7 @@ public class Rating implements Serializable {
     @Column(name = "DES_ANSWER", nullable = true, length = 500)
     private String desAnswer;
 
-    @Column(name = "ST_ATIVE", nullable = false)
+    @Column(name = "ST_ACTIVE", nullable = false)
     private Boolean stActive;
 
     @ManyToOne(fetch = FetchType.LAZY)

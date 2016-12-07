@@ -29,7 +29,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     @Transactional(value = TxType.SUPPORTS)
     public List<Country> listAllCountries() {
         StringBuffer hql = new StringBuffer();
-        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Country country ORDER BY country.desCountry ASC");
+        hql.append("SELECT country FROM com.holictechnology.kidfriendly.domain.entitys.Country country ORDER BY country.desCountry ASC");
         TypedQuery<Country> typedQuery = entityManager.createQuery(hql.toString(), Country.class);
 
         return typedQuery.getResultList();
@@ -45,8 +45,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     @Transactional(value = TxType.SUPPORTS)
     public List<State> listStateByCountry(Integer idCountry) {
         StringBuffer hql = new StringBuffer();
-        hql.append(
-                "FROM com.holictechnology.kidfriendly.domain.entitys.State state WHERE state.country.idCountry = :idCountry ORDER BY state.desState ASC");
+        hql.append("SELECT state FROM com.holictechnology.kidfriendly.domain.entitys.State state WHERE state.country.idCountry = :idCountry ORDER BY state.desState ASC");
         TypedQuery<State> typedQuery = entityManager.createQuery(hql.toString(), State.class);
         typedQuery.setParameter("idCountry", idCountry);
 
@@ -63,7 +62,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     @Transactional(value = TxType.SUPPORTS)
     public List<City> listCityByState(Integer idState) {
         StringBuffer hql = new StringBuffer();
-        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.City city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");
+        hql.append("SELECT city FROM com.holictechnology.kidfriendly.domain.entitys.City city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");
         TypedQuery<City> typedQuery = entityManager.createQuery(hql.toString(), City.class);
         typedQuery.setParameter("idState", idState);
 

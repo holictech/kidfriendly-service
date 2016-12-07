@@ -18,6 +18,14 @@ public class PaginatorDto implements Serializable {
     private Long currentPage;
     private Long pageSize;
 
+    public PaginatorDto() {}
+
+    public PaginatorDto(Long currentPage, Long pageSize) {
+        super();
+        this.currentPage = currentPage;
+        this.pageSize = pageSize;
+    }
+
     public Long getSize() {
         return size;
     }

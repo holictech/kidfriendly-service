@@ -41,6 +41,18 @@ public abstract class AbstractEJB implements Serializable {
     }
 
     /**
+     * @param sql
+     * @return
+     */
+    protected StringBuffer createHqlCount(final StringBuffer hql) {
+        StringBuffer hqlCount = new StringBuffer();
+        hqlCount.append("SELECT COUNT(*) ");
+        hqlCount.append(hql.substring(hql.toString().toUpperCase().indexOf("FROM")));
+
+        return hqlCount;
+    }
+
+    /**
      * @param query
      * @param paginatorDto
      */

@@ -7,7 +7,7 @@ import java.util.Collection;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 
 
-public class ResultDto<T> implements Serializable {
+public final class ResultDto<T> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
