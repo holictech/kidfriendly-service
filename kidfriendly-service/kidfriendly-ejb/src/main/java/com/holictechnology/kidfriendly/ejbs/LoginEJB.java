@@ -85,5 +85,4 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 //            return Boolean.FALSE;
 //        }
 //    }
-
 }

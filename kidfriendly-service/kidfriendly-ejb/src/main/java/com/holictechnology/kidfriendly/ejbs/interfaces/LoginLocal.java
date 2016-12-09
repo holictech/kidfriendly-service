@@ -14,7 +14,7 @@ public interface LoginLocal {
 //     * @return
 //     * @throws Exception
 //     */
-//    UserDto authenticate(String email) throws Exception;
+//    UserDto authenticate(String email) throws KidFriendlyException;
 //
 //    /**
 //     * Method to check if the login already exists
@@ -23,7 +23,7 @@ public interface LoginLocal {
 //     * @return
 //     * @throws Exception
 //     */
-//    boolean isExistLogin(final String idLogin) throws PersistenceException;
+//    boolean isExistLogin(final String idLogin) throws KidFriendlyException;
 //
 //    /**
 //     * Method to save the user.
@@ -31,5 +31,5 @@ public interface LoginLocal {
 //     * @param login
 //     * @throws PersistenceException
 //     */
-//    void save(Login login) throws PersistenceException;
+//    void include(Login login) throws KidFriendlyException;
 }

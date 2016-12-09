@@ -31,4 +31,21 @@ public interface RatingLocal {
      * @throws KidFriendlyException
      */
     ResultDto<RatingDto> listByCompany(Long idCompany, PaginatorDto paginatorDto) throws KidFriendlyException;
+
+    /**
+     * TODO - COLOCAR O COMENTÁRIO.
+     * 
+     * @param primaryKey
+     * @param idCompany
+     * @throws KidFriendlyException
+     */
+    void activate(Long primaryKey, Long idCompany) throws KidFriendlyException;
+
+    /**
+     * TODO - COLOCAR O COMENTÁRIO.
+     * 
+     * @param idCompany
+     * @throws KidFriendlyException
+     */
+    void calculateRating(Long idCompany) throws KidFriendlyException;
 }

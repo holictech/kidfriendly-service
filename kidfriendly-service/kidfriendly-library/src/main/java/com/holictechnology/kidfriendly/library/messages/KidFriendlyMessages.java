@@ -28,15 +28,17 @@ public final class KidFriendlyMessages {
     /*
      * RATING
      */
-    public static final String ERROR_LIST_RATING = "N\u00e3o foi poss\u00edvel listar as classifica\u00e7\u00f5es";
+    public static final String ERROR_LIST_RATING = "N\u00e3o foi poss\u00edvel listar as avalia\u00e7\u00f5es.";
+    public static final String ERROR_ACTIVATE_RATING = "N\u00e3o foi poss\u00edvel ativar a avalia\u00e7\u00e3o.";
+    public static final String ERROR_NOT_FOUND_RATING = "Avalia\u00e7\u00e3o n\u00e3o encontrada.";
     
+    /*
+     * LOCALITY
+     */
+    public static final String ERROR_LIST_ALL_COUNTRIES = "N\u00e3o foi poss\u00edvel listar os pa\u00edses.";
+    public static final String ERROR_LIST_STATE_BY_COUNTRY = "N\u00e3o foi poss\u00edvel listar os estados.";
+    public static final String ERROR_LIST_CITY_BY_STATE = "N\u00e3o foi poss\u00edvel lista as cidades.";
     
-//  /*
-//  * LOCALITY
-//  */
-// public static final String ERROR_LIST_ALL_COUNTRIES = "N\u00e3o foi poss\u00edvel listar os pa\u00edses.";
-// public static final String ERROR_LIST_STATE_BY_COUNTRY = "N\u00e3o foi poss\u00edvel listar os estados.";
-// public static final String ERROR_LIST_CITY_BY_STATE = "N\u00e3o foi poss\u00edvel lista as cidades.";
 //    
 //    /*
 //     * LOGIN

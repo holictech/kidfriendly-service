@@ -37,7 +37,8 @@ public class CharacteristicController extends AbstractController {
         try {
             characteristics = characteristicLocal.listByCategory(idCategory);
         } catch (Exception exception) {
-            error(getClass(), new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_CHARACTERISTIC_BY_CATEGORY, exception));
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_CHARACTERISTIC_BY_CATEGORY, exception)));
         }
 
         return ok(characteristics);

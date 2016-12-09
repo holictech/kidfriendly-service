@@ -1,13 +1,14 @@
 package com.holictechnology.kidfriendly.ejbs.interfaces;
 
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.ejb.Local;
 
 import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Country;
 import com.holictechnology.kidfriendly.domain.entitys.State;
+import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
 @Local
@@ -17,9 +18,9 @@ public interface LocalityLocal {
      * Method to list all countries
      * 
      * @return
-     * @throws Exception
+     * @throws KidFriendlyException
      */
-    List<Country> listAllCountries();
+    Collection<Country> listAllCountries() throws KidFriendlyException;
 
     /**
      * Method to list states by country.
@@ -27,9 +28,9 @@ public interface LocalityLocal {
      * @param idCountry
      *            - key {@link Country}
      * @return
-     * @throws Exception
+     * @throws KidFriendlyException
      */
-    List<State> listStateByCountry(Integer idCountry);
+    Collection<State> listStateByCountry(Integer idCountry) throws KidFriendlyException;
 
     /**
      * 
@@ -38,7 +39,7 @@ public interface LocalityLocal {
      * @param idState
      *            - key {@link Country}
      * @return
-     * @throws Exception
+     * @throws KidFriendlyException
      */
-    List<City> listCityByState(Integer idState);
+    Collection<City> listCityByState(Integer idState) throws KidFriendlyException;
 }

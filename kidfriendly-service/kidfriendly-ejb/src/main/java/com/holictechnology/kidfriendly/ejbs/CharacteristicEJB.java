@@ -1,7 +1,7 @@
 package com.holictechnology.kidfriendly.ejbs;
 
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
@@ -10,6 +10,7 @@ import javax.transaction.Transactional.TxType;
 
 import com.holictechnology.kidfriendly.domain.entitys.Characteristic;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CharacteristicLocal;
+import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
 @Stateless
@@ -25,7 +26,7 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
      */
     @Override
     @Transactional(value = TxType.SUPPORTS)
-    public List<Characteristic> listByCategory(Integer idCategory) {
+    public Collection<Characteristic> listByCategory(Integer idCategory) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT characteristic ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.CategoryCharacteristic categoryCharacteristic ");

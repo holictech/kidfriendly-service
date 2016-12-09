@@ -1,6 +1,9 @@
 package com.holictechnology.kidfriendly.controller.company;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
@@ -11,9 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.domain.dtos.RatingDto;
-import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
-import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
@@ -42,27 +42,25 @@ public class CompanyController extends AbstractController {
         try {
             company = companyLocal.find(primaryKey);
         } catch (Exception exception) {
-            error(getClass(), new KidFriendlyException(KidFriendlyMessages.ERROR_COMPANY_BY_PRIMARY_KEY, exception));
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_COMPANY_BY_PRIMARY_KEY, exception)));
         }
 
         return ok(company);
     }
 
-    @SuppressWarnings("unused")
     @GET
     @Path(value = "/details/{primaryKey}")
     public Response details(@PathParam(value = "primaryKey") Long primaryKey) throws KidFriendlyException {
-        // Map<String, Object> detailsMap = new HashMap<String, Object>();
-        // return ok(detailsMap);
-        Company company = null;
+        Map<String, Object> details = new HashMap<String, Object>();
 
         try {
-            ResultDto<RatingDto> resultDto = ratingLocal.listByCompany(1L, new PaginatorDto(0L, 20L));
-            company = companyLocal.find(primaryKey, "address.city.state.country", "phones");
+            details.put("company", companyLocal.find(primaryKey, "address.city.state.country", "phones"));
         } catch (Exception exception) {
-            error(getClass(), new KidFriendlyException(KidFriendlyMessages.ERROR_COMPANY_BY_PRIMARY_KEY, exception));
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_COMPANY_BY_PRIMARY_KEY, exception)));
         }
 
-        return ok(company);
+        return ok(details);
     }
 }

@@ -35,7 +35,8 @@ public class CategoryController extends AbstractController {
         try {
             categories = categoryLocal.listAll();
         } catch (Exception exception) {
-            error(getClass(), new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_CATEGORY, exception));
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_CATEGORY, exception)));
         }
 
         return ok(categories);

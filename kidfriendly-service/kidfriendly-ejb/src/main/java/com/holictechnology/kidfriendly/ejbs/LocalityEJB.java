@@ -1,7 +1,7 @@
 package com.holictechnology.kidfriendly.ejbs;
 
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
@@ -12,6 +12,7 @@ import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Country;
 import com.holictechnology.kidfriendly.domain.entitys.State;
 import com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal;
+import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
 @Stateless
@@ -22,12 +23,12 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal#listAll()
+     * @see com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal#
+     * listAllCountries()
      */
     @Override
     @Transactional(value = TxType.SUPPORTS)
-    public List<Country> listAllCountries() {
+    public Collection<Country> listAllCountries() throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT country FROM com.holictechnology.kidfriendly.domain.entitys.Country country ORDER BY country.desCountry ASC");
         TypedQuery<Country> typedQuery = entityManager.createQuery(hql.toString(), Country.class);
@@ -43,9 +44,10 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
      */
     @Override
     @Transactional(value = TxType.SUPPORTS)
-    public List<State> listStateByCountry(Integer idCountry) {
+    public Collection<State> listStateByCountry(Integer idCountry) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
-        hql.append("SELECT state FROM com.holictechnology.kidfriendly.domain.entitys.State state WHERE state.country.idCountry = :idCountry ORDER BY state.desState ASC");
+        hql.append(
+                "SELECT state FROM com.holictechnology.kidfriendly.domain.entitys.State state WHERE state.country.idCountry = :idCountry ORDER BY state.desState ASC");
         TypedQuery<State> typedQuery = entityManager.createQuery(hql.toString(), State.class);
         typedQuery.setParameter("idCountry", idCountry);
 
@@ -60,7 +62,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
      */
     @Override
     @Transactional(value = TxType.SUPPORTS)
-    public List<City> listCityByState(Integer idState) {
+    public Collection<City> listCityByState(Integer idState) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT city FROM com.holictechnology.kidfriendly.domain.entitys.City city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");
         TypedQuery<City> typedQuery = entityManager.createQuery(hql.toString(), City.class);

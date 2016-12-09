@@ -6,17 +6,21 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
+import javax.ws.rs.core.Response.Status;
 
 import com.holictechnology.kidfriendly.domain.dtos.RatingDto;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
+import com.holictechnology.kidfriendly.domain.entitys.Rating;
 import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
+import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
 
 @Stateless
@@ -24,6 +28,12 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
 
     private static final long serialVersionUID = 5701134070335928714L;
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#listPending()
+     */
     @Override
     @Transactional(value = TxType.SUPPORTS)
     public Collection<RatingDto> listPending() throws KidFriendlyException {
@@ -34,6 +44,14 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         return typedQuery.getResultList();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#listByCompany
+     * (java.lang.Long,
+     * com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto)
+     */
     @Override
     @Transactional(value = TxType.SUPPORTS)
     public ResultDto<RatingDto> listByCompany(Long idCompany, PaginatorDto paginatorDto) throws KidFriendlyException {
@@ -56,6 +74,40 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         resultDto.setResults(ratings);
 
         return resultDto;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#activate(java
+     * .lang.Long, java.lang.Long)
+     */
+    @Override
+    public void activate(Long primaryKey, Long idCompany) throws KidFriendlyException {
+        Rating rating = find(Rating.class, primaryKey);
+
+        if (rating == null) {
+            throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_NOT_FOUND_RATING);
+        }
+
+        rating.setStActive(Boolean.TRUE);
+        update(rating);
+        sessionContext.getBusinessObject(RatingLocal.class).calculateRating(idCompany);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#
+     * calculateRating(java.lang.Long)
+     */
+    @Asynchronous
+    public void calculateRating(Long idCompany) throws KidFriendlyException {
+        /*
+         * TODO - IMPLEMENTAR O CALCULO
+         */
+        System.out.println("Chamando método @Asynchronous");
     }
 
     /**

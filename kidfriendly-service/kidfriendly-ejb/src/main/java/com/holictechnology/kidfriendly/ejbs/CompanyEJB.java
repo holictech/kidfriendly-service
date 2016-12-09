@@ -2,6 +2,7 @@ package com.holictechnology.kidfriendly.ejbs;
 
 
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.domain.enums.StatusKidFriendlyEnum;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
+import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
 @Stateless
@@ -33,8 +35,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @Transactional(value = TxType.SUPPORTS)
-    public Company find(Long primaryKey, String ... lazyAttributes) throws Exception {
-        return findWithLazyInitialization(Company.class, primaryKey, lazyAttributes);
+    public Company find(Long primaryKey, String ... lazyAttributes) throws KidFriendlyException {
+        return find(Company.class, primaryKey, lazyAttributes);
     }
 
     /*
@@ -45,7 +47,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @Transactional(value = TxType.SUPPORTS)
-    public List<CompanyDto> listLatestResearch(Integer limit, Long idUser) {
+    public Collection<CompanyDto> listLatestResearch(Integer limit, Long idUser) throws KidFriendlyException {
         return Collections.emptyList();
     }
 
@@ -58,7 +60,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     @Override
     @SuppressWarnings("unchecked")
     @Transactional(value = TxType.SUPPORTS)
-    public List<CompanyDto> listSuggestions(Integer limit) {
+    public Collection<CompanyDto> listSuggestions(Integer limit) throws KidFriendlyException {
         StringBuffer sql = new StringBuffer();
         sql.append(
                 "SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
@@ -98,7 +100,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     @Override
     @SuppressWarnings("unchecked")
     @Transactional(value = TxType.SUPPORTS)
-    public List<CompanyDto> listNextToMe(Integer limit, Double longitude, Double latitude) {
+    public Collection<CompanyDto> listNextToMe(Integer limit, Double longitude, Double latitude) throws KidFriendlyException {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY company ");
@@ -127,7 +129,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     @Override
     @SuppressWarnings("unchecked")
     @Transactional(value = TxType.SUPPORTS)
-    public ResultDto<CompanyDto> search(CompanyFilterDto companyFilterDto) {
+    public ResultDto<CompanyDto> search(CompanyFilterDto companyFilterDto) throws KidFriendlyException {
         Query query = entityManager.createNativeQuery(createSqlCount(createSqlSearch(companyFilterDto, Boolean.FALSE)).toString());
         setParametersSqlSearch(query, companyFilterDto);
         companyFilterDto.getPaginatorDto().setSize(((Number) query.getSingleResult()).longValue());
@@ -223,8 +225,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param listObject
      * @return
      */
-    private List<CompanyDto> createResult(List<Object []> listObject) {
-        List<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
+    private Collection<CompanyDto> createResult(List<Object []> listObject) {
+        Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
 
         if (listObject != null) {
             CompanyDto companyDto;

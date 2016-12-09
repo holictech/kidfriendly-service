@@ -13,5 +13,5 @@ public interface UserLocal {
 //     * @param user
 //     * @throws Exception
 //     */
-//    void save(User user) throws PersistenceException;
+//    void save(User user) throws KidFriendlyException;
 }

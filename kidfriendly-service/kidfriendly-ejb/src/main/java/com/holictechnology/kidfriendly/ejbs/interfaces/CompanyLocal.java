@@ -1,7 +1,7 @@
 package com.holictechnology.kidfriendly.ejbs.interfaces;
 
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.ejb.Local;
 
@@ -9,6 +9,7 @@ import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
+import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
 @Local
@@ -20,8 +21,9 @@ public interface CompanyLocal {
      * @param primaryKey
      * @param lazyAttributes
      * @return
+     * @throws KidFriendlyException
      */
-    Company find(Long primaryKey, final String ... lazyAttributes) throws Exception;
+    Company find(Long primaryKey, final String ... lazyAttributes) throws KidFriendlyException;
 
     /**
      * TODO - COLOCAR O COMENTÁRIO.
@@ -29,18 +31,18 @@ public interface CompanyLocal {
      * @param limit
      * @param idUser
      * @return
-     * @throws Exception
+     * @throws KidFriendlyException
      */
-    List<CompanyDto> listLatestResearch(Integer limit, Long idUser);
+    Collection<CompanyDto> listLatestResearch(Integer limit, Long idUser) throws KidFriendlyException;
 
     /**
      * TODO - COLOCAR O COMENTÁRIO.
      * 
      * @param limit
      * @return
-     * @throws Exception
+     * @throws KidFriendlyException
      */
-    List<CompanyDto> listSuggestions(Integer limit);
+    Collection<CompanyDto> listSuggestions(Integer limit) throws KidFriendlyException;
 
     /**
      * TODO - COLOCAR O COMENTÁRIO.
@@ -49,15 +51,16 @@ public interface CompanyLocal {
      * @param longitude
      * @param latitude
      * @return
-     * @throws Exception
+     * @throws KidFriendlyException
      */
-    List<CompanyDto> listNextToMe(Integer limit, Double longitude, Double latitude);
+    Collection<CompanyDto> listNextToMe(Integer limit, Double longitude, Double latitude) throws KidFriendlyException;
 
     /**
      * TODO - COLOCAR O COMENTÁRIO.
      * 
      * @param companyFilterDto
      * @return
+     * @throws KidFriendlyException
      */
-    ResultDto<CompanyDto> search(CompanyFilterDto companyFilterDto);
+    ResultDto<CompanyDto> search(CompanyFilterDto companyFilterDto) throws KidFriendlyException;
 }

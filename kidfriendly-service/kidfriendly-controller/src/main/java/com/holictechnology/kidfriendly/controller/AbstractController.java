@@ -37,7 +37,8 @@ public abstract class AbstractController implements Serializable {
      * @throws CapitalPrimeException
      */
     protected void error(Class<?> clazz, KidFriendlyException kidFriendlyException) throws KidFriendlyException {
-        getLogger(clazz).error(kidFriendlyException.getCause() + ": " + kidFriendlyException.getMessage(), kidFriendlyException);
+        getLogger(clazz).error(((kidFriendlyException.getCause() == null) ? kidFriendlyException.getMessage() : kidFriendlyException.getCause().getMessage()),
+                kidFriendlyException);
         ConstraintViolationException constraintViolationException = getConstraintViolationException(kidFriendlyException);
 
         if (constraintViolationException != null && StringUtils.isNotBlank(constraintViolationException.getConstraintName())) {

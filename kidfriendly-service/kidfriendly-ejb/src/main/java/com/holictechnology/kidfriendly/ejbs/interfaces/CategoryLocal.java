@@ -1,11 +1,12 @@
 package com.holictechnology.kidfriendly.ejbs.interfaces;
 
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.ejb.Local;
 
 import com.holictechnology.kidfriendly.domain.entitys.Category;
+import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
 @Local
@@ -15,6 +16,7 @@ public interface CategoryLocal {
      * Method to list all categories.
      * 
      * @return
+     * @throws KidFriendlyException
      */
-    List<Category> listAll();
+    Collection<Category> listAll() throws KidFriendlyException;
 }

@@ -7,9 +7,11 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -40,7 +42,8 @@ public class RatingController extends AbstractController {
         try {
             ratings = ratingLocal.listPending();
         } catch (Exception exception) {
-            error(getClass(), new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_RATING, exception));
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_RATING, exception)));
         }
 
         return ok(ratings);
@@ -55,9 +58,21 @@ public class RatingController extends AbstractController {
         try {
             resultDto = ratingLocal.listByCompany(idCompany, paginatorDto);
         } catch (Exception exception) {
-            error(getClass(), new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_RATING, exception));
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_RATING, exception)));
         }
 
         return ok(resultDto);
+    }
+
+    @PUT
+    @Path(value = "/activate/{primaryKey}")
+    public void activate(@PathParam(value = "primaryKey") Long primaryKey, @QueryParam(value = "idCompany") Long idCompany) throws KidFriendlyException {
+        try {
+            ratingLocal.activate(primaryKey, idCompany);
+        } catch (Exception exception) {
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_ACTIVATE_RATING, exception)));
+        }
     }
 }

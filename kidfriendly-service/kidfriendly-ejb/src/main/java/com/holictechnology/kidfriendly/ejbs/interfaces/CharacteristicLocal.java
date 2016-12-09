@@ -1,12 +1,13 @@
 package com.holictechnology.kidfriendly.ejbs.interfaces;
 
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.ejb.Local;
 
 import com.holictechnology.kidfriendly.domain.entitys.Category;
 import com.holictechnology.kidfriendly.domain.entitys.Characteristic;
+import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
 @Local
@@ -18,6 +19,7 @@ public interface CharacteristicLocal {
      * @param idCategory
      *            - key {@link Category}
      * @return
+     * @throws KidFriendlyException
      */
-    List<Characteristic> listByCategory(Integer idCategory);
+    Collection<Characteristic> listByCategory(Integer idCategory) throws KidFriendlyException;
 }

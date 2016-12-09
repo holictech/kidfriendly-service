@@ -41,7 +41,8 @@ public class HomeController extends AbstractController {
             map.put(SUGGESTIONS, companyLocal.listSuggestions(DEFAULT_LIMIT));
             map.put(NEXT_TO_ME, companyLocal.listNextToMe(DEFAULT_LIMIT, longitude, latitude));
         } catch (Exception exception) {
-            error(getClass(), new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_COMPANIES, exception));
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_COMPANIES, exception)));
         }
 
         return ok(map);
