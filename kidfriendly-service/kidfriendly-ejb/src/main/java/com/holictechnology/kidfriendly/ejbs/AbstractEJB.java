@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import org.hibernate.Hibernate;
 
@@ -72,6 +73,7 @@ public abstract class AbstractEJB implements Serializable {
      * @param lazyAttributes
      * @throws Exception
      */
+    @Transactional(value = TxType.SUPPORTS)
     protected <T> void lazyInitialization(final T entity, final String ... lazyAttributes) throws KidFriendlyException {
         String _lazyAttributes[] = null;
         String lazyAttribute = null;
@@ -103,6 +105,7 @@ public abstract class AbstractEJB implements Serializable {
     /**
      * @param entity
      */
+    @Transactional(value = TxType.SUPPORTS)
     protected <T> void lazyInitialization(T entity) throws KidFriendlyException {
         if (entity != null && !Hibernate.isInitialized(entity)) {
             Hibernate.initialize(entity);
@@ -116,6 +119,7 @@ public abstract class AbstractEJB implements Serializable {
      * @return
      * @throws Exception
      */
+    @Transactional(value = TxType.SUPPORTS)
     protected <T> T find(final Class<T> entityClass, final Serializable primaryKey, final String ... lazyAttributes)
             throws KidFriendlyException {
         T entity = entityManager.find(entityClass, primaryKey);
