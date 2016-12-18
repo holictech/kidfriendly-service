@@ -28,7 +28,7 @@ public class CategoryEJB extends AbstractEJB implements CategoryLocal {
     @Transactional(value = TxType.SUPPORTS)
     public Collection<Category> listAll() throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
-        hql.append("SELECT category FROM com.holictechnology.kidfriendly.domain.entitys.Category category ORDER BY category.desCategory ASC");
+        hql.append("SELECT category FROM com.holictechnology.kidfriendly.domain.entitys.Category AS category ORDER BY category.desCategory ASC");
         TypedQuery<Category> typedQuery = entityManager.createQuery(hql.toString(), Category.class);
 
         return typedQuery.getResultList();

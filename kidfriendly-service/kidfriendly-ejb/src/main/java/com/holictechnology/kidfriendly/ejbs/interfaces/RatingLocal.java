@@ -8,6 +8,7 @@ import javax.ejb.Local;
 import com.holictechnology.kidfriendly.domain.dtos.RatingDto;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
+import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
@@ -36,10 +37,9 @@ public interface RatingLocal {
      * TODO - COLOCAR O COMENTÁRIO.
      * 
      * @param primaryKey
-     * @param idCompany
      * @throws KidFriendlyException
      */
-    void activate(Long primaryKey, Long idCompany) throws KidFriendlyException;
+    void activate(Long primaryKey) throws KidFriendlyException;
 
     /**
      * TODO - COLOCAR O COMENTÁRIO.
@@ -47,5 +47,5 @@ public interface RatingLocal {
      * @param idCompany
      * @throws KidFriendlyException
      */
-    void calculateRating(Long idCompany) throws KidFriendlyException;
+    void calculateRating(Company company) throws KidFriendlyException;
 }

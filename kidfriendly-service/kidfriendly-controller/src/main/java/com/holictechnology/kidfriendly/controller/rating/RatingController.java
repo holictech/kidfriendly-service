@@ -11,7 +11,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -67,9 +66,9 @@ public class RatingController extends AbstractController {
 
     @PUT
     @Path(value = "/activate/{primaryKey}")
-    public void activate(@PathParam(value = "primaryKey") Long primaryKey, @QueryParam(value = "idCompany") Long idCompany) throws KidFriendlyException {
+    public void activate(@PathParam(value = "primaryKey") Long primaryKey) throws KidFriendlyException {
         try {
-            ratingLocal.activate(primaryKey, idCompany);
+            ratingLocal.activate(primaryKey);
         } catch (Exception exception) {
             error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
                     : new KidFriendlyException(KidFriendlyMessages.ERROR_ACTIVATE_RATING, exception)));

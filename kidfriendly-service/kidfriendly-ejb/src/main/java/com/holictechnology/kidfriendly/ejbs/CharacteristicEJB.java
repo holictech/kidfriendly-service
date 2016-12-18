@@ -29,9 +29,9 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
     public Collection<Characteristic> listByCategory(Integer idCategory) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT characteristic ");
-        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.CategoryCharacteristic categoryCharacteristic ");
-        hql.append("INNER JOIN categoryCharacteristic.categoryCharacteristicPK.characteristic characteristic ");
-        hql.append("INNER JOIN categoryCharacteristic.categoryCharacteristicPK.category category ");
+        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.CategoryCharacteristic AS categoryCharacteristic ");
+        hql.append("INNER JOIN categoryCharacteristic.categoryCharacteristicPK.characteristic AS characteristic ");
+        hql.append("INNER JOIN categoryCharacteristic.categoryCharacteristicPK.category AS category ");
         hql.append("WHERE category.idCategory = :idCategory ");
         hql.append("ORDER BY characteristic.desCharacteristic ASC");
         TypedQuery<Characteristic> typedQuery = entityManager.createQuery(hql.toString(), Characteristic.class);

@@ -7,7 +7,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.ejb.Asynchronous;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -17,7 +19,9 @@ import javax.ws.rs.core.Response.Status;
 import com.holictechnology.kidfriendly.domain.dtos.RatingDto;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
+import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.domain.entitys.Rating;
+import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
@@ -27,6 +31,9 @@ import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 public class RatingEJB extends AbstractEJB implements RatingLocal {
 
     private static final long serialVersionUID = 5701134070335928714L;
+
+    @EJB
+    private CompanyLocal companyLocal;
 
     /*
      * (non-Javadoc)
@@ -81,33 +88,48 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
      * 
      * @see
      * com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#activate(java
-     * .lang.Long, java.lang.Long)
+     * .lang.Long)
      */
     @Override
-    public void activate(Long primaryKey, Long idCompany) throws KidFriendlyException {
-        Rating rating = find(Rating.class, primaryKey);
+    public void activate(Long primaryKey) throws KidFriendlyException {
+        Rating rating = find(Rating.class, primaryKey, "company");
 
         if (rating == null) {
             throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_NOT_FOUND_RATING);
         }
 
         rating.setStActive(Boolean.TRUE);
-        update(rating);
-        sessionContext.getBusinessObject(RatingLocal.class).calculateRating(idCompany);
+        rating = update(rating);
+        entityManager.flush();
+        sessionContext.getBusinessObject(RatingLocal.class).calculateRating(rating.getCompany());
     }
 
     /*
      * (non-Javadoc)
      * 
      * @see com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#
-     * calculateRating(java.lang.Long)
+     * calculateRating(com.holictechnology.kidfriendly.domain.entitys.Company)
      */
     @Asynchronous
-    public void calculateRating(Long idCompany) throws KidFriendlyException {
-        /*
-         * TODO - IMPLEMENTAR O CALCULO
-         */
-        System.out.println("Chamando método @Asynchronous");
+    public void calculateRating(Company company) throws KidFriendlyException {
+        StringBuffer sql = new StringBuffer();
+        sql.append(
+                "SELECT ROUND(((SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 1, 1, 0)) * 1) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 2, 1, 0)) * 2) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 3, 1, 0)) * 3) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 4, 1, 0)) * 4)) / COUNT(rating.ID_COMPANY)) ");
+        sql.append("FROM kidfriendly.RATING AS rating  ");
+        sql.append("WHERE rating.ST_ACTIVE = :stActive AND rating.ID_COMPANY = :idCompany ");
+        sql.append("GROUP BY rating.ID_COMPANY");
+        Query query = entityManager.createNativeQuery(sql.toString());
+        query.setParameter("stActive", Boolean.TRUE);
+        query.setParameter("idCompany", company.getIdCompany());
+
+        try {
+            Number numRate = (Number) query.getSingleResult();
+
+            if (numRate != null) {
+                company.setNumRate(numRate.shortValue());
+                update(company);
+            }
+        } catch (NoResultException exception) {}
     }
 
     /**
@@ -119,10 +141,10 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT new com.holictechnology.kidfriendly.domain.dtos.RatingDto(rating.idRating, rating.dtRating, rating.desRating, rating.desAnswer, "
                 + "statusKidFriendly.idStatusKidFriendly, company.idCompany, company.desName, user.idUser, user.desName, user.imgUser) ");
-        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Rating rating ");
-        hql.append("    INNER JOIN rating.statusKidFriendly statusKidFriendly ");
-        hql.append("    INNER JOIN rating.company company ");
-        hql.append("    INNER JOIN rating.user user ");
+        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Rating AS rating ");
+        hql.append("    INNER JOIN rating.statusKidFriendly AS A statusKidFriendly ");
+        hql.append("    INNER JOIN rating.company AS company ");
+        hql.append("    INNER JOIN rating.user AS user ");
         hql.append("WHERE 1 = 1 ");
         hql.append(((stActive != null)) ? "    AND rating.stActive = :stActive" : " ");
         hql.append(((idCompany != null)) ? "    AND company.idCompany = :idCompany" : " ");

@@ -30,7 +30,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     @Transactional(value = TxType.SUPPORTS)
     public Collection<Country> listAllCountries() throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
-        hql.append("SELECT country FROM com.holictechnology.kidfriendly.domain.entitys.Country country ORDER BY country.desCountry ASC");
+        hql.append("SELECT country FROM com.holictechnology.kidfriendly.domain.entitys.Country AS country ORDER BY country.desCountry ASC");
         TypedQuery<Country> typedQuery = entityManager.createQuery(hql.toString(), Country.class);
 
         return typedQuery.getResultList();
@@ -47,7 +47,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     public Collection<State> listStateByCountry(Integer idCountry) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append(
-                "SELECT state FROM com.holictechnology.kidfriendly.domain.entitys.State state WHERE state.country.idCountry = :idCountry ORDER BY state.desState ASC");
+                "SELECT state FROM com.holictechnology.kidfriendly.domain.entitys.State AS state WHERE state.country.idCountry = :idCountry ORDER BY state.desState ASC");
         TypedQuery<State> typedQuery = entityManager.createQuery(hql.toString(), State.class);
         typedQuery.setParameter("idCountry", idCountry);
 
@@ -64,7 +64,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     @Transactional(value = TxType.SUPPORTS)
     public Collection<City> listCityByState(Integer idState) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
-        hql.append("SELECT city FROM com.holictechnology.kidfriendly.domain.entitys.City city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");
+        hql.append("SELECT city FROM com.holictechnology.kidfriendly.domain.entitys.City AS city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");
         TypedQuery<City> typedQuery = entityManager.createQuery(hql.toString(), City.class);
         typedQuery.setParameter("idState", idState);
 
