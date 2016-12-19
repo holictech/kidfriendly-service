@@ -142,7 +142,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         hql.append("SELECT new com.holictechnology.kidfriendly.domain.dtos.RatingDto(rating.idRating, rating.dtRating, rating.desRating, rating.desAnswer, "
                 + "statusKidFriendly.idStatusKidFriendly, company.idCompany, company.desName, user.idUser, user.desName, user.imgUser) ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Rating AS rating ");
-        hql.append("    INNER JOIN rating.statusKidFriendly AS A statusKidFriendly ");
+        hql.append("    INNER JOIN rating.statusKidFriendly AS statusKidFriendly ");
         hql.append("    INNER JOIN rating.company AS company ");
         hql.append("    INNER JOIN rating.user AS user ");
         hql.append("WHERE 1 = 1 ");

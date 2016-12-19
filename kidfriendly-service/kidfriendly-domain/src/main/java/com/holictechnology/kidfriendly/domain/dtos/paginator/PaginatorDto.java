@@ -20,9 +20,9 @@ public class PaginatorDto implements Serializable {
 
     public PaginatorDto() {}
 
-    public PaginatorDto(Long currentPage, Long pageSize) {
+    public PaginatorDto(Long pageSize) {
         super();
-        this.currentPage = currentPage;
+        this.currentPage = BigInteger.ONE.longValue();
         this.pageSize = pageSize;
     }
 

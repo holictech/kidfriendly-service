@@ -1,6 +1,7 @@
 package com.holictechnology.kidfriendly.controller.company;
 
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
+import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
@@ -55,7 +57,8 @@ public class CompanyController extends AbstractController {
         Map<String, Object> details = new HashMap<String, Object>();
 
         try {
-            details.put("company", companyLocal.find(primaryKey, "address.city.state.country", "phones"));
+            details.put("company", companyLocal.find(primaryKey, "address.city.state", "phones"));
+            details.put("ratingResultDto", ratingLocal.listByCompany(primaryKey, new PaginatorDto(BigInteger.TEN.longValue())));
         } catch (Exception exception) {
             error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
                     : new KidFriendlyException(KidFriendlyMessages.ERROR_COMPANY_BY_PRIMARY_KEY, exception)));
