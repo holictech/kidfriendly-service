@@ -56,6 +56,9 @@ public class Rating implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USER", nullable = false)
     private User user;
+    
+    @Column(name = "ST_DELETE_LOGIC", nullable = false)
+    private Boolean deleteLogic;
 
     public Long getIdRating() {
         return idRating;
@@ -120,4 +123,14 @@ public class Rating implements Serializable {
     public void setUser(User user) {
         this.user = user;
     }
+
+	public Boolean getDeleteLogic() {
+		return deleteLogic;
+	}
+
+	public void setDeleteLogic(Boolean deleteLogic) {
+		this.deleteLogic = deleteLogic;
+	}
+    
+    
 }
