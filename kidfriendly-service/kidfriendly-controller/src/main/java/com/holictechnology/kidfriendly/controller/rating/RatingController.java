@@ -71,4 +71,16 @@ public class RatingController extends AbstractController {
             error(getClass(), exception, KidFriendlyMessages.ERROR_ACTIVATE_RATING);
         }
     }
+    
+    @PUT
+    @Path(value = "/activate-logic-fail/{primaryKey}")
+    public void deleteLogic(@PathParam(value = "primaryKey") Long primaryKey) throws KidFriendlyException {
+        try {
+            ratingLocal.activateNotShow(primaryKey);
+        } catch (Exception exception) {
+            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
+                    : new KidFriendlyException(KidFriendlyMessages.ERROR_ACTIVATE_RATING, exception)));
+        }
+    }
+    
 }

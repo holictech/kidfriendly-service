@@ -14,9 +14,9 @@
 	
 	<div class="text-app-titulo">| Comentários | Visualizando</div>
 		
-  <form ng-controller="companyController">
+  <form ng-controller="comentController">
     <div class="contentform">
-    	<div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
+    	<div id="sendmessage" ng-show="visibleMessage">{{messages}}</div>
     	
 		<div style="width:650px; height:300px; overflow: auto; margin-top: 40px;">
 		<table>
@@ -30,14 +30,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td class="user-name">teste.zé</td>
-							<td class="user-name">Teste</td>
-							<td class="user-email">05/12/2016</td>
-							<td class="user-phone">adhdhsdhjds dhdhjdshjds hsdhjdshjdshj sdhsdhsdhj.</td>
+						<tr ng-repeat="coment in coments">
+							<td class="user-name">{{coment.desNameUser}}</td>
+							<td class="user-name">{{coment.desNameCompany}}</td>
+							<td class="user-email">{{coment.dtRating}}</td>
+							<td class="user-phone">{{coment.desRating}}</td>
 							<td class="user-mobile">
-								<button type="button" class="acoes-excluir">Bloquear</button><br>
-								<button type="button" class="acoes-editar">Aceitar</button>
+								<button type="button" class="acoes-excluir" ng-click="deleteRating(coment.idRating)">Bloquear</button><br>
+								<button type="button" class="acoes-editar" ng-click="active(coment.idRating)">Aceitar</button>
 							</td>
 						</tr>
 					</tbody>
