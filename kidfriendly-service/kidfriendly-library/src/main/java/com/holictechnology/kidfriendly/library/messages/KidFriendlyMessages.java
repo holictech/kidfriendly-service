@@ -31,6 +31,7 @@ public final class KidFriendlyMessages {
     public static final String ERROR_LIST_RATING = "N\u00e3o foi poss\u00edvel listar as avalia\u00e7\u00f5es.";
     public static final String ERROR_ACTIVATE_RATING = "N\u00e3o foi poss\u00edvel ativar a avalia\u00e7\u00e3o.";
     public static final String ERROR_NOT_FOUND_RATING = "Avalia\u00e7\u00e3o n\u00e3o encontrada.";
+    public static final String ERROR_DELETE_RATING = "N\u00e3o foi poss\u00edvel deletar a avalia\u00e7\u00e3o.";
     
     /*
      * LOCALITY

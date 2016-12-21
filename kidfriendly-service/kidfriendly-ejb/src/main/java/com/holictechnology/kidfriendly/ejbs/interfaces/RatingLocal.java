@@ -48,12 +48,21 @@ public interface RatingLocal {
      * @throws KidFriendlyException
      */
     void calculateRating(Company company) throws KidFriendlyException;
-    
+
     /**
-     * Method in delete logic data rating for not show in app company avaliation and score great local
+     * Method in delete logic data rating for not show in app company avaliation
+     * and score great local
+     * 
      * @param key
      * @throws KidFriendlyException
      */
     void activateNotShow(Long key) throws KidFriendlyException;
-    
+
+    /**
+     * TODO - COLOCAR O COMENTÁRIO.
+     * 
+     * @param primaryKey
+     * @throws KidFriendlyException
+     */
+    void delete(Long primaryKey) throws KidFriendlyException;
 }

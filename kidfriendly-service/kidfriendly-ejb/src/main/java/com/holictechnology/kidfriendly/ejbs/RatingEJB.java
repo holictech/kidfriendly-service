@@ -148,7 +148,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         hql.append("WHERE 1 = 1 ");
         hql.append(((stActive != null)) ? "    AND rating.stActive = :stActive" : " ");
         hql.append(((idCompany != null)) ? "    AND company.idCompany = :idCompany" : " ");
-        hql.append(" AND rating.deleteLogic =  " ).append(Boolean.TRUE);
+        hql.append(" AND rating.deleteLogic =  ").append(Boolean.TRUE);
         hql.append((isOrderBy) ? " ORDER BY rating.dtRating DESC " : "");
 
         return hql;
@@ -168,15 +168,20 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         }
     }
 
-	@Override
-	public void activateNotShow(Long key) throws KidFriendlyException {
-		Rating rating = find(Rating.class, key, "company");
+    @Override
+    public void activateNotShow(Long key) throws KidFriendlyException {
+        Rating rating = find(Rating.class, key, "company");
 
         if (rating == null) {
             throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_NOT_FOUND_RATING);
         }
 
         rating.setDeleteLogic(Boolean.FALSE);
-        update(rating);        
-	}
+        update(rating);
+    }
+
+    @Override
+    public void delete(Long primaryKey) throws KidFriendlyException {
+        delete(Rating.class, primaryKey);
+    }
 }
