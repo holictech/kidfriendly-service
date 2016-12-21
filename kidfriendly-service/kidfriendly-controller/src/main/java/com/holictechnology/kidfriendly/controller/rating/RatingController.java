@@ -41,8 +41,7 @@ public class RatingController extends AbstractController {
         try {
             ratings = ratingLocal.listPending();
         } catch (Exception exception) {
-            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
-                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_RATING, exception)));
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_RATING);
         }
 
         return ok(ratings);
@@ -57,8 +56,7 @@ public class RatingController extends AbstractController {
         try {
             resultDto = ratingLocal.listByCompany(idCompany, paginatorDto);
         } catch (Exception exception) {
-            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
-                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_RATING, exception)));
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_RATING);
         }
 
         return ok(resultDto);
@@ -70,8 +68,7 @@ public class RatingController extends AbstractController {
         try {
             ratingLocal.activate(primaryKey);
         } catch (Exception exception) {
-            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
-                    : new KidFriendlyException(KidFriendlyMessages.ERROR_ACTIVATE_RATING, exception)));
+            error(getClass(), exception, KidFriendlyMessages.ERROR_ACTIVATE_RATING);
         }
     }
 }

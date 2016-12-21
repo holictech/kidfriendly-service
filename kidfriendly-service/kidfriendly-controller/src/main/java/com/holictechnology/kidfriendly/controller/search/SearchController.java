@@ -36,8 +36,7 @@ public class SearchController extends AbstractController {
         try {
             resultDto = companyLocal.search(companyFilterDto);
         } catch (Exception exception) {
-            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
-                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_COMPANIES, exception)));
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COMPANY);
         }
 
         return ok(resultDto);

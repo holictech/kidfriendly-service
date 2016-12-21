@@ -198,8 +198,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param companyFilterDto
      */
     private void setParametersSqlSearch(Query query, CompanyFilterDto companyFilterDto) {
-        setParametersSqlSearch(query, companyFilterDto.getCharacteristics());
-        query.setParameter("idCategory", companyFilterDto.getIdCategory());
+        setParametersSqlSearch(query, companyFilterDto.getCharacteristics(), companyFilterDto.getIdCategory());
 
         if (companyFilterDto.isSuperKidFriendly()) {
             query.setParameter("superKidFriendly", StatusKidFriendlyEnum.SUPER.getValue());
@@ -215,8 +214,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param query
      * @param characteristics
      */
-    private void setParametersSqlSearch(Query query, final List<Long> characteristics) {
+    private void setParametersSqlSearch(Query query, final List<Long> characteristics, final Integer idCategory) {
         if (characteristics != null && !characteristics.isEmpty()) {
+            query.setParameter("idCategory", idCategory);
             int index = 0;
 
             for (Long characteristic : characteristics) {

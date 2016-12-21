@@ -14,7 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
-import com.holictechnology.kidfriendly.library.messages.KidFriendlyUniqueEnum;
+import com.holictechnology.kidfriendly.library.messages.KidFriendlyConstraintViolationEnum;
+import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
 
 @TransactionManagement
@@ -33,16 +34,20 @@ public abstract class AbstractController implements Serializable {
 
     /**
      * @param clazz
-     * @param kidFriendlyException
-     * @throws CapitalPrimeException
+     * @param throwable
+     * @param message
+     * @throws KidFriendlyException
      */
-    protected void error(Class<?> clazz, KidFriendlyException kidFriendlyException) throws KidFriendlyException {
+    protected void error(Class<?> clazz, Throwable throwable, String message) throws KidFriendlyException {
+        KidFriendlyException kidFriendlyException = (KidFriendlyException.class.isAssignableFrom(throwable.getClass()) ? (KidFriendlyException) throwable
+                : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_CHARACTERISTIC, throwable));
         getLogger(clazz).error(((kidFriendlyException.getCause() == null) ? kidFriendlyException.getMessage() : kidFriendlyException.getCause().getMessage()),
                 kidFriendlyException);
         ConstraintViolationException constraintViolationException = getConstraintViolationException(kidFriendlyException);
 
         if (constraintViolationException != null && StringUtils.isNotBlank(constraintViolationException.getConstraintName())) {
-            KidFriendlyUniqueEnum kidFriendlyUniqueEnum = KidFriendlyUniqueEnum.valueOf(constraintViolationException.getConstraintName());
+            KidFriendlyConstraintViolationEnum kidFriendlyUniqueEnum = KidFriendlyConstraintViolationEnum
+                    .valueOf(constraintViolationException.getConstraintName());
 
             if (kidFriendlyUniqueEnum != null) {
                 kidFriendlyException = new KidFriendlyException(kidFriendlyUniqueEnum.getMessage(), kidFriendlyException);

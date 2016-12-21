@@ -39,8 +39,7 @@ public class LocalityController extends AbstractController {
         try {
             listCountry = localityLocal.listAllCountries();
         } catch (Exception exception) {
-            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
-                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_ALL_COUNTRIES, exception)));
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COUNTRY);
         }
 
         return ok(listCountry);
@@ -55,8 +54,7 @@ public class LocalityController extends AbstractController {
         try {
             listState = localityLocal.listStateByCountry(idCountry);
         } catch (Exception exception) {
-            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
-                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_STATE_BY_COUNTRY, exception)));
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_STATE);
         }
 
         return ok(listState);
@@ -71,8 +69,7 @@ public class LocalityController extends AbstractController {
         try {
             listCity = localityLocal.listCityByState(idState);
         } catch (Exception exception) {
-            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
-                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_CITY_BY_STATE, exception)));
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_CITY);
         }
 
         return ok(listCity);

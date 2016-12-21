@@ -11,7 +11,7 @@ public class CompanyFilterDto extends AbstractFilterDto {
     private static final long serialVersionUID = 3823747291893267157L;
 
     private List<Long> characteristics;
-    private Long idCategory;
+    private Integer idCategory;
     private boolean isSuperKidFriendly;
     private Double longitude;
     private Double latitude;
@@ -29,12 +29,12 @@ public class CompanyFilterDto extends AbstractFilterDto {
         return isSuperKidFriendly;
     }
 
-    public Long getIdCategory() {
+    public Integer getIdCategory() {
         return idCategory;
     }
 
     @QueryParam(value = "idCategory")
-    public void setIdCategory(Long idCategory) {
+    public void setIdCategory(Integer idCategory) {
         this.idCategory = idCategory;
     }
 

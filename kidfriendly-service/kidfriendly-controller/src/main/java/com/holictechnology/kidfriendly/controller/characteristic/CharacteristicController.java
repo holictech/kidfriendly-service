@@ -7,8 +7,8 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -29,16 +29,38 @@ public class CharacteristicController extends AbstractController {
     private CharacteristicLocal characteristicLocal;
 
     @GET
-    @Path(value = "/listbycategory")
+    @Path(value = "/listbycategory/{idCategory}")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response listByCategory(@QueryParam(value = "idCategory") Integer idCategory) throws KidFriendlyException {
+    public Response listByCategory(@PathParam(value = "idCategory") Integer idCategory) throws KidFriendlyException {
         Collection<Characteristic> characteristics = null;
 
         try {
             characteristics = characteristicLocal.listByCategory(idCategory);
         } catch (Exception exception) {
-            error(getClass(), (KidFriendlyException.class.isAssignableFrom(exception.getClass()) ? (KidFriendlyException) exception
-                    : new KidFriendlyException(KidFriendlyMessages.ERROR_LIST_CHARACTERISTIC_BY_CATEGORY, exception)));
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_CHARACTERISTIC);
+        }
+
+        return ok(characteristics);
+    }
+
+    @GET
+    @Path(value = "/listbycompany/{idCompany}")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response listByCompany(@PathParam(value = "idCompany") Long idCompany) throws KidFriendlyException {
+        return listByCompanyCategory(idCompany, null);
+    }
+
+    @GET
+    @Path(value = "/listbycompanycategory/{idCompany}/{idCategory}")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response listByCompanyCategory(@PathParam(value = "idCompany") Long idCompany, @PathParam(value = "idCategory") Integer idCategory)
+            throws KidFriendlyException {
+        Collection<Characteristic> characteristics = null;
+
+        try {
+            characteristics = characteristicLocal.listByCompanyCategory(idCompany, idCategory);
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_CHARACTERISTIC);
         }
 
         return ok(characteristics);

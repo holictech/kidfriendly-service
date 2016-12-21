@@ -17,13 +17,13 @@ public final class KidFriendlyMessages {
     /*
      * COMPANY
      */
-    public static final String ERROR_LIST_COMPANIES = "N\u00e3o foi poss\u00edvel listar os estabelecimentos.";
+    public static final String ERROR_LIST_COMPANY = "N\u00e3o foi poss\u00edvel listar os estabelecimentos.";
     public static final String ERROR_COMPANY_BY_PRIMARY_KEY = "N\u00e3o foi poss\u00edvel obter o estabelecimento.";
 
     /*
      * CHARACTERISTIC
      */
-    public static final String ERROR_LIST_CHARACTERISTIC_BY_CATEGORY = "N\u00e3o foi poss\u00edvel listar as caracter\u00edsticas.";
+    public static final String ERROR_LIST_CHARACTERISTIC = "N\u00e3o foi poss\u00edvel listar as caracter\u00edsticas.";
     
     /*
      * RATING
@@ -35,9 +35,9 @@ public final class KidFriendlyMessages {
     /*
      * LOCALITY
      */
-    public static final String ERROR_LIST_ALL_COUNTRIES = "N\u00e3o foi poss\u00edvel listar os pa\u00edses.";
-    public static final String ERROR_LIST_STATE_BY_COUNTRY = "N\u00e3o foi poss\u00edvel listar os estados.";
-    public static final String ERROR_LIST_CITY_BY_STATE = "N\u00e3o foi poss\u00edvel lista as cidades.";
+    public static final String ERROR_LIST_COUNTRY = "N\u00e3o foi poss\u00edvel listar os pa\u00edses.";
+    public static final String ERROR_LIST_STATE = "N\u00e3o foi poss\u00edvel listar os estados.";
+    public static final String ERROR_LIST_CITY = "N\u00e3o foi poss\u00edvel lista as cidades.";
     
 //    
 //    /*
