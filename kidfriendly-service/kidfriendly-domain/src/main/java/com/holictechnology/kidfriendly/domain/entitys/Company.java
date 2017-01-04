@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.ws.rs.DefaultValue;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -56,7 +57,7 @@ public class Company implements Serializable {
     @Column(name = "DT_REGISTER", nullable = false)
     private Date dtRegister;
 
-    @Column(name = "ST_ACTIVE", nullable = true)
+    @Column(name = "ST_ACTIVE", nullable = false)
     private Boolean stActive;
 
     @Column(name = "ST_HIGHLIGHT", nullable = true)
@@ -132,6 +133,7 @@ public class Company implements Serializable {
         return stActive;
     }
 
+    @DefaultValue(value = "false")
     public void setStActive(Boolean stActive) {
         this.stActive = stActive;
     }
@@ -140,6 +142,7 @@ public class Company implements Serializable {
         return stHighlight;
     }
 
+    @DefaultValue(value = "false")
     public void setStHighlight(Boolean stHighlight) {
         this.stHighlight = stHighlight;
     }

@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.ws.rs.DefaultValue;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -36,14 +37,17 @@ public class Rating implements Serializable {
     @Column(name = "DT_RATING", nullable = false)
     private Date dtRating;
 
-    @Column(name = "DES_RATING", nullable = false, length = 500)
+    @Column(name = "DES_RATING", nullable = false, length = 250)
     private String desRating;
 
-    @Column(name = "DES_ANSWER", nullable = true, length = 500)
+    @Column(name = "DES_ANSWER", nullable = true, length = 250)
     private String desAnswer;
 
     @Column(name = "ST_ACTIVE", nullable = false)
     private Boolean stActive;
+
+    @Column(name = "ST_DELETE", nullable = false)
+    private Boolean stDelete;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_COMPANY", nullable = false)
@@ -56,9 +60,6 @@ public class Rating implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USER", nullable = false)
     private User user;
-
-    @Column(name = "ST_DELETE_LOGIC", nullable = false)
-    private Boolean deleteLogic;
 
     public Long getIdRating() {
         return idRating;
@@ -96,8 +97,18 @@ public class Rating implements Serializable {
         return stActive;
     }
 
+    @DefaultValue(value = "false")
     public void setStActive(Boolean stActive) {
         this.stActive = stActive;
+    }
+
+    public Boolean getStDelete() {
+        return stDelete;
+    }
+
+    @DefaultValue(value = "false")
+    public void setStDelete(Boolean stDelete) {
+        this.stDelete = stDelete;
     }
 
     public Company getCompany() {
@@ -122,13 +133,5 @@ public class Rating implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Boolean getDeleteLogic() {
-        return deleteLogic;
-    }
-
-    public void setDeleteLogic(Boolean deleteLogic) {
-        this.deleteLogic = deleteLogic;
     }
 }

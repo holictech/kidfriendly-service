@@ -45,8 +45,9 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
     @Transactional(value = TxType.SUPPORTS)
     public Collection<RatingDto> listPending() throws KidFriendlyException {
         Boolean stActive = Boolean.FALSE;
-        TypedQuery<RatingDto> typedQuery = entityManager.createQuery(createHql(null, stActive, Boolean.TRUE).toString(), RatingDto.class);
-        setParametersHql(typedQuery, null, stActive);
+        Boolean stDelete = Boolean.FALSE;
+        TypedQuery<RatingDto> typedQuery = entityManager.createQuery(createHql(null, stActive, stDelete, Boolean.TRUE).toString(), RatingDto.class);
+        setParametersHql(typedQuery, null, stActive, stDelete);
 
         return typedQuery.getResultList();
     }
@@ -63,15 +64,16 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
     @Transactional(value = TxType.SUPPORTS)
     public ResultDto<RatingDto> listByCompany(Long idCompany, PaginatorDto paginatorDto) throws KidFriendlyException {
         Boolean stActive = Boolean.TRUE;
-        TypedQuery<Number> typedQueryCount = entityManager.createQuery(createHqlCount(createHql(idCompany, stActive, Boolean.FALSE)).toString(),
+        Boolean stDelete = Boolean.FALSE;
+        TypedQuery<Number> typedQueryCount = entityManager.createQuery(createHqlCount(createHql(idCompany, stActive, stDelete, Boolean.FALSE)).toString(),
                 Number.class);
-        setParametersHql(typedQueryCount, idCompany, stActive);
+        setParametersHql(typedQueryCount, idCompany, stActive, stDelete);
         paginatorDto.setSize(typedQueryCount.getSingleResult().longValue());
         List<RatingDto> ratings = new LinkedList<RatingDto>();
 
         if (paginatorDto.getSize() > BigInteger.ZERO.longValue()) {
-            TypedQuery<RatingDto> typedQuery = entityManager.createQuery(createHql(idCompany, stActive, Boolean.TRUE).toString(), RatingDto.class);
-            setParametersHql(typedQuery, idCompany, stActive);
+            TypedQuery<RatingDto> typedQuery = entityManager.createQuery(createHql(idCompany, stActive, stDelete, Boolean.TRUE).toString(), RatingDto.class);
+            setParametersHql(typedQuery, idCompany, stActive, stDelete);
             setParametersPaginator(typedQuery, paginatorDto);
             ratings.addAll(typedQuery.getResultList());
         }
@@ -116,10 +118,11 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         sql.append(
                 "SELECT ROUND(((SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 1, 1, 0)) * 1) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 2, 1, 0)) * 2) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 3, 1, 0)) * 3) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 4, 1, 0)) * 4)) / COUNT(rating.ID_COMPANY)) ");
         sql.append("FROM kidfriendly.RATING AS rating  ");
-        sql.append("WHERE rating.ST_ACTIVE = :stActive AND rating.ID_COMPANY = :idCompany ");
+        sql.append("WHERE rating.ST_ACTIVE = :stActive AND rating.ST_DELETE = :stDelete AND rating.ID_COMPANY = :idCompany ");
         sql.append("GROUP BY rating.ID_COMPANY");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("stActive", Boolean.TRUE);
+        query.setParameter("stDelete", Boolean.FALSE);
         query.setParameter("idCompany", company.getIdCompany());
 
         try {
@@ -134,10 +137,12 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
 
     /**
      * @param idCompany
+     * @param stActive
+     * @param stDelete
      * @param isOrderBy
      * @return
      */
-    private StringBuffer createHql(Long idCompany, Boolean stActive, boolean isOrderBy) {
+    private StringBuffer createHql(Long idCompany, Boolean stActive, Boolean stDelete, boolean isOrderBy) {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT new com.holictechnology.kidfriendly.domain.dtos.RatingDto(rating.idRating, rating.dtRating, rating.desRating, rating.desAnswer, "
                 + "statusKidFriendly.idStatusKidFriendly, company.idCompany, company.desName, user.idUser, user.desName, user.imgUser) ");
@@ -146,9 +151,9 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         hql.append("    INNER JOIN rating.company AS company ");
         hql.append("    INNER JOIN rating.user AS user ");
         hql.append("WHERE 1 = 1 ");
-        hql.append(((stActive != null)) ? "    AND rating.stActive = :stActive" : " ");
         hql.append(((idCompany != null)) ? "    AND company.idCompany = :idCompany" : " ");
-        hql.append(" AND rating.deleteLogic =  ").append(Boolean.TRUE);
+        hql.append(((stActive != null)) ? "    AND rating.stActive = :stActive" : " ");
+        hql.append(((stDelete != null)) ? "    AND rating.stDelete = :stDelete" : " ");
         hql.append((isOrderBy) ? " ORDER BY rating.dtRating DESC " : "");
 
         return hql;
@@ -156,32 +161,42 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
 
     /**
      * @param query
-     * @param companyFilterDto
+     * @param idCompany
+     * @param stActive
+     * @param stDelete
      */
-    private void setParametersHql(Query query, Long idCompany, Boolean stActive) {
-        if (stActive != null) {
-            query.setParameter("stActive", stActive);
-        }
+    private void setParametersHql(Query query, Long idCompany, Boolean stActive, Boolean stDelete) {
+        query.setParameter("stDelete", Boolean.FALSE);
 
         if (idCompany != null) {
             query.setParameter("idCompany", idCompany);
         }
+
+        if (stActive != null) {
+            query.setParameter("stActive", stActive);
+        }
+
+        if (stDelete != null) {
+            query.setParameter("stDelete", stDelete);
+        }
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#delete(java.
+     * lang.Long)
+     */
     @Override
-    public void activateNotShow(Long key) throws KidFriendlyException {
-        Rating rating = find(Rating.class, key, "company");
+    public void delete(Long primaryKey) throws KidFriendlyException {
+        Rating rating = find(Rating.class, primaryKey);
 
         if (rating == null) {
             throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_NOT_FOUND_RATING);
         }
 
-        rating.setDeleteLogic(Boolean.FALSE);
+        rating.setStDelete(Boolean.TRUE);
         update(rating);
-    }
-
-    @Override
-    public void delete(Long primaryKey) throws KidFriendlyException {
-        delete(Rating.class, primaryKey);
     }
 }

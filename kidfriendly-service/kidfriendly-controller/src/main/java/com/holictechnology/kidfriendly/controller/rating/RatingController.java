@@ -6,7 +6,6 @@ import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.BeanParam;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -74,17 +73,7 @@ public class RatingController extends AbstractController {
     }
 
     @PUT
-    @Path(value = "/activate-logic-fail/{primaryKey}")
-    public void deleteLogic(@PathParam(value = "primaryKey") Long primaryKey) throws KidFriendlyException {
-        try {
-            ratingLocal.activateNotShow(primaryKey);
-        } catch (Exception exception) {
-            error(getClass(), exception, KidFriendlyMessages.ERROR_ACTIVATE_RATING);
-        }
-    }
-
-    @DELETE
-    @Path(value = "/{primaryKey}")
+    @Path(value = "/delete/{primaryKey}")
     public void delete(@PathParam(value = "primaryKey") Long primaryKey) throws KidFriendlyException {
         try {
             ratingLocal.delete(primaryKey);
