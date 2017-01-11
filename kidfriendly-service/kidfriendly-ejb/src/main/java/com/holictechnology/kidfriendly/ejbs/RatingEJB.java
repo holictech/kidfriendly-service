@@ -101,7 +101,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         }
 
         rating.setStActive(Boolean.TRUE);
-        rating = update(rating);
+        rating = merge(rating);
         entityManager.flush();
         sessionContext.getBusinessObject(RatingLocal.class).calculateRating(rating.getCompany());
     }
@@ -130,7 +130,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
 
             if (numRate != null) {
                 company.setNumRate(numRate.shortValue());
-                update(company);
+                merge(company);
             }
         } catch (NoResultException exception) {}
     }
@@ -197,6 +197,6 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         }
 
         rating.setStDelete(Boolean.TRUE);
-        update(rating);
+        merge(rating);
     }
 }

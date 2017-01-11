@@ -10,10 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.core.MediaType;
-
-import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
@@ -49,8 +45,6 @@ public class Login implements Serializable {
         return idLogin;
     }
 
-    @FormParam("idLogin")
-    @PartType(MediaType.TEXT_PLAIN)
     public void setIdLogin(String idLogin) {
         this.idLogin = idLogin;
     }
@@ -76,13 +70,10 @@ public class Login implements Serializable {
         return user;
     }
 
-    @FormParam("user")
-    @PartType(MediaType.APPLICATION_OCTET_STREAM)
     public void setUser(User user) {
         this.user = user;
     }
 
-    @JsonIdentityReference(alwaysAsId = true)
     public Company getCompany() {
         return company;
     }

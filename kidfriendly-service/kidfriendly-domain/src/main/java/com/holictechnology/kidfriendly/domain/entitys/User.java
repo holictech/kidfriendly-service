@@ -12,10 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.core.MediaType;
-
-import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -55,8 +51,6 @@ public class User implements Serializable {
         return desName;
     }
 
-    @FormParam("desName")
-    @PartType(MediaType.TEXT_PLAIN)
     public void setDesName(String desName) {
         this.desName = desName;
     }

@@ -83,7 +83,7 @@ public abstract class AbstractEJB implements Serializable {
             for (String strLazyAttribute : lazyAttributes) {
                 _lazyAttributes = strLazyAttribute.split("\\.");
                 lazyAttribute = _lazyAttributes[BigInteger.ZERO.intValue()];
-                _lazyAttributes = ArrayUtilites.removeItem(_lazyAttributes, 0);
+                _lazyAttributes = ArrayUtilites.removeItem(_lazyAttributes, BigInteger.ZERO.intValue());
                 _object = ReflectionUtilites.invoke(entity, ReflectionUtilites.createMethodGet(lazyAttribute));
                 lazyInitialization(_object);
 
@@ -131,7 +131,7 @@ public abstract class AbstractEJB implements Serializable {
     /**
      * @param entity
      */
-    protected <T> void include(T entity) throws KidFriendlyException {
+    protected <T> void persist(T entity) throws KidFriendlyException {
         entityManager.persist(entity);
     }
 
@@ -139,7 +139,7 @@ public abstract class AbstractEJB implements Serializable {
      * @param entity
      * @return
      */
-    protected <T> T update(T entity) throws KidFriendlyException {
+    protected <T> T merge(T entity) throws KidFriendlyException {
         return entityManager.merge(entity);
     }
 
@@ -147,7 +147,7 @@ public abstract class AbstractEJB implements Serializable {
      * @param entityClass
      * @param primaryKey
      */
-    protected <T> void delete(Class<T> entityClass, Serializable primaryKey) throws KidFriendlyException {
+    protected <T> void remove(Class<T> entityClass, Serializable primaryKey) throws KidFriendlyException {
         entityManager.remove(find(entityClass, primaryKey));
     }
 }
