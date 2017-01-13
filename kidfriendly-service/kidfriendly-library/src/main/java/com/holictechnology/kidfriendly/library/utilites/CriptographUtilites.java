@@ -20,22 +20,27 @@ public final class CriptographUtilites implements Serializable {
      * 
      * @return
      */
-    public static CriptographUtilites getInstance() {
+    public synchronized static CriptographUtilites getInstance() {
         return new CriptographUtilites();
     }
 
     /**
-     * @param str
+     * @param value
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String createToken(String str) throws NoSuchAlgorithmException {
-        return PREFIX.concat(criptograph(str)).concat(SUFFIX);
+    public String createToken(String value) throws NoSuchAlgorithmException {
+        return PREFIX.concat(criptograph(value)).concat(SUFFIX);
     }
 
-    public String criptograph(String str) throws NoSuchAlgorithmException {
+    /**
+     * @param value
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public String criptograph(String value) throws NoSuchAlgorithmException {
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-        byte [] criptograph = messageDigest.digest(str.getBytes());
+        byte [] criptograph = messageDigest.digest(value.getBytes());
 
         return new BigInteger(1, criptograph).toString(16);
     }

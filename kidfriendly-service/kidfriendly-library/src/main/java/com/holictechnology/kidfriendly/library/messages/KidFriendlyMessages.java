@@ -40,6 +40,11 @@ public final class KidFriendlyMessages {
     public static final String ERROR_LIST_STATE = "N\u00e3o foi poss\u00edvel listar os estados.";
     public static final String ERROR_LIST_CITY = "N\u00e3o foi poss\u00edvel lista as cidades.";
     
+    /*
+     * IMAGE
+     */
+    public static final String ERROR_LIST_IMAGE = "N\u00e3o foi poss\u00edvel listar as imagens.";
+    
 //    
 //    /*
 //     * LOGIN
