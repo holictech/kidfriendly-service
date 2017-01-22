@@ -50,7 +50,7 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
     @Transactional(value = TxType.SUPPORTS)
     public Collection<Characteristic> listByCompanyCategory(Long idCompany, Integer idCategory) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
-        hql.append("SELECT characteristic ");
+        hql.append("SELECT DISTINCT characteristic ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.CompanyCategoryCharacteristic AS companyCategoryCharacteristic ");
         hql.append("INNER JOIN companyCategoryCharacteristic.companyCategoryCharacteristicPK.categoryCharacteristic AS categoryCharacteristic ");
         hql.append("INNER JOIN categoryCharacteristic.categoryCharacteristicPK.characteristic AS characteristic ");

@@ -15,7 +15,13 @@ public class PaginatorDto implements Serializable {
     private static final long serialVersionUID = -5723814885898119399L;
 
     private Long size;
+
+    @DefaultValue(value = "1")
+    @QueryParam(value = "currentPage")
     private Long currentPage;
+
+    @DefaultValue(value = "20")
+    @QueryParam(value = "pageSize")
     private Long pageSize;
 
     public PaginatorDto() {}
@@ -38,8 +44,6 @@ public class PaginatorDto implements Serializable {
         return currentPage;
     }
 
-    @DefaultValue(value = "1")
-    @QueryParam(value = "currentPage")
     public void setCurrentPage(Long currentPage) {
         this.currentPage = currentPage;
     }
@@ -48,8 +52,6 @@ public class PaginatorDto implements Serializable {
         return pageSize;
     }
 
-    @DefaultValue(value = "20")
-    @QueryParam(value = "pageSize")
     public void setPageSize(Long pageSize) {
         this.pageSize = pageSize;
     }

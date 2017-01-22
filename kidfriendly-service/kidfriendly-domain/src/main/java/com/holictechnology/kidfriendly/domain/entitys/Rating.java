@@ -43,9 +43,11 @@ public class Rating implements Serializable {
     @Column(name = "DES_ANSWER", nullable = true, length = 250)
     private String desAnswer;
 
+    @DefaultValue(value = "false")
     @Column(name = "ST_ACTIVE", nullable = false)
     private Boolean stActive;
 
+    @DefaultValue(value = "false")
     @Column(name = "ST_DELETE", nullable = false)
     private Boolean stDelete;
 
@@ -97,7 +99,6 @@ public class Rating implements Serializable {
         return stActive;
     }
 
-    @DefaultValue(value = "false")
     public void setStActive(Boolean stActive) {
         this.stActive = stActive;
     }
@@ -106,7 +107,6 @@ public class Rating implements Serializable {
         return stDelete;
     }
 
-    @DefaultValue(value = "false")
     public void setStDelete(Boolean stDelete) {
         this.stDelete = stDelete;
     }

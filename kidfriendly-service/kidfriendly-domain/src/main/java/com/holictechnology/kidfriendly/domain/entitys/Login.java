@@ -33,6 +33,7 @@ public class Login implements Serializable {
     @Column(name = "ST_ACTIVE", nullable = false)
     private Boolean stActive;
 
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_USER", nullable = true)
     private User user;
@@ -65,7 +66,6 @@ public class Login implements Serializable {
         this.stActive = stActive;
     }
 
-    @JsonIdentityReference(alwaysAsId = true)
     public User getUser() {
         return user;
     }

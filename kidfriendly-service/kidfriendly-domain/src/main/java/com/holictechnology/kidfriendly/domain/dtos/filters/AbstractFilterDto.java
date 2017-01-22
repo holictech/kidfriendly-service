@@ -12,13 +12,13 @@ public class AbstractFilterDto implements Serializable {
 
     private static final long serialVersionUID = -787193217721323332L;
 
+    @BeanParam
     private PaginatorDto paginatorDto;
 
     public PaginatorDto getPaginatorDto() {
         return paginatorDto;
     }
 
-    @BeanParam
     public void setPaginatorDto(PaginatorDto paginatorDto) {
         this.paginatorDto = paginatorDto;
     }

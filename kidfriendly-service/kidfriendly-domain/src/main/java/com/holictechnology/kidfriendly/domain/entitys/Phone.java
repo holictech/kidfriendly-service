@@ -46,6 +46,7 @@ public class Phone implements Serializable {
     @Column(name = "NUM_PHONE", nullable = false, length = 15)
     private String numPhone;
 
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_COMPANY", nullable = false)
     private Company company;
@@ -78,7 +79,6 @@ public class Phone implements Serializable {
         return company;
     }
 
-    @JsonIdentityReference(alwaysAsId = true)
     public void setCompany(Company company) {
         this.company = company;
     }

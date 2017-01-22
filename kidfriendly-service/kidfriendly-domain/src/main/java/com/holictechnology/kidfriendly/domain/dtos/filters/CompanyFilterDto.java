@@ -10,17 +10,25 @@ public class CompanyFilterDto extends AbstractFilterDto {
 
     private static final long serialVersionUID = 3823747291893267157L;
 
+    @QueryParam(value = "idCharacteristic")
     private List<Long> characteristics;
+
+    @QueryParam(value = "idCategory")
     private Integer idCategory;
+
+    @QueryParam(value = "isSuperKidFriendly")
     private boolean isSuperKidFriendly;
+
+    @QueryParam(value = "longitude")
     private Double longitude;
+
+    @QueryParam(value = "latitude")
     private Double latitude;
 
     public List<Long> getCharacteristics() {
         return characteristics;
     }
 
-    @QueryParam(value = "idCharacteristic")
     public void setCharacteristics(List<Long> characteristics) {
         this.characteristics = characteristics;
     }
@@ -33,12 +41,10 @@ public class CompanyFilterDto extends AbstractFilterDto {
         return idCategory;
     }
 
-    @QueryParam(value = "idCategory")
     public void setIdCategory(Integer idCategory) {
         this.idCategory = idCategory;
     }
 
-    @QueryParam(value = "isSuperKidFriendly")
     public void setSuperKidFriendly(boolean isSuperKidFriendly) {
         this.isSuperKidFriendly = isSuperKidFriendly;
     }
@@ -47,7 +53,6 @@ public class CompanyFilterDto extends AbstractFilterDto {
         return longitude;
     }
 
-    @QueryParam(value = "longitude")
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
@@ -56,7 +61,6 @@ public class CompanyFilterDto extends AbstractFilterDto {
         return latitude;
     }
 
-    @QueryParam(value = "latitude")
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }

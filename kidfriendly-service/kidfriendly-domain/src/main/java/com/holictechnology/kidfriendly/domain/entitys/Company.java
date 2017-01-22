@@ -57,9 +57,11 @@ public class Company implements Serializable {
     @Column(name = "DT_REGISTER", nullable = false)
     private Date dtRegister;
 
+    @DefaultValue(value = "false")
     @Column(name = "ST_ACTIVE", nullable = false)
     private Boolean stActive;
 
+    @DefaultValue(value = "false")
     @Column(name = "ST_HIGHLIGHT", nullable = true)
     private Boolean stHighlight;
 
@@ -133,7 +135,6 @@ public class Company implements Serializable {
         return stActive;
     }
 
-    @DefaultValue(value = "false")
     public void setStActive(Boolean stActive) {
         this.stActive = stActive;
     }
@@ -142,7 +143,6 @@ public class Company implements Serializable {
         return stHighlight;
     }
 
-    @DefaultValue(value = "false")
     public void setStHighlight(Boolean stHighlight) {
         this.stHighlight = stHighlight;
     }
