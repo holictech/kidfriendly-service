@@ -147,14 +147,14 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         hql.append("SELECT new com.holictechnology.kidfriendly.domain.dtos.RatingDto(rating.idRating, rating.dtRating, rating.desRating, rating.desAnswer, "
                 + "statusKidFriendly.idStatusKidFriendly, company.idCompany, company.desName, user.idUser, user.desName, user.imgUser) ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Rating AS rating ");
-        hql.append("    INNER JOIN rating.statusKidFriendly AS statusKidFriendly ");
-        hql.append("    INNER JOIN rating.company AS company ");
-        hql.append("    INNER JOIN rating.user AS user ");
+        hql.append("INNER JOIN rating.statusKidFriendly AS statusKidFriendly ");
+        hql.append("INNER JOIN rating.company AS company ");
+        hql.append("INNER JOIN rating.user AS user ");
         hql.append("WHERE 1 = 1 ");
-        hql.append(((idCompany != null)) ? "    AND company.idCompany = :idCompany" : " ");
-        hql.append(((stActive != null)) ? "    AND rating.stActive = :stActive" : " ");
-        hql.append(((stDelete != null)) ? "    AND rating.stDelete = :stDelete" : " ");
-        hql.append((isOrderBy) ? " ORDER BY rating.dtRating DESC " : "");
+        hql.append(((idCompany != null)) ? "AND company.idCompany = :idCompany " : " ");
+        hql.append(((stActive != null)) ? "AND rating.stActive = :stActive " : " ");
+        hql.append(((stDelete != null)) ? "AND rating.stDelete = :stDelete " : " ");
+        hql.append((isOrderBy) ? "ORDER BY rating.dtRating DESC " : "");
 
         return hql;
     }
@@ -166,8 +166,6 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
      * @param stDelete
      */
     private void setParametersHql(Query query, Long idCompany, Boolean stActive, Boolean stDelete) {
-        query.setParameter("stDelete", Boolean.FALSE);
-
         if (idCompany != null) {
             query.setParameter("idCompany", idCompany);
         }

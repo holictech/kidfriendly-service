@@ -62,27 +62,23 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     @Transactional(value = TxType.SUPPORTS)
     public Collection<CompanyDto> listSuggestions(Integer limit) throws KidFriendlyException {
         StringBuffer sql = new StringBuffer();
-        sql.append(
-                "SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
+        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
-        sql.append("    INNER JOIN ( ");
-        sql.append(
-                "        SELECT company.ID_COMPANY FROM company WHERE company.ST_ACTIVE = 1 AND company.ST_HIGHLIGHT = 1 ORDER BY RAND() LIMIT :limit ");
-        sql.append("    ) _company ON (_company.ID_COMPANY = company.ID_COMPANY) ");
-        sql.append("    INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("    INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
-        sql.append("    INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
+        sql.append("INNER JOIN ( ");
+        sql.append("SELECT company.ID_COMPANY FROM company WHERE company.ST_ACTIVE = 1 AND company.ST_HIGHLIGHT = 1 ORDER BY RAND() LIMIT :limit ");
+        sql.append(") _company ON (_company.ID_COMPANY = company.ID_COMPANY) ");
+        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
+        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
+        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
         sql.append("UNION ALL ");
-        sql.append(
-                "SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
+        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
-        sql.append("    INNER JOIN ( ");
-        sql.append(
-                "        SELECT company.ID_COMPANY FROM company WHERE company.ST_ACTIVE = 1 AND company.ST_HIGHLIGHT = 0 ORDER BY RAND() LIMIT :limit ");
-        sql.append("    ) _company ON (_company.ID_COMPANY = company.ID_COMPANY) ");
-        sql.append("    INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("    INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
-        sql.append("    INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
+        sql.append("INNER JOIN ( ");
+        sql.append("SELECT company.ID_COMPANY FROM company WHERE company.ST_ACTIVE = 1 AND company.ST_HIGHLIGHT = 0 ORDER BY RAND() LIMIT :limit ");
+        sql.append(") _company ON (_company.ID_COMPANY = company.ID_COMPANY) ");
+        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
+        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
+        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
         sql.append("ORDER BY ST_HIGHLIGHT DESC, DES_NAME LIMIT :limit ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("limit", limit);
@@ -104,9 +100,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
-        sql.append("    INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("    INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
-        sql.append("    INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
+        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
+        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
+        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
         sql.append(
                 "WHERE company.ST_ACTIVE = 1 AND ST_Contains(ST_MakeEnvelope(Point((:longitude+(10/100)), (:latitude+(10/100))), Point((:longitude-(10/100)), (:latitude-(10/100)))), Point(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
         sql.append("ORDER BY company.DES_NAME ");
@@ -155,13 +151,12 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     private StringBuffer createSqlSearch(CompanyFilterDto companyFilterDto, boolean isOrderBy) {
         StringBuffer sql = new StringBuffer();
-        sql.append(
-                "SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
+        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
         sql.append(createSqlSearch(companyFilterDto.getCharacteristics()));
-        sql.append("    INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("    INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
-        sql.append("    INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
+        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
+        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
+        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
         sql.append("WHERE company.ST_ACTIVE = 1 ");
         sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : " "));
         sql.append(((companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)
@@ -184,9 +179,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             int size = characteristics.size();
 
             for (int index = 0; index < size; index++) {
-                sql.append("    INNER JOIN COMPANY_CATEGORY_CHARACTERISTIC AS COMPANY_CATEGORY_CHARACTERISTIC_" + index
+                sql.append("INNER JOIN COMPANY_CATEGORY_CHARACTERISTIC AS COMPANY_CATEGORY_CHARACTERISTIC_" + index
                         + " ON (company.ID_COMPANY = COMPANY_CATEGORY_CHARACTERISTIC_" + index + ".ID_COMPANY and COMPANY_CATEGORY_CHARACTERISTIC_" + index
-                        + ".ID_CATEGORY = :idCategory and COMPANY_CATEGORY_CHARACTERISTIC_" + index + ".ID_CHARACTERISTIC = :parameter" + index + ")");
+                        + ".ID_CATEGORY = :idCategory and COMPANY_CATEGORY_CHARACTERISTIC_" + index + ".ID_CHARACTERISTIC = :parameter" + index + ") ");
             }
         }
 
