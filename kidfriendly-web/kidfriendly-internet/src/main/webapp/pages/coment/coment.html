@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="vendor/css/component.css" type="text/css" />
 		<link rel="stylesheet" href="vendor/css/demo.css" type="text/css" />
 		<link rel="stylesheet" href="vendor/css/normalize.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/table.css" type="text/css" />
 <body>
 <div id="wrap">
 	<div ng-controller="abstractController"><menu></menu></div>
@@ -16,7 +17,7 @@
 		
   <form ng-controller="comentController">
     <div class="contentform">
-    	<div id="sendmessage" ng-show="visibleMessage">{{messages}}</div>
+    	<div ng-class="cssMessage" ng-show="visibleMessage">{{messages}}</div>
     	
 		<div style="width:650px; height:300px; overflow: auto; margin-top: 40px;">
 		<table>
@@ -43,6 +44,7 @@
 					</tbody>
 		</table>
 		</div>
+	</div>
 		
 	</form>
 </div>
