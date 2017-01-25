@@ -1,7 +1,11 @@
 package com.holictechnology.kidfriendly.ejbs.interfaces;
 
 
+import java.util.List;
+
 import javax.ejb.Local;
+
+import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
 
 
 @Local
@@ -32,4 +36,12 @@ public interface LoginLocal {
 //     * @throws PersistenceException
 //     */
 //    void include(Login login) throws KidFriendlyException;
+	
+	
+	/**
+	 * Method in return login adim for system
+	 * @return
+	 */
+	List<LoginDto> returnLoginAdm();
+	
 }

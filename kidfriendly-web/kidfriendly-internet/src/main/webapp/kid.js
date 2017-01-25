@@ -1,7 +1,8 @@
 /**
  * Created by Paulo on 24/11/2015.
  */
-var kid = angular.module('kid',['ui.bootstrap', 'ngResource', 'ngRoute', 'ngCookies', 'ui.router']);
+var kid = angular.module('kid',['ui.bootstrap', 'ngResource', 'ngRoute', 'ngCookies', 'ui.router', 'angularModalService',
+	'ngAnimate']);
 
 kid.config(['$stateProvider', '$urlRouterProvider', '$routeProvider', function($stateProvider, $urlRouterProvider, $routeProvider) {
 	 
@@ -25,10 +26,13 @@ kid.config(['$stateProvider', '$urlRouterProvider', '$routeProvider', function($
 	   templateUrl : 'pages/company/edit.html',
 	}).state('adm', {
 	   url: '/adm',
-	   templateUrl : 'pages/user/adm.html',
+	   templateUrl : 'pages/user/search.html',
 	}).state('searchAdm', {
 	   url: '/searchAdm',
 	   templateUrl : 'pages/user/search.html',
+	}).state('registerUser', {
+	   url: '/registerUser',
+	   templateUrl : 'pages/user/adm.html',
 	}).state('editAdm', {
 	   url: '/editAdm',
 	   templateUrl : 'pages/user/edit.html',

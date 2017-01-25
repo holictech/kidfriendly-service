@@ -1,15 +1,32 @@
 package com.holictechnology.kidfriendly.ejbs;
 
 
-import javax.ejb.Stateless;
+import java.util.List;
 
+import javax.ejb.Stateless;
+import javax.persistence.Query;
+
+import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
 import com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal;
+import com.holictechnology.kidfriendly.mount.dto.LoginToLoginDto;
 
 
 @Stateless
 public class LoginEJB extends AbstractEJB implements LoginLocal {
 
     private static final long serialVersionUID = 8439680343365480598L;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<LoginDto> returnLoginAdm() {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT l FROM Login l WHERE l.stActive = :stActive AND l.user = null ORDER  BY l.idLogin ");
+		
+		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("stActive", Boolean.FALSE);
+		
+		return LoginToLoginDto.getInstance().loginToLoginDto(query.getResultList());
+	}
 
 //    /*
 //     * (non-Javadoc)
