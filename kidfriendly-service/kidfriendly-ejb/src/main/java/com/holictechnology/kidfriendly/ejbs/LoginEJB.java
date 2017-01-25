@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
+import com.holictechnology.kidfriendly.domain.entitys.Login;
 import com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal;
 import com.holictechnology.kidfriendly.mount.dto.LoginToLoginDto;
 
@@ -26,6 +27,15 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 		query.setParameter("stActive", Boolean.FALSE);
 		
 		return LoginToLoginDto.getInstance().loginToLoginDto(query.getResultList());
+	}
+
+	@Override
+	public LoginDto saveOrAlterUserAdm(LoginDto loginDto) {
+		Login login = LoginToLoginDto.getInstance().loginDtoToLoginDtoSingle(loginDto);
+		
+		entityManager.merge(login);
+		
+		return LoginToLoginDto.getInstance().loginToLoginDtoSingle(login);
 	}
 
 //    /*

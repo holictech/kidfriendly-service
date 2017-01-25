@@ -44,4 +44,11 @@ public interface LoginLocal {
 	 */
 	List<LoginDto> returnLoginAdm();
 	
+	/**
+	 * Method save or update user adm
+	 * @param loginDto
+	 * @return
+	 */
+	LoginDto saveOrAlterUserAdm(LoginDto loginDto);
+	
 }

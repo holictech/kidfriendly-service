@@ -46,4 +46,38 @@ public class LoginToLoginDto {
 		return loginDtos;
 	}
 	
+	/**
+	 * Reverse object received dto and transform in entity
+	 * @param loginDto
+	 * @return
+	 */
+	public Login loginDtoToLoginDtoSingle(LoginDto loginDto){
+		Login login = new Login();
+		
+		if(loginDto != null){
+			login.setIdLogin(loginDto.getIdLogin());
+			login.setDesPassword(loginDto.getDesPassword());
+			login.setStActive(loginDto.getStActive());
+		}
+		
+		return login;
+	}
+	
+	/**
+	 * Inverse object received entity and trnsform dto
+	 * @param login
+	 * @return
+	 */
+	public LoginDto loginToLoginDtoSingle(Login login){
+		LoginDto loginDto = new LoginDto();
+		
+		if(loginDto != null){
+			loginDto.setIdLogin(login.getIdLogin());
+			loginDto.setDesPassword(login.getDesPassword());
+			loginDto.setStActive(login.getStActive());
+		}
+		
+		return loginDto;
+	}
+	
 }

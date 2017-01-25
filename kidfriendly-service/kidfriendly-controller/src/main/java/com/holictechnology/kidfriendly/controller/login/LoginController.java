@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -63,6 +64,21 @@ public class LoginController extends AbstractController {
         }
     	
     	return ok(loginDtos);
+    }
+    
+    @PUT
+    @Path("/update-user-adm")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateUserAdm(LoginDto loginDto) throws KidFriendlyException{
+    	LoginDto login = null;
+    	
+    	try {
+    		login = loginLocal.saveOrAlterUserAdm(loginDto);
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_RATING);
+        }
+    	
+    	return ok(login);
     }
     
 }
