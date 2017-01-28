@@ -4,6 +4,12 @@
 		<script type="text/javascript" src="vendor/js/jquery.flow.1.2.js"></script>
 		<script type="text/javascript" src="vendor/js/jquery.cycle.js"></script>
 		<script type="text/javascript" src="vendor/js/custom.js"></script>
+		
+		<link rel="stylesheet" href="vendor/css/component.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/demo.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/normalize.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/table.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/formatter.css" type="text/css" />
 <body>
 <div id="wrap">
 	<div ng-controller="abstractController"><menu></menu></div>
@@ -12,13 +18,14 @@
 		
   <form ng-controller="userController">
     <div class="contentform">
-    	<div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
+    	<div ng-class="cssMessage" ng-show="visibleMessage">{{messages}}</div>
 
 
     	<div class="leftcontact">
 			      <div class="form-group">
 			        <p>Nome Usuário<span>*</span></p>
-				        <input type="text" name="nom" id="nom" data-rule="required" placeholder="Login do usuário"/>
+				        <input type="text" name="nom" id="nom" data-rule="required" placeholder="Login do usuário"
+				        ng-model="userRegister"/>
                 <div class="validation"></div>
        </div> 
 
@@ -28,12 +35,13 @@
 
 			<div class="form-group">
 			<p>Senha <span>*</span></p>
-                <input type="text" name="cep" id="cep" data-rule="required" placeholder="Senha do usuário"/>
+                <input type="password" name="cep" id="cep" data-rule="required" placeholder="Senha do usuário"
+                ng-model="pwsRegister"/>
                 <div class="validation"></div>
 			</div>	
 	</div>
 	</div>
-	<button type="button" class="bouton-contact">Cadastrar</button>
+	<button type="button" class="bouton-contact" ng-click="registerUserAdm(userRegister, pwsRegister)">Cadastrar</button>
 	<button type="button" class="bouton-search" ng-click="search()">Pesquisar</button>
 	
 	</form>

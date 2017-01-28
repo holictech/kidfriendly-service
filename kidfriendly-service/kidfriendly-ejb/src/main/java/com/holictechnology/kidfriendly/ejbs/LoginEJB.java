@@ -64,6 +64,19 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 		return message;
 	}
 
+	@Override
+	public LoginDto registerUserAdm(String user, String pws) {
+		Login login = new Login();
+		
+		login.setIdLogin(user);
+		login.setDesPassword(pws);
+		login.setStActive(Boolean.FALSE);
+		
+		entityManager.persist(login);
+		
+		return LoginToLoginDto.getInstance().loginToLoginDtoSingle(login);
+	}
+
 //    /*
 //     * (non-Javadoc)
 //     * 

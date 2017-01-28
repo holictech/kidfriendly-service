@@ -28,4 +28,11 @@ kid.service('userService', ['$http',
 		return $http.get(uri + '/login/search-user-adm/' + search);
 	};
 	
+	/**
+	 * Register user admin
+	 */
+	this.getRegisterUserAdmin = function(uri, user, pws){
+		return $http.post(uri + '/login/register-user-adm/' + user + "/" + pws);
+	};
+	
 }]);

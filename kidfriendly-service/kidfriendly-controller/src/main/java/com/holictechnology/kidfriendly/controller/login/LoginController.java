@@ -7,6 +7,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -88,6 +89,13 @@ public class LoginController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteUserAdm(@PathParam("id") String id){
     	return ok(loginLocal.deleteUserAdm(id));
+    }
+    
+    @POST
+    @Path("/register-user-adm/{user}/{pws}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerUserAdm(@PathParam("user") String user, @PathParam("pws") String pws){
+    	return ok(loginLocal.registerUserAdm(user, pws));
     }
     
 }

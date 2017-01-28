@@ -59,4 +59,12 @@ public interface LoginLocal {
 	 */
 	MessageDto deleteUserAdm(String idLogin);
 	
+	/**
+	 * Register user in system admin
+	 * @param user
+	 * @param pws
+	 * @return
+	 */
+	LoginDto registerUserAdm(String user, String pws);
+	
 }
