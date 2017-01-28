@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -52,13 +54,13 @@ public class LoginController extends AbstractController {
     
     
     @GET
-    @Path("/search-user-adm")
+    @Path("/search-user-adm/{search}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response searchAdm() throws KidFriendlyException{
+    public Response searchAdm(@PathParam("search") String search) throws KidFriendlyException{
     	List<LoginDto> loginDtos = null;
     	
     	try {
-    		loginDtos = loginLocal.returnLoginAdm();
+    		loginDtos = loginLocal.returnLoginAdm(search);
         } catch (Exception exception) {
             error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_RATING);
         }
@@ -79,6 +81,13 @@ public class LoginController extends AbstractController {
         }
     	
     	return ok(login);
+    }
+    
+    @DELETE
+    @Path("/remove-user/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteUserAdm(@PathParam("id") String id){
+    	return ok(loginLocal.deleteUserAdm(id));
     }
     
 }

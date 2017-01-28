@@ -7,6 +7,7 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
+import com.holictechnology.kidfriendly.domain.dtos.MessageDto;
 import com.holictechnology.kidfriendly.domain.entitys.Login;
 import com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal;
 import com.holictechnology.kidfriendly.mount.dto.LoginToLoginDto;
@@ -19,12 +20,20 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<LoginDto> returnLoginAdm() {
+	public List<LoginDto> returnLoginAdm(String search) {
 		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT l FROM Login l WHERE l.stActive = :stActive AND l.user = null ORDER  BY l.idLogin ");
+		sql.append(" SELECT l FROM Login l WHERE l.stActive = :stActive AND l.user = null ");
+		
+		if(!search.equals("null"))
+			sql.append(" 	AND l.idLogin like :idLogin ");
+		
+		sql.append(" 		ORDER  BY l.idLogin ");
 		
 		Query query = entityManager.createQuery(sql.toString());
 		query.setParameter("stActive", Boolean.FALSE);
+		
+		if(!search.equals("null"))
+			query.setParameter("idLogin", "%" + search + "%");
 		
 		return LoginToLoginDto.getInstance().loginToLoginDto(query.getResultList());
 	}
@@ -36,6 +45,23 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 		entityManager.merge(login);
 		
 		return LoginToLoginDto.getInstance().loginToLoginDtoSingle(login);
+	}
+
+	@Override
+	public MessageDto deleteUserAdm(String idLogin) {
+		MessageDto message = new MessageDto();
+		
+		try{
+			Login login = entityManager.find(Login.class, idLogin);
+			entityManager.remove(login);
+			message.setMessage("Removido com sucesso.");
+			message.setStatusSuccess(true);
+		}catch (Exception e) {
+			message.setMessage("Erro ao remover usuário, tente mais tarde e se persistir entre em contato com o suporte.");
+			message.setStatusSuccess(false);
+		}
+		
+		return message;
 	}
 
 //    /*

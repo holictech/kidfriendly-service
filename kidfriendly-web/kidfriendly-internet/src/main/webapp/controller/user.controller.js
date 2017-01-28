@@ -44,6 +44,9 @@ kid.controller('userController', ['$scope', 'userService', '$state', '$cookieSto
 		$state.go('editAdm');
 	};
 	
+	/**
+	 * Method in update user admin
+	 */
 	$scope.updateUserAdmin = function(){
 		userService.getAlterUser(util.getUri(), $scope.user).success(function(data, status, headers, config) {
 			$scope.cssMessage = "message-table-correct";
@@ -53,6 +56,38 @@ kid.controller('userController', ['$scope', 'userService', '$state', '$cookieSto
 			$scope.cssMessage = "message-table-incorret";
 			$scope.messages = "Erro ao tentar alterar usuário...";
 			$scope.visibleMessage = true;
+	    });
+	};
+	
+	/**
+	 * Delete User admin
+	 */
+	$scope.deleteUserAdm = function(user){
+		userService.getDeleteUser(util.getUri(), user).success(function(data, status, headers, config) {
+			$scope.cssMessage = "message-table-correct";
+			$scope.messages = data.message;
+			$scope.visibleMessage = true;
+			userService.getUserAdm(util.getUri()).success(function(data, status, headers, config) {
+				$scope.users = data;
+			}).error(function(data, status, headers, config) {
+				$scope.messages = "Não foi possível carregar os dados dos usuários por algum erro interno...";
+				$scope.visibleMessage = true;
+				$scope.cssMessage = "message-table-incorret";
+		    });
+		}).error(function(data, status, headers, config) {
+			$scope.cssMessage = "message-table-incorret";
+			$scope.messages = data.message;
+			$scope.visibleMessage = true;
+	    });
+	};
+	
+	$scope.searchUserAdmin = function(searching){
+		userService.getSearchUserAdmin(util.getUri(), searching).success(function(data, status, headers, config) {
+			$scope.users = data;
+		}).error(function(data, status, headers, config) {
+			$scope.messages = "Não foi possível pesquisar ERRO INTERNO...";
+			$scope.visibleMessage = true;
+			$scope.cssMessage = "message-table-incorret";
 	    });
 	};
 	

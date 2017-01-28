@@ -240,3 +240,8 @@ form:after {
 	background-position: 0 -135px;
 	color: #00aeef;
 }
+
+.space-blank{
+	margin-bottom: 5px;
+	margin-top: 5px;
+}

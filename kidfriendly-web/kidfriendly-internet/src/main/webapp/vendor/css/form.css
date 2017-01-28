@@ -161,12 +161,12 @@ i {
   background-color: #FF4500;
   color: #FFF;
   text-align: center;
-  width: 100%;
+  width:100px;
   border:0;
-  padding: 17px 25px;
+  padding: 8px 14px;
   border-radius: 5px 5px 5px 5px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 10px;
 }
 
 .bouton-cancel{

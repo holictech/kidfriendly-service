@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
+import com.holictechnology.kidfriendly.domain.dtos.MessageDto;
 
 
 @Local
@@ -42,7 +43,7 @@ public interface LoginLocal {
 	 * Method in return login adim for system
 	 * @return
 	 */
-	List<LoginDto> returnLoginAdm();
+	List<LoginDto> returnLoginAdm(String search);
 	
 	/**
 	 * Method save or update user adm
@@ -50,5 +51,12 @@ public interface LoginLocal {
 	 * @return
 	 */
 	LoginDto saveOrAlterUserAdm(LoginDto loginDto);
+	
+	/**
+	 * Method in delete user adm
+	 * @param loginDto
+	 * @return
+	 */
+	MessageDto deleteUserAdm(String idLogin);
 	
 }
