@@ -14,6 +14,10 @@ public class CompanyDto implements Serializable {
     private Short numRate;
     private String desState;
     private String desCity;
+    
+    private AdressDto adressDto;
+    
+    private ImageDto imageDto;
 
     public Long getIdCompany() {
         return idCompany;
@@ -62,4 +66,21 @@ public class CompanyDto implements Serializable {
     public void setDesCity(String desCity) {
         this.desCity = desCity;
     }
+
+	public AdressDto getAdressDto() {
+		return adressDto;
+	}
+
+	public void setAdressDto(AdressDto adressDto) {
+		this.adressDto = adressDto;
+	}
+
+	public ImageDto getImageDto() {
+		return imageDto;
+	}
+
+	public void setImageDto(ImageDto imageDto) {
+		this.imageDto = imageDto;
+	}
+    
 }
