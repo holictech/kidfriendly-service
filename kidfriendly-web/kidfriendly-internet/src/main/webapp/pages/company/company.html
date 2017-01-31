@@ -4,6 +4,12 @@
 		<script type="text/javascript" src="vendor/js/jquery.flow.1.2.js"></script>
 		<script type="text/javascript" src="vendor/js/jquery.cycle.js"></script>
 		<script type="text/javascript" src="vendor/js/custom.js"></script>
+		
+		<link rel="stylesheet" href="vendor/css/component.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/demo.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/normalize.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/table.css" type="text/css" />
+		<link rel="stylesheet" href="vendor/css/formatter.css" type="text/css" />
 <body>
 <div id="wrap">
 	<div ng-controller="abstractController"><menu></menu></div>
@@ -114,7 +120,16 @@
                 <div class="validation"></div>
 			</div>	
 	</div>
+	
 	</div>
+	
+	<div class="contentform space-blank">
+		<div class="form-group">
+			<input type="file" id="file" name="file"/>
+			<button type="button" class="bouton-add-peq">Adicionar</button>
+		</div>
+	</div>
+	
 	<button type="button" class="bouton-contact">Cadastrar</button>
 	<button type="button" class="bouton-search" ng-click="search()">Pesquisar</button>
 	

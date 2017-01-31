@@ -39,7 +39,7 @@ public class Login implements Serializable {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_COMPANY", nullable = false)
+    @JoinColumn(name = "ID_COMPANY", nullable = true)
     private Company company;
 
     public String getIdLogin() {

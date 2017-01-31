@@ -19,6 +19,7 @@ import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.domain.enums.StatusKidFriendlyEnum;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
+import com.holictechnology.kidfriendly.mount.dto.CompanyToCompanyDto;
 
 
 @Stateless
@@ -244,4 +245,15 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
         return listCompanyDto;
     }
+
+	@Override
+	public CompanyDto saveOrUpdate(CompanyDto companyDto) {
+		Company company = CompanyToCompanyDto.getInstance().companyDtoToCompany(companyDto);
+		
+		entityManager.merge(company);
+		
+		companyDto.setIdCompany(company.getIdCompany());
+		
+		return companyDto;
+	}
 }

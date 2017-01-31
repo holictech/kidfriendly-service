@@ -133,6 +133,17 @@ i {
   font-size: 14px;
 }
 
+.bouton-add-peq{
+  background-color: #B0C4DE;
+  color: #FFF;
+  text-align: center;
+  border:0;
+  padding: 12px 20px;
+  border-radius: 5px 5px 5px 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 .acoes-editar{
   background-color: #B0C4DE;
   color: #FFF;

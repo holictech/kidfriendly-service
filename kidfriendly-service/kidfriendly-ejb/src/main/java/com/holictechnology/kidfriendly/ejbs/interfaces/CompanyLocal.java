@@ -63,4 +63,12 @@ public interface CompanyLocal {
      * @throws KidFriendlyException
      */
     ResultDto<CompanyDto> search(CompanyFilterDto companyFilterDto) throws KidFriendlyException;
+    
+    /**
+     * Method in register company in system
+     * @param companyDto
+     * @return
+     */
+    CompanyDto saveOrUpdate(CompanyDto companyDto);
+    
 }
