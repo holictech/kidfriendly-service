@@ -2,6 +2,7 @@ package com.holictechnology.kidfriendly.domain.dtos;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 
 public class CompanyDto implements Serializable {
@@ -12,12 +13,13 @@ public class CompanyDto implements Serializable {
     private String desName;
     private byte [] imgLogo;
     private Short numRate;
-    private String desState;
-    private String desCity;
+    private String desSite;
     
     private AdressDto adressDto;
     
     private ImageDto imageDto;
+    
+    private List<PhoneDto> phoneDtos;
 
     public Long getIdCompany() {
         return idCompany;
@@ -51,22 +53,6 @@ public class CompanyDto implements Serializable {
         this.numRate = numRate;
     }
 
-    public String getDesState() {
-        return desState;
-    }
-
-    public void setDesState(String desState) {
-        this.desState = desState;
-    }
-
-    public String getDesCity() {
-        return desCity;
-    }
-
-    public void setDesCity(String desCity) {
-        this.desCity = desCity;
-    }
-
 	public AdressDto getAdressDto() {
 		return adressDto;
 	}
@@ -82,5 +68,21 @@ public class CompanyDto implements Serializable {
 	public void setImageDto(ImageDto imageDto) {
 		this.imageDto = imageDto;
 	}
-    
+
+	public String getDesSite() {
+		return desSite;
+	}
+
+	public void setDesSite(String desSite) {
+		this.desSite = desSite;
+	}
+
+	public List<PhoneDto> getPhoneDtos() {
+		return phoneDtos;
+	}
+
+	public void setPhoneDtos(List<PhoneDto> phoneDtos) {
+		this.phoneDtos = phoneDtos;
+	}
+	
 }
