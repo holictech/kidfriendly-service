@@ -8,6 +8,7 @@ import javax.ejb.Local;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
+import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
@@ -67,8 +68,9 @@ public interface CompanyLocal {
     /**
      * Method in register company in system
      * @param companyDto
+     * @param city
      * @return
      */
-    CompanyDto saveOrUpdate(CompanyDto companyDto);
+    CompanyDto saveOrUpdate(CompanyDto companyDto, City city) throws KidFriendlyException;
     
 }

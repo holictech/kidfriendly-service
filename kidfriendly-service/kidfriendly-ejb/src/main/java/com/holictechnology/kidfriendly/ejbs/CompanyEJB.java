@@ -15,6 +15,8 @@ import javax.transaction.Transactional.TxType;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
+import com.holictechnology.kidfriendly.domain.entitys.Address;
+import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.domain.enums.StatusKidFriendlyEnum;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
@@ -245,8 +247,12 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     }
 
 	@Override
-	public CompanyDto saveOrUpdate(CompanyDto companyDto) {
+	public CompanyDto saveOrUpdate(CompanyDto companyDto, City city) throws KidFriendlyException {
 		Company company = CompanyToCompanyDto.getInstance().companyDtoToCompany(companyDto);
+		Address address = CompanyToCompanyDto.getInstance().mountAddress(companyDto, city);
+		
+		persist(address);
+		company.setAddress(address);
 		
 		entityManager.merge(company);
 		
