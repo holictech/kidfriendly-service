@@ -85,4 +85,11 @@ public class CompanyController extends AbstractController {
 		}
     	return ok(companyDto);
     }
+    
+    @GET
+    @Path("/search-company")
+    public Response searchCompany(){
+    	return ok(null);
+    }
+    
 }
