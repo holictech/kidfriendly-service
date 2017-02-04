@@ -69,4 +69,15 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	    });
 	};
 	
+	/**
+	 * Method search company
+	 */
+	$scope.searchCompany = function(){
+		companyService.getCitys(util.getUri(), objState).success(function(data, status, headers, config) {
+			$scope.citys = data;
+		}).error(function(data, status, headers, config) {
+			
+	    });
+	};
+	
 }]);
