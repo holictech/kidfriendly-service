@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
-import com.holictechnology.kidfriendly.domain.dtos.PhoneDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Address;
@@ -237,11 +236,13 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             CompanyDto companyDto;
 
             for (Object [] object : listObject) {
-                companyDto = new CompanyDto();
+            	companyDto = new CompanyDto();
                 companyDto.setIdCompany((object[0] != null) ? Long.valueOf(object[0].toString()) : null);
                 companyDto.setDesName((object[1] != null) ? object[1].toString() : null);
                 companyDto.setImgLogo((object[2] != null) ? (byte []) object[2] : null);
-                companyDto.setNumRate((object[3] != null) ? Short.valueOf(object[3].toString()) : null);
+                companyDto.setNumRate((object[3] != null) ? Short.valueOf(object[3].toString()) : 4);
+                companyDto.setDesCity((object[5] != null) ? object[5].toString() : null);
+                companyDto.setDesState((object[6] != null) ? object[6].toString() : null);
                 listCompanyDto.add(companyDto);
             }
         }

@@ -11,6 +11,8 @@ public class CompanyDto implements Serializable {
 
     private Long idCompany;
     private String desName;
+    private String desState;
+    private String desCity;
     
     private String document;
     
@@ -124,6 +126,22 @@ public class CompanyDto implements Serializable {
 
 	public void setIdCity(String idCity) {
 		this.idCity = idCity;
+	}
+
+	public String getDesState() {
+		return desState;
+	}
+
+	public void setDesState(String desState) {
+		this.desState = desState;
+	}
+
+	public String getDesCity() {
+		return desCity;
+	}
+
+	public void setDesCity(String desCity) {
+		this.desCity = desCity;
 	}
 	
 }
