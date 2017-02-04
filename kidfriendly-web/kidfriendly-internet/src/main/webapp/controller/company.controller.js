@@ -3,8 +3,8 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 
 	$scope.states = {};
 	$scope.citys = {};
-	$scope.addressDto = {};
 	$scope.companyDto = {};
+	$scope.phoneDto = {};
 	
 	$scope.search = function(){
 		$state.go('searchCompany');
@@ -18,12 +18,18 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 		$state.go('editCompany');
 	};
 	
+	/**
+	 * Method loaded states in country Brazil
+	 */
 	locationService.getStates(util.getUri(), 1).success(function(data, status, headers, config) {
 		$scope.states = data;
 	}).error(function(data, status, headers, config) {
 		
     });
 	
+	/**
+	 * Method in selected state by loaded city
+	 */
 	$scope.getCityByState = function(objState){
 		locationService.getCitys(util.getUri(), objState).success(function(data, status, headers, config) {
 			$scope.citys = data;

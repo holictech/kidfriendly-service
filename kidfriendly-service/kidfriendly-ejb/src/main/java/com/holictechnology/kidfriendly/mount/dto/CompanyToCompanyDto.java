@@ -39,6 +39,8 @@ public class CompanyToCompanyDto {
 		company.setImgLogo(companyDto.getImgLogo());
 		company.setNumRate(companyDto.getNumRate());
 		company.setDesSite(companyDto.getDesSite());
+		company.setDesCNPJ(companyDto.getDocument());
+		company.setDesNameResponsible(companyDto.getNamePearsonResponsible());
 		
 		return company;
 	}

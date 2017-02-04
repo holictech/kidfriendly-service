@@ -11,6 +11,13 @@ public class CompanyDto implements Serializable {
 
     private Long idCompany;
     private String desName;
+    
+    private String document;
+    
+    private String email;
+    
+    private String namePearsonResponsible;
+    
     private byte [] imgLogo;
     private Short numRate;
     private String desSite;
@@ -83,6 +90,30 @@ public class CompanyDto implements Serializable {
 
 	public void setImageDtos(List<ImageDto> imageDtos) {
 		this.imageDtos = imageDtos;
+	}
+
+	public String getDocument() {
+		return document;
+	}
+
+	public void setDocument(String document) {
+		this.document = document;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNamePearsonResponsible() {
+		return namePearsonResponsible;
+	}
+
+	public void setNamePearsonResponsible(String namePearsonResponsible) {
+		this.namePearsonResponsible = namePearsonResponsible;
 	}
 	
 }
