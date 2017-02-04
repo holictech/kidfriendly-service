@@ -3,6 +3,8 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 
 	$scope.states = {};
 	$scope.citys = {};
+	$scope.addressDto = {};
+	$scope.companyDto = {};
 	
 	$scope.search = function(){
 		$state.go('searchCompany');
