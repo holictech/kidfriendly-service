@@ -17,7 +17,7 @@ public class CompanyDto implements Serializable {
     
     private AdressDto adressDto;
     
-    private ImageDto imageDto;
+    private List<ImageDto> imageDtos;
     
     private List<PhoneDto> phoneDtos;
 
@@ -61,14 +61,6 @@ public class CompanyDto implements Serializable {
 		this.adressDto = adressDto;
 	}
 
-	public ImageDto getImageDto() {
-		return imageDto;
-	}
-
-	public void setImageDto(ImageDto imageDto) {
-		this.imageDto = imageDto;
-	}
-
 	public String getDesSite() {
 		return desSite;
 	}
@@ -83,6 +75,14 @@ public class CompanyDto implements Serializable {
 
 	public void setPhoneDtos(List<PhoneDto> phoneDtos) {
 		this.phoneDtos = phoneDtos;
+	}
+
+	public List<ImageDto> getImageDtos() {
+		return imageDtos;
+	}
+
+	public void setImageDtos(List<ImageDto> imageDtos) {
+		this.imageDtos = imageDtos;
 	}
 	
 }

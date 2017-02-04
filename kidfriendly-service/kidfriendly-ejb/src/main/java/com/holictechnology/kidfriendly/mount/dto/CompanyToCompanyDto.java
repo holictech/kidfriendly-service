@@ -67,20 +67,19 @@ public class CompanyToCompanyDto {
 	/**
 	 * Method in mount images catalog company
 	 * @param company
-	 * @param images
 	 * @param companyDto
 	 * @return
 	 */
-	public List<Image> mountImageCompany(Company company, List<byte []> images, CompanyDto companyDto){
+	public List<Image> mountImageCompany(Company company, CompanyDto companyDto){
 		List<Image> imagens = new ArrayList<Image>();
 		
-		if(images != null){
-			if(!images.isEmpty()){
-				for(int i=0; i<images.size(); i++){
+		if(companyDto.getImageDtos() != null){
+			if(!companyDto.getImageDtos().isEmpty()){
+				for(int i=0; i<companyDto.getImageDtos().size(); i++){
 					Image image = new Image();
 					image.setCompany(company);
-					image.setDesImage(companyDto.getImageDto().getDesImage());
-					image.setImgImage(images.get(i));
+					image.setDesImage(companyDto.getImageDtos().get(i).getDesImage());
+					image.setImgImage(companyDto.getImageDtos().get(i).getImgImage());
 					imagens.add(image);
 				}
 			}
