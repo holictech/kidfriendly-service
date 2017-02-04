@@ -95,7 +95,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
      */
     @Override
     public void activate(Long primaryKey) throws KidFriendlyException {
-        Rating rating = entityManager.find(Rating.class, primaryKey);
+        Rating rating = find(Rating.class, primaryKey, "company");
 
         if (rating == null) {
             throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_NOT_FOUND_RATING);
@@ -189,7 +189,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
      */
     @Override
     public void delete(Long primaryKey) throws KidFriendlyException {
-        Rating rating = entityManager.find(Rating.class, primaryKey);
+        Rating rating = find(Rating.class, primaryKey);
 
         if (rating == null) {
             throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_NOT_FOUND_RATING);
