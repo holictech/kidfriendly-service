@@ -6,7 +6,9 @@ import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.BeanParam;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -18,6 +20,7 @@ import com.holictechnology.kidfriendly.controller.AbstractController;
 import com.holictechnology.kidfriendly.domain.dtos.RatingDto;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
+import com.holictechnology.kidfriendly.domain.entitys.Rating;
 import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
@@ -49,6 +52,7 @@ public class RatingController extends AbstractController {
 
     @GET
     @Path(value = "/listbycompany/{idCompany}")
+    @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response listByCompany(@PathParam(value = "idCompany") Long idCompany, @BeanParam PaginatorDto paginatorDto) throws KidFriendlyException {
         ResultDto<RatingDto> resultDto = null;
@@ -79,6 +83,18 @@ public class RatingController extends AbstractController {
             ratingLocal.delete(primaryKey);
         } catch (Exception exception) {
             error(getClass(), exception, KidFriendlyMessages.ERROR_DELETE_RATING);
+        }
+    }
+
+    @POST
+    @Path(value = "/include")
+    @Consumes(value = MediaType.APPLICATION_JSON)
+    public void include(Rating rating) throws KidFriendlyException {
+//        System.out.println(rating);
+        try {
+            // ratingLocal.include(rating);
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_RATING);
         }
     }
 }

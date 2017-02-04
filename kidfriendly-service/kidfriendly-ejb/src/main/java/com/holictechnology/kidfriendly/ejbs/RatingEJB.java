@@ -3,6 +3,7 @@ package com.holictechnology.kidfriendly.ejbs;
 
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -196,5 +197,18 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
 
         rating.setStDelete(Boolean.TRUE);
         merge(rating);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#include(com.
+     * holictechnology.kidfriendly.domain.entitys.Rating)
+     */
+    @Override
+    public void include(Rating rating) throws KidFriendlyException {
+        rating.setDtRating(new Date());
+        persist(rating);
     }
 }

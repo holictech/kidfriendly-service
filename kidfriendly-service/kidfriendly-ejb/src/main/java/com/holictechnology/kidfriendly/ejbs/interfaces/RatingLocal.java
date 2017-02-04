@@ -9,6 +9,7 @@ import com.holictechnology.kidfriendly.domain.dtos.RatingDto;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
+import com.holictechnology.kidfriendly.domain.entitys.Rating;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
@@ -56,4 +57,12 @@ public interface RatingLocal {
      * @throws KidFriendlyException
      */
     void delete(Long primaryKey) throws KidFriendlyException;
+
+    /**
+     * TODO - COLOCAR O COMENTÁRIO.
+     * 
+     * @param rating
+     * @throws KidFriendlyException
+     */
+    void include(Rating rating) throws KidFriendlyException;
 }
