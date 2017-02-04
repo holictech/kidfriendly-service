@@ -14,11 +14,13 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
+import com.holictechnology.kidfriendly.domain.dtos.PhoneDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Address;
 import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
+import com.holictechnology.kidfriendly.domain.entitys.Phone;
 import com.holictechnology.kidfriendly.domain.enums.StatusKidFriendlyEnum;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
@@ -257,10 +259,25 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 		company.setAddress(address);
 		company.setDtRegister(new Date());
 		
-		entityManager.merge(company);
+		company = entityManager.merge(company);
 		
 		companyDto.setIdCompany(company.getIdCompany());
 		
+		savePhone(companyDto, company);
+		
 		return companyDto;
+	}
+	
+	/**
+	 * Method save phones by company
+	 * @param companyDto
+	 * @param company
+	 * @throws KidFriendlyException
+	 */
+	private void savePhone(CompanyDto companyDto, Company company) throws KidFriendlyException{
+		List<Phone> phones = CompanyToCompanyDto.getInstance().mountPhone(companyDto, company);
+		for(Phone phone : phones){
+			persist(phone);
+		}
 	}
 }

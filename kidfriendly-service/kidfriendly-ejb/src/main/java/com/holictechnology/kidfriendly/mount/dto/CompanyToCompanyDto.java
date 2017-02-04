@@ -10,6 +10,7 @@ import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.domain.entitys.Image;
 import com.holictechnology.kidfriendly.domain.entitys.Phone;
+import com.holictechnology.kidfriendly.domain.enums.TypePhoneEnum;
 
 /**
  * Class responsible for converte company entity and company dto
@@ -105,7 +106,8 @@ public class CompanyToCompanyDto {
 					Phone phone = new Phone();
 					phone.setCompany(company);
 					phone.setNumPhone(phoneDto.getNumPhone());
-					phone.setTypePhoneEnum(phoneDto.getTypePhoneEnum());
+					phoneDto.getTypePhoneEnum();
+					phone.setTypePhoneEnum(TypePhoneEnum.CELL_PHONE);
 					
 					phones.add(phone);
 				}

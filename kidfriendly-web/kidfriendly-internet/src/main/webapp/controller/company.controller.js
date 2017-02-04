@@ -5,6 +5,10 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	$scope.citys = {};
 	$scope.companyDto = {};
 	$scope.phoneDto = {};
+	$scope.companyDto.phoneDtos = [];
+	$scope.messages = "";
+	$scope.cssMessage = "";
+	$scope.visibleMessage = false;
 	
 	$scope.search = function(){
 		$state.go('searchCompany');
@@ -41,12 +45,27 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	/**
 	 * Method save company
 	 */
-	$scope.saveCompany = function(){
+	$scope.saveCompany = function(numPhone, cellPhone){
+		$scope.phoneDto.numPhone = numPhone;
+		$scope.companyDto.phoneDtos.push($scope.phoneDto);
+		$scope.phoneDto.numPhone = cellPhone;
+		$scope.companyDto.phoneDtos.push($scope.phoneDto);
 		console.log($scope.companyDto);
 		companyService.getCompany(util.getUri(), $scope.companyDto).success(function(data, status, headers, config) {
-			
+			$scope.messages = "Cadastrado com sucesso...";
+			$scope.visibleMessage = true;
+			$scope.cssMessage = "message-table-correct";
+			$scope.states = {};
+			$scope.citys = {};
+			$scope.companyDto = {};
+			$scope.phoneDto = {};
+			$scope.companyDto.phoneDtos = [];
+			$scope.phoneFixed = "";
+			$scope.celPhone = "";
 		}).error(function(data, status, headers, config) {
-			
+			$scope.messages = "Error: não foi processado...";
+			$scope.visibleMessage = true;
+			$scope.cssMessage = "message-table-incorret";
 	    });
 	};
 	

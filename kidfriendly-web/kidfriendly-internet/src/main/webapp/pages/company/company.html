@@ -18,7 +18,7 @@
 		
   <form ng-controller="companyController">
     <div class="contentform">
-    	<div id="sendmessage"> Your message has been sent successfully. Thank you. </div>
+    	<div ng-class="cssMessage" ng-show="visibleMessage">{{messages}}</div>
 
 
     	<div class="leftcontact">
@@ -140,7 +140,7 @@
 		</div>
 	</div>
 	
-	<button type="button" class="bouton-contact" ng-click="saveCompany()">Cadastrar</button>
+	<button type="button" class="bouton-contact" ng-click="saveCompany(phoneFixed, celPhone)">Cadastrar</button>
 	<button type="button" class="bouton-search" ng-click="search()">Pesquisar</button>
 	
 	</form>
