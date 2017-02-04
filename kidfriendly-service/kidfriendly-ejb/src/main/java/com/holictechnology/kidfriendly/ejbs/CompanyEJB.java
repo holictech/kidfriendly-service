@@ -4,6 +4,7 @@ package com.holictechnology.kidfriendly.ejbs;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -247,12 +248,14 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     }
 
 	@Override
-	public CompanyDto saveOrUpdate(CompanyDto companyDto, City city) throws KidFriendlyException {
+	public CompanyDto saveOrUpdate(CompanyDto companyDto) throws KidFriendlyException {
 		Company company = CompanyToCompanyDto.getInstance().companyDtoToCompany(companyDto);
+		City city = entityManager.find(City.class, Integer.valueOf(companyDto.getIdCity()));
 		Address address = CompanyToCompanyDto.getInstance().mountAddress(companyDto, city);
 		
 		persist(address);
 		company.setAddress(address);
+		company.setDtRegister(new Date());
 		
 		entityManager.merge(company);
 		

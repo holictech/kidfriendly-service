@@ -38,4 +38,16 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	    });
 	};
 	
+	/**
+	 * Method save company
+	 */
+	$scope.saveCompany = function(){
+		console.log($scope.companyDto);
+		companyService.getCompany(util.getUri(), $scope.companyDto).success(function(data, status, headers, config) {
+			
+		}).error(function(data, status, headers, config) {
+			
+	    });
+	};
+	
 }]);

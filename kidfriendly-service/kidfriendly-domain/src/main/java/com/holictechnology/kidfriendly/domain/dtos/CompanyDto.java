@@ -18,6 +18,8 @@ public class CompanyDto implements Serializable {
     
     private String namePearsonResponsible;
     
+    private String idCity;
+    
     private byte [] imgLogo;
     private Short numRate;
     private String desSite;
@@ -114,6 +116,14 @@ public class CompanyDto implements Serializable {
 
 	public void setNamePearsonResponsible(String namePearsonResponsible) {
 		this.namePearsonResponsible = namePearsonResponsible;
+	}
+
+	public String getIdCity() {
+		return idCity;
+	}
+
+	public void setIdCity(String idCity) {
+		this.idCity = idCity;
 	}
 	
 }

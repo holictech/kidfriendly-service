@@ -38,8 +38,8 @@
 
 			<div class="form-group">
 			<p>Site</p>	
-                <input type="email" name="email" id="email" data-rule="email" placeholder="Site da empresa caso possua"
-                ng-model="companyDto.email"/>
+                <input type="text" name="email" id="email" data-rule="email" placeholder="Site da empresa caso possua"
+                ng-model="companyDto.desSite"/>
                 <div class="validation"></div>
 			</div>	
 
@@ -81,9 +81,8 @@
 			<div class="form-group">
 			<p>Cidade <span>*</span></p>	
 				<div class="styled-select blue semi-square">
-				  <select ng-model="objCity">
-				    <option>Cidade</option>
-				    <option ng-repeat="city in citys" value="city">{{city.desCity}}</option>
+				  <select ng-model="companyDto.idCity">
+				    <option ng-repeat="city in citys" value="{{city.idCity}}">{{city.desCity}}</option>
 				  </select>
 				</div>
                 <div class="validation"></div>
@@ -141,7 +140,7 @@
 		</div>
 	</div>
 	
-	<button type="button" class="bouton-contact">Cadastrar</button>
+	<button type="button" class="bouton-contact" ng-click="saveCompany()">Cadastrar</button>
 	<button type="button" class="bouton-search" ng-click="search()">Pesquisar</button>
 	
 	</form>

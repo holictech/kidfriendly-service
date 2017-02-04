@@ -4,8 +4,8 @@ kid.service('companyService', ['$http',
 	/**
 	 * Register Company
 	 */
-	this.getCompany = function(uri, companyDto, city){
-		return $http.post(uri + '/company/register-company', companyDto, city);
+	this.getCompany = function(uri, companyDto){
+		return $http.post(uri + '/company/register-company', companyDto);
 	};
 	
 	/**

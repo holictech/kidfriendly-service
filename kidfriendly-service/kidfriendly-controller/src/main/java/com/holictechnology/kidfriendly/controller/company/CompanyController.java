@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response;
 import com.holictechnology.kidfriendly.controller.AbstractController;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
-import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CharacteristicLocal;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
@@ -78,9 +77,9 @@ public class CompanyController extends AbstractController {
     @POST
     @Path("/register-company")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response saveCompany(CompanyDto companyDto, City city) throws KidFriendlyException{
+    public Response saveCompany(CompanyDto companyDto) throws KidFriendlyException{
     	try {
-			companyLocal.saveOrUpdate(companyDto, city);
+			companyLocal.saveOrUpdate(companyDto);
 		} catch (KidFriendlyException e) {
 			error(getClass(), e, KidFriendlyMessages.ERROR_COMPANY_SAVE);
 		}
