@@ -81,7 +81,7 @@
 			<div class="form-group">
 			<p>Cidade <span>*</span></p>	
 				<div class="styled-select blue semi-square">
-				  <select ng-model="companyDto.idCity">
+				  <select ng-model="companyDto.addressDto.cityDto.idCity">
 				    <option ng-repeat="city in citys" value="{{city.idCity}}">{{city.desCity}}</option>
 				  </select>
 				</div>
@@ -91,42 +91,42 @@
 			<div class="form-group">
 			<p>Rua <span>*</span></p>
                 <input type="text" name="fonction" id="fonction" data-rule="required" placeholder="Endereço | Rua"
-                ng-model="companyDto.adressDto.desStreet"/>
+                ng-model="companyDto.addressDto.desStreet"/>
                 <div class="validation"></div>
 			</div>
 			
 			<div class="form-group">
 			<p>Latitude <span>*</span></p>
                 <input type="text" name="fonction" id="fonction" data-rule="required" placeholder="Latitude"
-                ng-model="companyDto.adressDto.numLatitude"/>
+                ng-model="companyDto.addressDto.numLatitude"/>
                 <div class="validation"></div>
 			</div>
 			
 			<div class="form-group">
 			<p>Longitude <span>*</span></p>
                 <input type="text" name="fonction" id="fonction" data-rule="required" placeholder="Longitude"
-                ng-model="companyDto.adressDto.numLongitude"/>
+                ng-model="companyDto.addressDto.numLongitude"/>
                 <div class="validation"></div>
 			</div>
 
 			<div class="form-group">
 			<p>Número <span>*</span></p>	
                 <input type="text" name="sujet" id="sujet" data-rule="required" placeholder="Número do local"
-                ng-model="companyDto.adressDto.numStreet"/>
+                ng-model="companyDto.addressDto.numStreet"/>
                 <div class="validation"></div>
 			</div>
 		
 			<div class="form-group">
 			<p>Bairro <span>*</span></p>
                 <input type="text" name="sujet" id="sujet" data-rule="required" placeholder="Bairro da localização"
-                ng-model="companyDto.adressDto.desNeighborhood"/>
+                ng-model="companyDto.addressDto.desNeighborhood"/>
                 <div class="validation"></div>
 			</div>
 			
 			<div class="form-group">
 			<p>CEP <span>*</span></p>
                 <input type="text" name="cep" id="cep" data-rule="required" placeholder="CEP do local"
-                ng-model="companyDto.adressDto.descCode"/>
+                ng-model="companyDto.addressDto.descCode"/>
                 <div class="validation"></div>
 			</div>	
 	</div>

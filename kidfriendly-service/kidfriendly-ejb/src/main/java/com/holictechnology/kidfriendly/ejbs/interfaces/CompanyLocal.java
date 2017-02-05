@@ -2,6 +2,7 @@ package com.holictechnology.kidfriendly.ejbs.interfaces;
 
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Local;
 
@@ -70,6 +71,31 @@ public interface CompanyLocal {
      * @param city
      * @return
      */
-    CompanyDto saveOrUpdate(CompanyDto companyDto) throws KidFriendlyException;
+    CompanyDto saveCompany(CompanyDto companyDto) throws KidFriendlyException;
+    
+    /**
+     * Method search company a filters in view - search simple for admins
+     * @param nameEstablishment
+     * @param responsibleEstablishment
+     * @param cnpj
+     * @param objCity
+     * @return
+     */
+    List<Company> searchCompanySimple(String nameEstablishment, String responsibleEstablishment,
+    		String cnpj, Integer objCity);
+    
+    /**
+     * Method in inactivate company stactive received false for company selected
+     * @param company
+     * @return
+     */
+    Company inactivateCompany(Company company);
+    
+    /**
+     * Method edit company selected
+     * @param company
+     * @return
+     */
+    Company editCompany(Company company);
     
 }

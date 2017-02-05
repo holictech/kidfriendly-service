@@ -1,5 +1,5 @@
-kid.controller('companyController', ['$scope', 'companyService', '$state', '$cookieStore', 'locationService', 'util', 
-    function($scope, companyService, $state, $cookieStore, locationService, util){
+kid.controller('companyController', ['$scope', 'companyService', '$state', '$cookieStore', 'locationService', 'util', '$timeout', 
+    function($scope, companyService, $state, $cookieStore, locationService, util, $timeout){
 
 	$scope.states = {};
 	$scope.citys = {};
@@ -9,6 +9,18 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	$scope.messages = "";
 	$scope.cssMessage = "";
 	$scope.visibleMessage = false;
+	$scope.companys = {};
+	$scope.company = {};
+	
+	$scope.initEdit = function(){
+		if($scope.company.idCompany == undefined || $scope.company.idCompany == null){
+			$scope.company = $cookieStore.get("company");
+		}
+	};
+	
+	var searching = function() {
+		$state.go('searchCompany');
+    };
 	
 	$scope.search = function(){
 		$state.go('searchCompany');
@@ -18,7 +30,9 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 		$state.go('company');
 	};
 	
-	$scope.edit = function(){
+	$scope.edit = function(company){
+		console.log(company);
+		$cookieStore.put("company", company);
 		$state.go('editCompany');
 	};
 	
@@ -72,11 +86,69 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	/**
 	 * Method search company
 	 */
-	$scope.searchCompany = function(){
-		companyService.getCitys(util.getUri(), objState).success(function(data, status, headers, config) {
-			$scope.citys = data;
+	$scope.searchCompany = function(nameEstablishment, responsibleEstablishment,
+			cnpj, objCity){
+		companyService.getListCompany(util.getUri(), nameEstablishment, responsibleEstablishment,
+				cnpj, objCity).success(function(data, status, headers, config) {
+			$scope.companys = data;
+			if($scope.companys == null){
+				$scope.messages = "Não trouxe nenhum dado referente aos filtros selecionados.";
+				$scope.visibleMessage = true;
+				$scope.cssMessage = "message-table-incorret";
+			}
 		}).error(function(data, status, headers, config) {
-			
+			$scope.messages = "Error: não foi processado...";
+			$scope.visibleMessage = true;
+			$scope.cssMessage = "message-table-incorret";
+	    });
+	};
+	
+	/**
+	 * Method in inative company
+	 */
+	$scope.inactiveCompany = function(company){
+		companyService.getInactiveCompany(util.getUri(), company).success(function(data, status, headers, config) {
+			if(data == null){
+				$scope.messages = "O estabeecimento permanece ativo por algum erro interno no sistema.";
+				$scope.visibleMessage = true;
+				$scope.cssMessage = "message-table-incorret";
+			}else{
+				companyService.getListCompany(util.getUri(), $scope.nameEstablishment, $scope.responsibleEstablishment,
+						$scope.cnpj, $scope.objCity).success(function(data, status, headers, config) {
+					$scope.companys = data;
+					if($scope.companys == null){
+						$scope.messages = "Não trouxe nenhum dado referente aos filtros selecionados.";
+						$scope.visibleMessage = true;
+						$scope.cssMessage = "message-table-incorret";
+					}
+				}).error(function(data, status, headers, config) {
+					$scope.messages = "Error: não foi processado...";
+					$scope.visibleMessage = true;
+					$scope.cssMessage = "message-table-incorret";
+			    });
+			}
+		}).error(function(data, status, headers, config) {
+			$scope.messages = "Error: não foi processado...";
+			$scope.visibleMessage = true;
+			$scope.cssMessage = "message-table-incorret";
+	    });
+	};
+	
+	$scope.editCompany = function(){
+		companyService.getEditCompany(util.getUri(), $scope.company).success(function(data, status, headers, config) {
+			if(data == null){
+				$scope.messages = "O estabeecimento não pode ser alterado.";
+				$scope.visibleMessage = true;
+				$scope.cssMessage = "message-table-incorret";
+			}
+			$scope.messages = "Alterado com sucesso...";
+			$scope.visibleMessage = true;
+			$scope.cssMessage = "message-table-correct";
+			$timeout(searching, 2000);
+		}).error(function(data, status, headers, config) {
+			$scope.messages = "Error: não foi processado...";
+			$scope.visibleMessage = true;
+			$scope.cssMessage = "message-table-incorret";
 	    });
 	};
 	

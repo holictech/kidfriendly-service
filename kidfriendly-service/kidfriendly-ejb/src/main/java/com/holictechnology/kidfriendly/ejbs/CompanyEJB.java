@@ -255,7 +255,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     }
 
     @Override
-    public CompanyDto saveOrUpdate(CompanyDto companyDto) throws KidFriendlyException {
+    public CompanyDto saveCompany(CompanyDto companyDto) throws KidFriendlyException {
         Company company = CompanyToCompanyDto.getInstance().companyDtoToCompany(companyDto);
         City city = entityManager.find(City.class, Integer.valueOf(companyDto.getAddressDto().getCityDto().getIdCity()));
         Address address = CompanyToCompanyDto.getInstance().mountAddress(companyDto, city);
@@ -263,6 +263,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         persist(address);
         company.setAddress(address);
         company.setDtRegister(new Date());
+        company.setStActive(Boolean.TRUE);
 
         company = entityManager.merge(company);
 
@@ -286,4 +287,71 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             persist(phone);
         }
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Company> searchCompanySimple(String nameEstablishment, String responsibleEstablishment, String cnpj,
+			Integer objCity) {
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" SELECT DISTINCT c FROM Company c JOIN FETCH c.phones p JOIN FETCH c.address a JOIN FETCH a.city ci JOIN FETCH ci.state s WHERE c.address.city.idCity = :idCity ");
+		sql.append(" AND c.stActive = :stActive ");
+		
+		if(nameEstablishment != null && !nameEstablishment.equals("undefined")){
+			sql.append(" AND c.desName LIKE :desName ");
+		}
+		
+		if(responsibleEstablishment != null && !responsibleEstablishment.equals("undefined")){
+			sql.append(" AND c.desNameResponsible LIKE :desNameResponsible ");
+		}
+		
+		if(cnpj != null && !cnpj.equals("undefined")){
+			sql.append(" AND c.desCNPJ = :desCNPJ ");
+		}
+		
+		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("idCity", objCity);
+		query.setParameter("stActive", Boolean.TRUE);
+		
+		if(nameEstablishment != null && !nameEstablishment.equals("undefined"))
+			query.setParameter("desName", "%" + nameEstablishment + "%");
+		
+		if(responsibleEstablishment != null && !responsibleEstablishment.equals("undefined"))
+			query.setParameter("desNameResponsible", "%" + responsibleEstablishment + "%");
+		
+		if(cnpj != null && !cnpj.equals("undefined"))
+			query.setParameter("desCNPJ", cnpj);
+		
+		List<Company> companies = query.getResultList();
+		
+		if(companies == null)
+			return null;
+		
+		return companies;
+	}
+
+	@Override
+	public Company inactivateCompany(Company company) {
+		company.setStActive(Boolean.FALSE);
+		
+		try {
+			merge(company);
+			return company;
+		} catch (KidFriendlyException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	@Override
+	public Company editCompany(Company company) {
+		try {
+			merge(company);
+			return company;
+		} catch (KidFriendlyException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

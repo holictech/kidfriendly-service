@@ -11,9 +11,24 @@ kid.service('companyService', ['$http',
 	/**
 	 * List Company's
 	 */
-	this.getListCompany = function(uri, search){
-		return $http.get(uri + '/login/search-user-adm/' + search);
+	this.getListCompany = function(uri, nameEstablishment, responsibleEstablishment,
+			cnpj, objCity){
+		return $http.get(uri + '/company/search-company/' + nameEstablishment + "/" + responsibleEstablishment + 
+				"/" + cnpj + "/" + objCity);
 	};
 	
+	/**
+	 * inactive Company
+	 */
+	this.getInactiveCompany = function(uri, company){
+		return $http.put(uri + '/company/inative-company', company);
+	};
+	
+	/**
+	 * Edit Company
+	 */
+	this.getEditCompany = function(uri, company){
+		return $http.put(uri + '/company/edit-company', company);
+	};
 	
 }]);

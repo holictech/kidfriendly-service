@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -79,7 +80,7 @@ public class CompanyController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response saveCompany(CompanyDto companyDto) throws KidFriendlyException{
     	try {
-			companyLocal.saveOrUpdate(companyDto);
+			companyLocal.saveCompany(companyDto);
 		} catch (KidFriendlyException e) {
 			error(getClass(), e, KidFriendlyMessages.ERROR_COMPANY_SAVE);
 		}
@@ -87,9 +88,24 @@ public class CompanyController extends AbstractController {
     }
     
     @GET
-    @Path("/search-company")
-    public Response searchCompany(){
-    	return ok(null);
+    @Path("/search-company/{nameEstablishment}/{responsibleEstablishment}/{cnpj}/{objCity}")
+    public Response searchCompany(@PathParam("nameEstablishment") String nameEstablishment, @PathParam("responsibleEstablishment") String responsibleEstablishment,
+    		@PathParam("cnpj") String cnpj, @PathParam("objCity") Integer objCity){
+    	return ok(companyLocal.searchCompanySimple(nameEstablishment, responsibleEstablishment, cnpj, objCity));
+    }
+    
+    @PUT
+    @Path("/inative-company")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response inativeCompany(Company company){
+    	return ok(companyLocal.inactivateCompany(company));
+    }
+    
+    @PUT
+    @Path("/edit-company")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editCompany(Company company){
+    	return ok(companyLocal.editCompany(company));
     }
     
 }
