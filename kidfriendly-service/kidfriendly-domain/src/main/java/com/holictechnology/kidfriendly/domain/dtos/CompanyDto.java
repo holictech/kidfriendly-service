@@ -22,6 +22,8 @@ public class CompanyDto implements Serializable {
     
     private String idCity;
     
+    private CityDto cityDto;
+    
     private byte [] imgLogo;
     private Short numRate;
     private String desSite;
@@ -142,6 +144,14 @@ public class CompanyDto implements Serializable {
 
 	public void setDesCity(String desCity) {
 		this.desCity = desCity;
+	}
+
+	public CityDto getCityDto() {
+		return cityDto;
+	}
+
+	public void setCityDto(CityDto cityDto) {
+		this.cityDto = cityDto;
 	}
 	
 }
