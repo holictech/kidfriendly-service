@@ -7,6 +7,7 @@ import javax.ejb.Local;
 
 import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
 import com.holictechnology.kidfriendly.domain.dtos.MessageDto;
+import com.holictechnology.kidfriendly.domain.entitys.Login;
 
 
 @Local
@@ -66,5 +67,13 @@ public interface LoginLocal {
 	 * @return
 	 */
 	LoginDto registerUserAdm(String user, String pws);
+	
+	/**
+	 * Method entrace user in system
+	 * @param user
+	 * @param pws
+	 * @return
+	 */
+	Login login(String user, String pws);
 	
 }

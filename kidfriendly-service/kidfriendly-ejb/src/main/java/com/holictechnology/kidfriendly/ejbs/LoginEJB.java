@@ -80,6 +80,28 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 		return LoginToLoginDto.getInstance().loginToLoginDtoSingle(login);
 	}
 
+	@Override
+	public Login login(String user, String pws) {
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT l FROM Login l WHERE l.stActive = :stActive AND l.user = null ");
+		sql.append(" 	AND l.idLogin = :idLogin ");
+		sql.append(" 	AND l.desPassword = :desPassword ");
+		
+		Query query = entityManager.createQuery(sql.toString());
+		query.setParameter("stActive", Boolean.FALSE);
+		query.setParameter("idLogin", user);
+		query.setParameter("desPassword", pws);
+		
+		try{
+			Login login = (Login) query.getSingleResult();
+			return login;
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 //    /*
 //     * (non-Javadoc)
 //     * 

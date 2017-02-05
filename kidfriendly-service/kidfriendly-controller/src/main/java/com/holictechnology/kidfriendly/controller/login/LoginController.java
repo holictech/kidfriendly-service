@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
 import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
+import com.holictechnology.kidfriendly.domain.entitys.Login;
 import com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
@@ -96,6 +97,20 @@ public class LoginController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response registerUserAdm(@PathParam("user") String user, @PathParam("pws") String pws){
     	return ok(loginLocal.registerUserAdm(user, pws));
+    }
+    
+    @GET
+    @Path("/login-entrace/{user}/{pws}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(@PathParam("user") String user, @PathParam("pws") String pws) throws KidFriendlyException{
+    	Login login = null;
+    	try{
+    		login = loginLocal.login(user, pws);
+    	}catch (Exception e) {
+    		error(getClass(), e, KidFriendlyMessages.ERROR_AUTHENTICATE_LOGIN_NOT_FOUND);
+		}
+    	
+    	return ok(login);
     }
     
 }

@@ -47,15 +47,15 @@ public final class KidFriendlyMessages {
      */
     public static final String ERROR_LIST_IMAGE = "N\u00e3o foi poss\u00edvel listar as imagens.";
     
-//    
-//    /*
-//     * LOGIN
-//     */
-//    public static final String ERROR_AUTHENTICATE_LOGIN_NOT_FOUND = "E-mail n\u00e3o encontrado.";
-//    public static final String ERROR_REGISTER_LOGIN_REGISTERED = "E-mail j\u00e1 cadastrado.";
-//
-//    /*
-//     * USER
-//     */
-//    public static final String ERROR_REGISTER_USER = "N\u00e3o foi poss\u00edvel efetuar o cadastro.";
+    
+    /*
+     * LOGIN
+     */
+    public static final String ERROR_AUTHENTICATE_LOGIN_NOT_FOUND = "E-mail n\u00e3o encontrado.";
+    public static final String ERROR_REGISTER_LOGIN_REGISTERED = "E-mail j\u00e1 cadastrado.";
+
+    /*
+     * USER
+     */
+    public static final String ERROR_REGISTER_USER = "N\u00e3o foi poss\u00edvel efetuar o cadastro.";
 }
