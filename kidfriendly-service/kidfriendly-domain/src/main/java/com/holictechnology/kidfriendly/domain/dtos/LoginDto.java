@@ -8,9 +8,7 @@ package com.holictechnology.kidfriendly.domain.dtos;
 public class LoginDto {
 
     private String idLogin;
-
     private String desPassword;
-
     private Boolean stActive;
 
 	public String getIdLogin() {
@@ -36,5 +34,4 @@ public class LoginDto {
 	public void setStActive(Boolean stActive) {
 		this.stActive = stActive;
 	}
-	
 }

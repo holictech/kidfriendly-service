@@ -13,6 +13,8 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
+import com.holictechnology.kidfriendly.domain.dtos.AddressDto;
+import com.holictechnology.kidfriendly.domain.dtos.CityDto;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
@@ -236,13 +238,15 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             CompanyDto companyDto;
 
             for (Object [] object : listObject) {
-            	companyDto = new CompanyDto();
+                companyDto = new CompanyDto();
+                companyDto.setAddressDto(new AddressDto());
+                companyDto.getAddressDto().setCityDto(new CityDto());
                 companyDto.setIdCompany((object[0] != null) ? Long.valueOf(object[0].toString()) : null);
                 companyDto.setDesName((object[1] != null) ? object[1].toString() : null);
                 companyDto.setImgLogo((object[2] != null) ? (byte []) object[2] : null);
                 companyDto.setNumRate((object[3] != null) ? Short.valueOf(object[3].toString()) : 4);
-                companyDto.setDesCity((object[5] != null) ? object[5].toString() : null);
-                companyDto.setDesState((object[6] != null) ? object[6].toString() : null);
+                companyDto.getAddressDto().getCityDto().setDesCity((object[5] != null) ? object[5].toString() : null);
+                companyDto.getAddressDto().getCityDto().setDesState((object[6] != null) ? object[6].toString() : null);
                 listCompanyDto.add(companyDto);
             }
         }
@@ -250,35 +254,36 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         return listCompanyDto;
     }
 
-	@Override
-	public CompanyDto saveOrUpdate(CompanyDto companyDto) throws KidFriendlyException {
-		Company company = CompanyToCompanyDto.getInstance().companyDtoToCompany(companyDto);
-		City city = entityManager.find(City.class, Integer.valueOf(companyDto.getIdCity()));
-		Address address = CompanyToCompanyDto.getInstance().mountAddress(companyDto, city);
-		
-		persist(address);
-		company.setAddress(address);
-		company.setDtRegister(new Date());
-		
-		company = entityManager.merge(company);
-		
-		companyDto.setIdCompany(company.getIdCompany());
-		
-		savePhone(companyDto, company);
-		
-		return companyDto;
-	}
-	
-	/**
-	 * Method save phones by company
-	 * @param companyDto
-	 * @param company
-	 * @throws KidFriendlyException
-	 */
-	private void savePhone(CompanyDto companyDto, Company company) throws KidFriendlyException{
-		List<Phone> phones = CompanyToCompanyDto.getInstance().mountPhone(companyDto, company);
-		for(Phone phone : phones){
-			persist(phone);
-		}
-	}
+    @Override
+    public CompanyDto saveOrUpdate(CompanyDto companyDto) throws KidFriendlyException {
+        Company company = CompanyToCompanyDto.getInstance().companyDtoToCompany(companyDto);
+        City city = entityManager.find(City.class, Integer.valueOf(companyDto.getAddressDto().getCityDto().getIdCity()));
+        Address address = CompanyToCompanyDto.getInstance().mountAddress(companyDto, city);
+
+        persist(address);
+        company.setAddress(address);
+        company.setDtRegister(new Date());
+
+        company = entityManager.merge(company);
+
+        companyDto.setIdCompany(company.getIdCompany());
+
+        savePhone(companyDto, company);
+
+        return companyDto;
+    }
+
+    /**
+     * Method save phones by company
+     * 
+     * @param companyDto
+     * @param company
+     * @throws KidFriendlyException
+     */
+    private void savePhone(CompanyDto companyDto, Company company) throws KidFriendlyException {
+        List<Phone> phones = CompanyToCompanyDto.getInstance().mountPhone(companyDto, company);
+        for (Phone phone : phones) {
+            persist(phone);
+        }
+    }
 }

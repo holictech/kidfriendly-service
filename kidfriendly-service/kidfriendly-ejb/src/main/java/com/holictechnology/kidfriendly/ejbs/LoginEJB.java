@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
 import com.holictechnology.kidfriendly.domain.dtos.MessageDto;
@@ -18,8 +20,9 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 
     private static final long serialVersionUID = 8439680343365480598L;
 
+    @Override
 	@SuppressWarnings("unchecked")
-	@Override
+    @Transactional(value = TxType.SUPPORTS)
 	public List<LoginDto> returnLoginAdm(String search) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" SELECT l FROM Login l WHERE l.stActive = :stActive AND l.user = null ");

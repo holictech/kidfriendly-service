@@ -11,27 +11,14 @@ public class CompanyDto implements Serializable {
 
     private Long idCompany;
     private String desName;
-    private String desState;
-    private String desCity;
-    
     private String document;
-    
     private String email;
-    
     private String namePearsonResponsible;
-    
-    private String idCity;
-    
-    private CityDto cityDto;
-    
     private byte [] imgLogo;
     private Short numRate;
     private String desSite;
-    
-    private AdressDto adressDto;
-    
+    private AddressDto addressDto;
     private List<ImageDto> imageDtos;
-    
     private List<PhoneDto> phoneDtos;
 
     public Long getIdCompany() {
@@ -66,92 +53,59 @@ public class CompanyDto implements Serializable {
         this.numRate = numRate;
     }
 
-	public AdressDto getAdressDto() {
-		return adressDto;
-	}
+    public AddressDto getAddressDto() {
+        return addressDto;
+    }
 
-	public void setAdressDto(AdressDto adressDto) {
-		this.adressDto = adressDto;
-	}
+    public void setAddressDto(AddressDto addressDto) {
+        this.addressDto = addressDto;
+    }
 
-	public String getDesSite() {
-		return desSite;
-	}
+    public String getDesSite() {
+        return desSite;
+    }
 
-	public void setDesSite(String desSite) {
-		this.desSite = desSite;
-	}
+    public void setDesSite(String desSite) {
+        this.desSite = desSite;
+    }
 
-	public List<PhoneDto> getPhoneDtos() {
-		return phoneDtos;
-	}
+    public List<PhoneDto> getPhoneDtos() {
+        return phoneDtos;
+    }
 
-	public void setPhoneDtos(List<PhoneDto> phoneDtos) {
-		this.phoneDtos = phoneDtos;
-	}
+    public void setPhoneDtos(List<PhoneDto> phoneDtos) {
+        this.phoneDtos = phoneDtos;
+    }
 
-	public List<ImageDto> getImageDtos() {
-		return imageDtos;
-	}
+    public List<ImageDto> getImageDtos() {
+        return imageDtos;
+    }
 
-	public void setImageDtos(List<ImageDto> imageDtos) {
-		this.imageDtos = imageDtos;
-	}
+    public void setImageDtos(List<ImageDto> imageDtos) {
+        this.imageDtos = imageDtos;
+    }
 
-	public String getDocument() {
-		return document;
-	}
+    public String getDocument() {
+        return document;
+    }
 
-	public void setDocument(String document) {
-		this.document = document;
-	}
+    public void setDocument(String document) {
+        this.document = document;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getNamePearsonResponsible() {
-		return namePearsonResponsible;
-	}
+    public String getNamePearsonResponsible() {
+        return namePearsonResponsible;
+    }
 
-	public void setNamePearsonResponsible(String namePearsonResponsible) {
-		this.namePearsonResponsible = namePearsonResponsible;
-	}
-
-	public String getIdCity() {
-		return idCity;
-	}
-
-	public void setIdCity(String idCity) {
-		this.idCity = idCity;
-	}
-
-	public String getDesState() {
-		return desState;
-	}
-
-	public void setDesState(String desState) {
-		this.desState = desState;
-	}
-
-	public String getDesCity() {
-		return desCity;
-	}
-
-	public void setDesCity(String desCity) {
-		this.desCity = desCity;
-	}
-
-	public CityDto getCityDto() {
-		return cityDto;
-	}
-
-	public void setCityDto(CityDto cityDto) {
-		this.cityDto = cityDto;
-	}
-	
+    public void setNamePearsonResponsible(String namePearsonResponsible) {
+        this.namePearsonResponsible = namePearsonResponsible;
+    }
 }
