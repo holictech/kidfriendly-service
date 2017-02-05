@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.ws.rs.DefaultValue;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -43,11 +42,9 @@ public class Rating implements Serializable {
     @Column(name = "DES_ANSWER", nullable = true, length = 250)
     private String desAnswer;
 
-    @DefaultValue(value = "false")
     @Column(name = "ST_ACTIVE", nullable = false)
     private Boolean stActive;
 
-    @DefaultValue(value = "false")
     @Column(name = "ST_DELETE", nullable = false)
     private Boolean stDelete;
 

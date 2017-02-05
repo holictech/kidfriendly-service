@@ -14,7 +14,6 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
-import com.holictechnology.kidfriendly.domain.dtos.PhoneDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Address;

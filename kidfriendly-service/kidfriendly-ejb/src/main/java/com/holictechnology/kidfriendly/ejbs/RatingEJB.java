@@ -209,6 +209,8 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
     @Override
     public void include(Rating rating) throws KidFriendlyException {
         rating.setDtRating(new Date());
+        rating.setStActive(Boolean.FALSE);
+        rating.setStDelete(Boolean.FALSE);
         persist(rating);
     }
 }

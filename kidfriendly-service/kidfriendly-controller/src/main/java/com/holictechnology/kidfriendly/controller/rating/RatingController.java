@@ -87,12 +87,11 @@ public class RatingController extends AbstractController {
     }
 
     @POST
-    @Path(value = "/include")
     @Consumes(value = MediaType.APPLICATION_JSON)
+    @Produces(value = MediaType.APPLICATION_JSON)
     public void include(Rating rating) throws KidFriendlyException {
-//        System.out.println(rating);
         try {
-            // ratingLocal.include(rating);
+            ratingLocal.include(rating);
         } catch (Exception exception) {
             error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_RATING);
         }
