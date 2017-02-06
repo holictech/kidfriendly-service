@@ -88,12 +88,26 @@ public class RatingController extends AbstractController {
 
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
-    @Produces(value = MediaType.APPLICATION_JSON)
     public void include(Rating rating) throws KidFriendlyException {
         try {
             ratingLocal.include(rating);
         } catch (Exception exception) {
             error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_RATING);
         }
+    }
+
+    @GET
+    @Path(value = "/haspermission/{idCompany}/{idUser}")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response hasPermission(@PathParam(value = "idCompany") Long idCompany, @PathParam(value = "idUser") Long idUser) throws KidFriendlyException {
+        Boolean hasPermission = Boolean.FALSE;
+
+        try {
+            hasPermission = ratingLocal.hasPermission(idCompany, idUser);
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_HAS_PERMISSION_RATING);
+        }
+
+        return ok(hasPermission);
     }
 }

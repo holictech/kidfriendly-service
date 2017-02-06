@@ -65,4 +65,14 @@ public interface RatingLocal {
      * @throws KidFriendlyException
      */
     void include(Rating rating) throws KidFriendlyException;
+
+    /**
+     * TODO - COLOCAR O COMENTÁRIO.
+     * 
+     * @param idCompany
+     * @param idUser
+     * @return
+     * @throws KidFriendlyException
+     */
+    boolean hasPermission(Long idCompany, Long idUser) throws KidFriendlyException;
 }

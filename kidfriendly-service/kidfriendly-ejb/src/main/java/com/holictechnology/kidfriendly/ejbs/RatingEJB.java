@@ -32,6 +32,7 @@ import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 public class RatingEJB extends AbstractEJB implements RatingLocal {
 
     private static final long serialVersionUID = 5701134070335928714L;
+    private static final long QUANTITY_OF_MONTHS = 1;
 
     @EJB
     private CompanyLocal companyLocal;
@@ -118,7 +119,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         StringBuffer sql = new StringBuffer();
         sql.append(
                 "SELECT ROUND(((SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 1, 1, 0)) * 1) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 2, 1, 0)) * 2) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 3, 1, 0)) * 3) + (SUM(IF(rating.ID_STATUS_KIDFRIENDLY = 4, 1, 0)) * 4)) / COUNT(rating.ID_COMPANY)) ");
-        sql.append("FROM kidfriendly.RATING AS rating  ");
+        sql.append("FROM RATING AS rating ");
         sql.append("WHERE rating.ST_ACTIVE = :stActive AND rating.ST_DELETE = :stDelete AND rating.ID_COMPANY = :idCompany ");
         sql.append("GROUP BY rating.ID_COMPANY");
         Query query = entityManager.createNativeQuery(sql.toString());
@@ -212,5 +213,32 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
         rating.setStActive(Boolean.FALSE);
         rating.setStDelete(Boolean.FALSE);
         persist(rating);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#hasPermission
+     * (java.lang.Long, java.lang.Long)
+     */
+    @Override
+    @Transactional(value = TxType.SUPPORTS)
+    public boolean hasPermission(Long idCompany, Long idUser) throws KidFriendlyException {
+        boolean hasPermission = Boolean.FALSE;
+        StringBuffer sql = new StringBuffer();
+        sql.append("SELECT TIMESTAMPDIFF(MONTH, MAX(rating.DT_RATING), CURRENT_TIMESTAMP()) as quantityOfMonths ");
+        sql.append("FROM RATING AS rating ");
+        sql.append("WHERE rating.ID_COMPANY = :idCompany AND rating.ID_USER = :idUser ");
+        Query query = entityManager.createNativeQuery(sql.toString());
+        query.setParameter("idCompany", idCompany);
+        query.setParameter("idUser", idUser);
+
+        try {
+            Number quantityOfMonths = (Number) query.getSingleResult();
+            hasPermission = (quantityOfMonths == null || quantityOfMonths.longValue() >= QUANTITY_OF_MONTHS);
+        } catch (NoResultException e) {}
+
+        return hasPermission;
     }
 }
