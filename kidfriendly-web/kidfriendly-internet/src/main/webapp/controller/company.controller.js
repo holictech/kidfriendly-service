@@ -1,5 +1,5 @@
-kid.controller('companyController', ['$scope', 'companyService', '$state', '$cookieStore', 'locationService', 'util', '$timeout', 
-    function($scope, companyService, $state, $cookieStore, locationService, util, $timeout){
+kid.controller('companyController', ['$scope', 'companyService', '$state', '$cookieStore', 'locationService', 'util', '$timeout', 'ngProgressFactory',
+    function($scope, companyService, $state, $cookieStore, locationService, util, $timeout, ngProgressFactory){
 
 	$scope.states = {};
 	$scope.citys = {};
@@ -11,6 +11,8 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	$scope.visibleMessage = false;
 	$scope.companys = {};
 	$scope.company = {};
+	
+	$scope.progressbar = ngProgressFactory.createInstance();
 	
 	$scope.initEdit = function(){
 		if($scope.company.idCompany == undefined || $scope.company.idCompany == null){
@@ -39,6 +41,7 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	/**
 	 * Method loaded states in country Brazil
 	 */
+	//locationService.getStates(util.getUri(), 2).success(function(data, status, headers, config) {
 	locationService.getStates(util.getUri(), 1).success(function(data, status, headers, config) {
 		$scope.states = data;
 	}).error(function(data, status, headers, config) {
@@ -60,6 +63,10 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	 * Method save company
 	 */
 	$scope.saveCompany = function(numPhone, cellPhone){
+		$scope.progressbar.start();
+		$timeout($scope.progressbar.complete(), 10000);
+		$scope.progressbar.set(100);
+		$scope.companyDto.phoneDtos = [];
 		$scope.phoneDto.numPhone = numPhone;
 		$scope.companyDto.phoneDtos.push($scope.phoneDto);
 		$scope.phoneDto.numPhone = cellPhone;
@@ -135,6 +142,9 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	};
 	
 	$scope.editCompany = function(){
+		$scope.progressbar.start();
+		$timeout($scope.progressbar.complete(), 10000);
+		$scope.progressbar.set(100);
 		companyService.getEditCompany(util.getUri(), $scope.company).success(function(data, status, headers, config) {
 			if(data == null){
 				$scope.messages = "O estabeecimento não pode ser alterado.";

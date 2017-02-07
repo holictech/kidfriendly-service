@@ -114,23 +114,4 @@ kid.controller('userController', ['$scope', 'userService', '$state', '$cookieSto
 	    });
 	};
 	
-	/**
-	 * Efective login user in system
-	 */
-	$scope.entrace = function(){
-		userService.getLogin(util.getUri(), $scope.username, $scope.password).success(function(data, status, headers, config) {
-			if(data != null && data != '' && data != undefined){
-				$state.go('initial');
-			}else{
-				$scope.messages = "Usuário e senha não é um administrador.";
-				$scope.visibleMessage = true;
-				$scope.cssMessage = "message-table-incorret";
-			}
-		}).error(function(data, status, headers, config) {
-			$scope.messages = "Não foi possível entrar ERRO INTERNO...";
-			$scope.visibleMessage = true;
-			$scope.cssMessage = "message-table-incorret";
-	    });
-	};
-	
 }]);

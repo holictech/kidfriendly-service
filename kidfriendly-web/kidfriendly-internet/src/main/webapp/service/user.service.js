@@ -35,11 +35,4 @@ kid.service('userService', ['$http',
 		return $http.post(uri + '/login/register-user-adm/' + user + "/" + pws);
 	};
 	
-	/**
-	 * Method login user adm
-	 */
-	this.getLogin = function(uri, user, pws){
-		return $http.get(uri + '/login/login-entrace/' + user + "/" + pws);
-	};
-	
 }]);

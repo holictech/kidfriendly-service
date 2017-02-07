@@ -2,7 +2,7 @@
  * Created by Paulo on 24/11/2015.
  */
 var kid = angular.module('kid',['ui.bootstrap', 'ngResource', 'ngRoute', 'ngCookies', 'ui.router', 'angularModalService',
-	'ngAnimate']);
+	'ngAnimate', 'ngProgress']);
 
 kid.config(['$stateProvider', '$urlRouterProvider', '$routeProvider', function($stateProvider, $urlRouterProvider, $routeProvider) {
 	 
