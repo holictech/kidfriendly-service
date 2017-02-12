@@ -47,7 +47,7 @@ public enum StatusKidFriendlyEnum implements IEnum {
         StatusKidFriendlyEnum statusKidFriendlyEnum = null;
 
         if (value != null) {
-            for (StatusKidFriendlyEnum _statusKidFriendlyEnum : StatusKidFriendlyEnum.values()) {
+            for (StatusKidFriendlyEnum _statusKidFriendlyEnum : values()) {
                 if (_statusKidFriendlyEnum.getValue().equals(value)) {
                     statusKidFriendlyEnum = _statusKidFriendlyEnum;
                     break;

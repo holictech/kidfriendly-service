@@ -6,18 +6,16 @@ import com.holictechnology.kidfriendly.domain.enums.interfaces.IEnum;
 
 public enum TypePhoneEnum implements IEnum {
 
-    CELL_PHONE(Short.valueOf("1"), "Celular"), COMMERCIAL(Short.valueOf("2"), "Comercial"), RESIDENTIAL(Short.valueOf("3"), "Residencial");
+    CELL_PHONE(Short.valueOf("1")), COMMERCIAL(Short.valueOf("2")), RESIDENTIAL(Short.valueOf("3"));
 
     private Short value;
-    private String description;
 
     /**
      * @param value
      * @param description
      */
-    private TypePhoneEnum(final Short value, final String description) {
+    private TypePhoneEnum(final Short value) {
         this.value = value;
-        this.description = description;
     }
 
     /*
@@ -39,7 +37,7 @@ public enum TypePhoneEnum implements IEnum {
      */
     @Override
     public String getDescription() {
-        return description;
+        return null;
     }
 
     /**
@@ -50,7 +48,7 @@ public enum TypePhoneEnum implements IEnum {
         TypePhoneEnum typePhoneEnum = null;
 
         if (value != null) {
-            for (TypePhoneEnum _typePhoneEnum : TypePhoneEnum.values()) {
+            for (TypePhoneEnum _typePhoneEnum : values()) {
                 if (_typePhoneEnum.getValue().equals(value)) {
                     typePhoneEnum = _typePhoneEnum;
                     break;

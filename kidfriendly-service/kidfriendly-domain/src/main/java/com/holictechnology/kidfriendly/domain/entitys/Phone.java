@@ -36,9 +36,7 @@ public class Phone implements Serializable {
     private Integer idPhone;
 
     @Type(type = "com.holictechnology.kidfriendly.library.hibernate.EnumUserType", parameters = {
-            @Parameter(name = EnumUserType.PACKAGE_ENUM, value = "com.holictechnology.kidfriendly.domain.enums.TypePhoneEnum"),
-            @Parameter(name = EnumUserType.GET_VALUE_METHOD, value = "getValue"),
-            @Parameter(name = EnumUserType.VALUE_OF_METHOD, value = "valueOf")
+            @Parameter(name = EnumUserType.PACKAGE_ENUM, value = "com.holictechnology.kidfriendly.domain.enums.TypePhoneEnum")
     })
     @Column(name = "NUM_TYPE_PHONE", nullable = false)
     private TypePhoneEnum typePhoneEnum;
