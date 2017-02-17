@@ -147,7 +147,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
     private StringBuffer createHql(Long idCompany, Boolean stActive, Boolean stDelete, boolean isOrderBy) {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT new com.holictechnology.kidfriendly.domain.dtos.RatingDto(rating.idRating, rating.dtRating, rating.desRating, rating.desAnswer, "
-                + "statusKidFriendly.idStatusKidFriendly, company.idCompany, company.desName, user.idUser, user.desName, user.imgUser) ");
+                + "statusKidFriendly.idStatusKidFriendly, company.idCompany, company.desName, user.idUser, user.dsName, user.mgUser) ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Rating AS rating ");
         hql.append("INNER JOIN rating.statusKidFriendly AS statusKidFriendly ");
         hql.append("INNER JOIN rating.company AS company ");
