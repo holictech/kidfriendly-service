@@ -27,7 +27,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
      * listAllCountries()
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<Country> listAllCountries() throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT country FROM com.holictechnology.kidfriendly.domain.entitys.Country AS country ORDER BY country.desCountry ASC");
@@ -43,7 +43,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
      * listStateByCountry(java.lang.Integer)
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<State> listStateByCountry(Integer idCountry) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append(
@@ -58,13 +58,35 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
      * (non-Javadoc)
      * 
      * @see com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal#
+     * listStateWithCityByCountry(java.lang.Integer)
+     */
+    @Override
+    @Transactional(value = TxType.NOT_SUPPORTED)
+    public Collection<State> listStateWithCityByCountry(Integer idCountry) throws KidFriendlyException {
+        StringBuffer hql = new StringBuffer();
+        hql.append("SELECT state ");
+        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.City AS city INNER JOIN city.state AS state ");
+        hql.append("WHERE state.country.idCountry = :idCountry ");
+        hql.append("GROUP BY state ");
+        hql.append("ORDER BY state.desState ASC ");
+        TypedQuery<State> typedQuery = entityManager.createQuery(hql.toString(), State.class);
+        typedQuery.setParameter("idCountry", idCountry);
+
+        return typedQuery.getResultList();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal#
      * listCityByState(java.lang.Integer)
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<City> listCityByState(Integer idState) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
-        hql.append("SELECT city FROM com.holictechnology.kidfriendly.domain.entitys.City AS city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");
+        hql.append(
+                "SELECT city FROM com.holictechnology.kidfriendly.domain.entitys.City AS city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");
         TypedQuery<City> typedQuery = entityManager.createQuery(hql.toString(), City.class);
         typedQuery.setParameter("idState", idState);
 

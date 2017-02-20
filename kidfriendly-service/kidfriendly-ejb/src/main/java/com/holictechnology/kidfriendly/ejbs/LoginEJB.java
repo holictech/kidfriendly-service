@@ -22,7 +22,7 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
 
     @Override
 	@SuppressWarnings("unchecked")
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
 	public List<LoginDto> returnLoginAdm(String search) {
 		StringBuffer sql = new StringBuffer();
 		sql.append(" SELECT l FROM Login l WHERE l.stActive = :stActive AND l.user = null ");

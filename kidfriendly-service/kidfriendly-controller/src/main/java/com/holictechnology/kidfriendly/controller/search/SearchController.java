@@ -31,7 +31,7 @@ public class SearchController extends AbstractController {
     @GET
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response search(@BeanParam CompanyFilterDto companyFilterDto) throws KidFriendlyException {
-        ResultDto<CompanyDto> resultDto = new ResultDto<>();
+        ResultDto<CompanyDto> resultDto = null;
 
         try {
             resultDto = companyLocal.search(companyFilterDto);

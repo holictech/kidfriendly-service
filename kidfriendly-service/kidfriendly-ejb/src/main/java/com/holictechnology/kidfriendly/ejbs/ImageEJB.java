@@ -26,7 +26,7 @@ public class ImageEJB extends AbstractEJB implements ImageLocal {
      * java.lang.Long)
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<Image> listByCompany(Long idCompany) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT image ");

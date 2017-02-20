@@ -44,7 +44,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
      * com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal#listPending()
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<RatingDto> listPending() throws KidFriendlyException {
         Boolean stActive = Boolean.FALSE;
         Boolean stDelete = Boolean.FALSE;
@@ -63,7 +63,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
      * com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto)
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public ResultDto<RatingDto> listByCompany(Long idCompany, PaginatorDto paginatorDto) throws KidFriendlyException {
         Boolean stActive = Boolean.TRUE;
         Boolean stDelete = Boolean.FALSE;
@@ -223,7 +223,7 @@ public class RatingEJB extends AbstractEJB implements RatingLocal {
      * (java.lang.Long, java.lang.Long)
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public boolean hasPermission(Long idCompany, Long idUser) throws KidFriendlyException {
         boolean hasPermission = Boolean.FALSE;
         StringBuffer sql = new StringBuffer();

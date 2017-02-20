@@ -46,9 +46,9 @@ public class LocalityController extends AbstractController {
     }
 
     @GET
-    @Path("/liststatebycountry/{idcountry}")
+    @Path("/liststatebycountry/{idCountry}")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response listStateByCountry(@PathParam(value = "idcountry") Integer idCountry) throws KidFriendlyException {
+    public Response listStateByCountry(@PathParam(value = "idCountry") Integer idCountry) throws KidFriendlyException {
         Collection<State> listState = null;
 
         try {
@@ -61,9 +61,24 @@ public class LocalityController extends AbstractController {
     }
 
     @GET
-    @Path("/listcitybystate/{idstate}")
+    @Path("/liststatewithcitybycountry/{idCountry}")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response listCityByState(@PathParam(value = "idstate") Integer idState) throws KidFriendlyException {
+    public Response listStateWithCityByCountry(@PathParam(value = "idCountry") Integer idCountry) throws KidFriendlyException {
+        Collection<State> listState = null;
+
+        try {
+            listState = localityLocal.listStateWithCityByCountry(idCountry);
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_STATE);
+        }
+
+        return ok(listState);
+    }
+
+    @GET
+    @Path("/listcitybystate/{idState}")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response listCityByState(@PathParam(value = "idState") Integer idState) throws KidFriendlyException {
         Collection<City> listCity = null;
 
         try {

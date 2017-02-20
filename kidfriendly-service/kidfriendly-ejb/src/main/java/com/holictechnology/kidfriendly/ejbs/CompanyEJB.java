@@ -3,7 +3,6 @@ package com.holictechnology.kidfriendly.ejbs;
 
 import java.math.BigInteger;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +24,7 @@ import com.holictechnology.kidfriendly.domain.entitys.Phone;
 import com.holictechnology.kidfriendly.domain.enums.StatusKidFriendlyEnum;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
+import com.holictechnology.kidfriendly.library.utilites.ObjectUtilities;
 import com.holictechnology.kidfriendly.mount.dto.CompanyToCompanyDto;
 
 
@@ -42,20 +42,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @Transactional(value = TxType.SUPPORTS)
-    public Company find(Long primaryKey, String ... lazyAttributes) throws KidFriendlyException {
+    public Company find(final Long primaryKey, final String ... lazyAttributes) throws KidFriendlyException {
         return find(Company.class, primaryKey, lazyAttributes);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal#
-     * listLatestResearch(java.lang.Integer, java.lang.Long)
-     */
-    @Override
-    @Transactional(value = TxType.SUPPORTS)
-    public Collection<CompanyDto> listLatestResearch(Integer limit, Long idUser) throws KidFriendlyException {
-        return Collections.emptyList();
     }
 
     /*
@@ -66,8 +54,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional(value = TxType.SUPPORTS)
-    public Collection<CompanyDto> listSuggestions(Integer limit) throws KidFriendlyException {
+    @Transactional(value = TxType.NOT_SUPPORTED)
+    public Collection<CompanyDto> listSuggestions(final Integer limit) throws KidFriendlyException {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
@@ -86,7 +74,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
         sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
         sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
-        sql.append("ORDER BY ST_HIGHLIGHT DESC, DES_NAME LIMIT :limit ");
+        sql.append("ORDER BY ST_HIGHLIGHT DESC, NUM_RATE DESC, DES_NAME LIMIT :limit ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("limit", limit);
 
@@ -102,8 +90,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional(value = TxType.SUPPORTS)
-    public Collection<CompanyDto> listNextToMe(Integer limit, Double longitude, Double latitude) throws KidFriendlyException {
+    @Transactional(value = TxType.NOT_SUPPORTED)
+    public Collection<CompanyDto> listNextToMe(final Integer limit, final Double longitude, final Double latitude) throws KidFriendlyException {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
@@ -112,7 +100,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
         sql.append(
                 "WHERE company.ST_ACTIVE = 1 AND ST_Contains(ST_MakeEnvelope(Point((:longitude+(10/100)), (:latitude+(10/100))), Point((:longitude-(10/100)), (:latitude-(10/100)))), Point(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
-        sql.append("ORDER BY company.DES_NAME ");
+        sql.append("ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("longitude", longitude);
         query.setParameter("latitude", latitude);
@@ -131,8 +119,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     @Override
     @SuppressWarnings("unchecked")
-    @Transactional(value = TxType.SUPPORTS)
-    public ResultDto<CompanyDto> search(CompanyFilterDto companyFilterDto) throws KidFriendlyException {
+    @Transactional(value = TxType.NOT_SUPPORTED)
+    public ResultDto<CompanyDto> search(final CompanyFilterDto companyFilterDto) throws KidFriendlyException {
         Query query = entityManager.createNativeQuery(createSqlCount(createSqlSearch(companyFilterDto, Boolean.FALSE)).toString());
         setParametersSqlSearch(query, companyFilterDto);
         companyFilterDto.getPaginatorDto().setSize(((Number) query.getSingleResult()).longValue());
@@ -156,21 +144,24 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param companyFilterDto
      * @return
      */
-    private StringBuffer createSqlSearch(CompanyFilterDto companyFilterDto, boolean isOrderBy) {
+    private StringBuffer createSqlSearch(final CompanyFilterDto companyFilterDto, final boolean isOrderBy) {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
-        sql.append(createSqlSearch(companyFilterDto.getCharacteristics()));
+        sql.append(createSqlSearch(companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics()));
         sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
-        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
+        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "")
+                + ") ");
+        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE"
+                + ((companyFilterDto.getIdState() != null) ? " AND state.ID_STATE = :idState" : "") + ") ");
         sql.append("WHERE company.ST_ACTIVE = 1 ");
+        sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? " AND company.DES_NAME LIKE :desNameCompany" : " "));
         sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : " "));
         sql.append(((companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)
                 ? "AND ST_Contains(ST_MakeEnvelope(Point((:longitude+(10/100)), (:latitude+(10/100))), Point((:longitude-(10/100)), (:latitude-(10/100)))), Point(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
                 : ""));
         sql.append("GROUP BY company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
-        sql.append(((isOrderBy) ? "ORDER BY company.DES_NAME " : " "));
+        sql.append(((isOrderBy) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : " "));
 
         return sql;
     }
@@ -179,17 +170,20 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param idsCharacteristic
      * @return
      */
-    private StringBuffer createSqlSearch(final List<Long> characteristics) {
+    private StringBuffer createSqlSearch(final Integer idCategory, final List<Long> characteristics) {
         StringBuffer sql = new StringBuffer();
 
-        if (characteristics != null && !characteristics.isEmpty()) {
+        if (idCategory != null && ObjectUtilities.isNotEmptyOrNull(characteristics)) {
             int size = characteristics.size();
 
             for (int index = 0; index < size; index++) {
-                sql.append("INNER JOIN COMPANY_CATEGORY_CHARACTERISTIC AS COMPANY_CATEGORY_CHARACTERISTIC_" + index
-                        + " ON (company.ID_COMPANY = COMPANY_CATEGORY_CHARACTERISTIC_" + index + ".ID_COMPANY and COMPANY_CATEGORY_CHARACTERISTIC_" + index
-                        + ".ID_CATEGORY = :idCategory and COMPANY_CATEGORY_CHARACTERISTIC_" + index + ".ID_CHARACTERISTIC = :parameter" + index + ") ");
+                sql.append("INNER JOIN COMPANY_CATEGORY_CHARACTERISTIC AS companyCategoryCharacteristic" + index
+                        + " ON (company.ID_COMPANY = companyCategoryCharacteristic" + index + ".ID_COMPANY and companyCategoryCharacteristic" + index
+                        + ".ID_CATEGORY = :idCategory and companyCategoryCharacteristic" + index + ".ID_CHARACTERISTIC = :characteristc" + index + ") ");
             }
+        } else if (idCategory != null) {
+            sql.append(
+                    "INNER JOIN COMPANY_CATEGORY_CHARACTERISTIC AS companyCategoryCharacteristic ON (company.ID_COMPANY = companyCategoryCharacteristic.ID_COMPANY and companyCategoryCharacteristic.ID_CATEGORY = :idCategory) ");
         }
 
         return sql;
@@ -199,12 +193,24 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param query
      * @param companyFilterDto
      */
-    private void setParametersSqlSearch(Query query, CompanyFilterDto companyFilterDto) {
-        setParametersSqlSearch(query, companyFilterDto.getCharacteristics(), companyFilterDto.getIdCategory());
+    private void setParametersSqlSearch(final Query query, final CompanyFilterDto companyFilterDto) {
+        if (ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany())) {
+            query.setParameter("desNameCompany", "%" + companyFilterDto.getDesNameCompany() + "%");
+        }
+
+        if (companyFilterDto.getIdCity() != null) {
+            query.setParameter("idCity", companyFilterDto.getIdCity());
+        }
+
+        if (companyFilterDto.getIdState() != null) {
+            query.setParameter("idState", companyFilterDto.getIdState());
+        }
 
         if (companyFilterDto.isSuperKidFriendly()) {
             query.setParameter("superKidFriendly", StatusKidFriendlyEnum.SUPER.getValue());
         }
+
+        setParametersSqlSearch(query, companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics());
 
         if (companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null) {
             query.setParameter("longitude", companyFilterDto.getLongitude());
@@ -216,13 +222,16 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param query
      * @param characteristics
      */
-    private void setParametersSqlSearch(Query query, final List<Long> characteristics, final Integer idCategory) {
-        if (characteristics != null && !characteristics.isEmpty()) {
+    private void setParametersSqlSearch(final Query query, final Integer idCategory, final List<Long> characteristics) {
+        if (idCategory != null) {
             query.setParameter("idCategory", idCategory);
+        }
+
+        if (ObjectUtilities.isNotEmptyOrNull(characteristics)) {
             int index = 0;
 
             for (Long characteristic : characteristics) {
-                query.setParameter("parameter" + index++, characteristic);
+                query.setParameter("characteristc" + index++, characteristic);
             }
         }
     }
@@ -231,7 +240,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param listObject
      * @return
      */
-    private Collection<CompanyDto> createResult(List<Object []> listObject) {
+    private Collection<CompanyDto> createResult(final List<Object []> listObject) {
         Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
 
         if (listObject != null) {
@@ -288,70 +297,71 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         }
     }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Company> searchCompanySimple(String nameEstablishment, String responsibleEstablishment, String cnpj,
-			Integer objCity) {
-		StringBuffer sql = new StringBuffer();
-		
-		sql.append(" SELECT DISTINCT c FROM Company c JOIN FETCH c.phones p JOIN FETCH c.address a JOIN FETCH a.city ci JOIN FETCH ci.state s WHERE c.address.city.idCity = :idCity ");
-		sql.append(" AND c.stActive = :stActive ");
-		
-		if(nameEstablishment != null && !nameEstablishment.equals("undefined")){
-			sql.append(" AND c.desName LIKE :desName ");
-		}
-		
-		if(responsibleEstablishment != null && !responsibleEstablishment.equals("undefined")){
-			sql.append(" AND c.desNameResponsible LIKE :desNameResponsible ");
-		}
-		
-		if(cnpj != null && !cnpj.equals("undefined")){
-			sql.append(" AND c.desCNPJ = :desCNPJ ");
-		}
-		
-		Query query = entityManager.createQuery(sql.toString());
-		query.setParameter("idCity", objCity);
-		query.setParameter("stActive", Boolean.TRUE);
-		
-		if(nameEstablishment != null && !nameEstablishment.equals("undefined"))
-			query.setParameter("desName", "%" + nameEstablishment + "%");
-		
-		if(responsibleEstablishment != null && !responsibleEstablishment.equals("undefined"))
-			query.setParameter("desNameResponsible", "%" + responsibleEstablishment + "%");
-		
-		if(cnpj != null && !cnpj.equals("undefined"))
-			query.setParameter("desCNPJ", cnpj);
-		
-		List<Company> companies = query.getResultList();
-		
-		if(companies == null)
-			return null;
-		
-		return companies;
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    @Transactional(value = TxType.NOT_SUPPORTED)
+    public List<Company> searchCompanySimple(String nameEstablishment, String responsibleEstablishment, String cnpj,
+            Integer objCity) {
+        StringBuffer sql = new StringBuffer();
 
-	@Override
-	public Company inactivateCompany(Company company) {
-		company.setStActive(Boolean.FALSE);
-		
-		try {
-			merge(company);
-			return company;
-		} catch (KidFriendlyException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
-	}
+        sql.append(
+                " SELECT DISTINCT c FROM Company c JOIN FETCH c.phones p JOIN FETCH c.address a JOIN FETCH a.city ci JOIN FETCH ci.state s WHERE c.address.city.idCity = :idCity ");
+        sql.append(" AND c.stActive = :stActive ");
 
-	@Override
-	public Company editCompany(Company company) {
-		try {
-			merge(company);
-			return company;
-		} catch (KidFriendlyException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+        if (nameEstablishment != null && !nameEstablishment.equals("undefined")) {
+            sql.append(" AND c.desName LIKE :desName ");
+        }
+
+        if (responsibleEstablishment != null && !responsibleEstablishment.equals("undefined")) {
+            sql.append(" AND c.desNameResponsible LIKE :desNameResponsible ");
+        }
+
+        if (cnpj != null && !cnpj.equals("undefined")) {
+            sql.append(" AND c.desCNPJ = :desCNPJ ");
+        }
+
+        Query query = entityManager.createQuery(sql.toString());
+        query.setParameter("idCity", objCity);
+        query.setParameter("stActive", Boolean.TRUE);
+
+        if (nameEstablishment != null && !nameEstablishment.equals("undefined"))
+            query.setParameter("desName", "%" + nameEstablishment + "%");
+
+        if (responsibleEstablishment != null && !responsibleEstablishment.equals("undefined"))
+            query.setParameter("desNameResponsible", "%" + responsibleEstablishment + "%");
+
+        if (cnpj != null && !cnpj.equals("undefined"))
+            query.setParameter("desCNPJ", cnpj);
+
+        List<Company> companies = query.getResultList();
+
+        if (companies == null)
+            return null;
+
+        return companies;
+    }
+
+    @Override
+    public Company inactivateCompany(Company company) {
+        company.setStActive(Boolean.FALSE);
+
+        try {
+            return merge(company);
+        } catch (KidFriendlyException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Company editCompany(Company company) {
+        try {
+            return merge(company);
+        } catch (KidFriendlyException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

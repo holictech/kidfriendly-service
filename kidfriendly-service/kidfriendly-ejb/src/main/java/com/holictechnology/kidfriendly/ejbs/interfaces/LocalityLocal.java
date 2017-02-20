@@ -33,6 +33,16 @@ public interface LocalityLocal {
     Collection<State> listStateByCountry(Integer idCountry) throws KidFriendlyException;
 
     /**
+     * Method to list states with cities by country.
+     * 
+     * @param idCountry
+     *            - key {@link Country}
+     * @return
+     * @throws KidFriendlyException
+     */
+    Collection<State> listStateWithCityByCountry(Integer idCountry) throws KidFriendlyException;
+
+    /**
      * 
      * Method to list cities by state.
      * 

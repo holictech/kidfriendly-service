@@ -25,7 +25,7 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
      * listByCategory(java.lang.Integer)
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<Characteristic> listByCategory(Integer idCategory) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT characteristic ");
@@ -47,7 +47,7 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
      * listByCompanyCategory(java.lang.Long, java.lang.Integer)
      */
     @Override
-    @Transactional(value = TxType.SUPPORTS)
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<Characteristic> listByCompanyCategory(Long idCompany, Integer idCategory) throws KidFriendlyException {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT DISTINCT characteristic ");

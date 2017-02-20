@@ -30,16 +30,6 @@ public interface CompanyLocal {
      * TODO - COLOCAR O COMENTÁRIO.
      * 
      * @param limit
-     * @param idUser
-     * @return
-     * @throws KidFriendlyException
-     */
-    Collection<CompanyDto> listLatestResearch(Integer limit, Long idUser) throws KidFriendlyException;
-
-    /**
-     * TODO - COLOCAR O COMENTÁRIO.
-     * 
-     * @param limit
      * @return
      * @throws KidFriendlyException
      */

@@ -17,8 +17,8 @@ import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyConstraintViolationEnum;
 
 
-@TransactionManagement
 @Transactional(value = TxType.NOT_SUPPORTED)
+@TransactionManagement
 public abstract class AbstractController implements Serializable {
 
     private static final long serialVersionUID = -7183158366724998348L;
@@ -57,15 +57,11 @@ public abstract class AbstractController implements Serializable {
     }
 
     /**
-     * TODO - REMOVER HEADER
-     * 
      * @param object
      * @return
      */
     protected Response ok(Object object) {
-        return Response.ok(object).header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization").header("Access-Control-Allow-Credentials", "true")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD").header("Access-Control-Max-Age", "1209600").build();
+        return Response.ok(object).build();
     }
 
     /**
