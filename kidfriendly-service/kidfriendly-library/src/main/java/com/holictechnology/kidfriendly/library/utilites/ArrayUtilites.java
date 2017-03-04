@@ -1,11 +1,16 @@
 package com.holictechnology.kidfriendly.library.utilites;
 
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.io.IOUtils;
 
 
 public final class ArrayUtilites implements Serializable {
@@ -37,5 +42,23 @@ public final class ArrayUtilites implements Serializable {
         }
 
         return object;
+    }
+
+    /**
+     * @param url
+     * @return
+     */
+    public static byte [] converter(String url) {
+        byte [] bytes = null;
+
+        if (ObjectUtilities.isNotEmptyOrNull(url)) {
+            try {
+                URL _url = new URL(url);
+                InputStream inputStream = _url.openStream();
+                bytes = IOUtils.toByteArray(inputStream);
+            } catch (IOException e) {}
+        }
+
+        return bytes;
     }
 }

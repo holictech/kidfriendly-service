@@ -10,8 +10,8 @@ import java.security.NoSuchAlgorithmException;
 public final class CriptographUtilites implements Serializable {
 
     private static final long serialVersionUID = 1623424675100052733L;
-    private static final String SUFFIX = "KiD";
     private static final String PREFIX = "fRiEnDlY";
+    private static final String SUFFIX = "KiD";
 
     private CriptographUtilites() {}
 

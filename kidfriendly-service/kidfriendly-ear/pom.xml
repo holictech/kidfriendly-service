@@ -105,6 +105,13 @@
 			<scope>provided</scope>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>${commons-io.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -154,6 +161,11 @@
 							<groupId>org.apache.commons</groupId>
 							<artifactId>commons-lang3</artifactId>
 							<bundleFileName>commons-lang3.jar</bundleFileName>
+						</jarModule>
+						<jarModule>
+							<groupId>commons-io</groupId>
+							<artifactId>commons-io</artifactId>
+							<bundleFileName>commons-io.jar</bundleFileName>
 						</jarModule>
 						<ejbModule>
 							<groupId>com.holictechnology.kidfriendly.service</groupId>
