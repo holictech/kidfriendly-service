@@ -134,9 +134,42 @@
 	</div>
 	
 	<div class="contentform space-blank">
+		<fieldset title="Categoria">
+			<legend>Categoria</legend>
+			<div>
+				<div ng-repeat="category in categorys">
+					<table>
+						<tr>
+							<td style="vertical-align: middle; width: 90%"><p>{{category.desCategory}}</p></td>
+							<td style="vertical-align: middle;"><input type="checkbox" ng-click="characterist(category.idCategory)"
+					id="{{category.idCategory}}"/></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	
+	<div class="contentform space-blank">
+		<fieldset title="Caracteristícas" ng-show="characteristcs.length > 0">
+			<legend>Caracteristícas</legend>
+			<div>
+				<div ng-repeat="c in characteristcs">
+					<table>
+						<tr>
+							<td style="vertical-align: middle; width: 90%"><p>{{c.desCharacteristic}}</p></td>
+							<td style="vertical-align: middle;"><input type="checkbox" ng-click="mountObjCharacterisct(c.idCharacteristic)"/></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	
+	<div class="contentform space-blank">
 		<div class="form-group">
-			<input type="file" id="file" name="file"/>
-			<button type="button" class="bouton-add-peq">Adicionar</button>
+			<input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this)" id="photo-upload" placeholder="Selecione uma ou mais fotos de uma vez"
+			multiple="multiple"/>
 		</div>
 	</div>
 	

@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -48,6 +49,9 @@ public class Image implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_MARKETING_CONTRACT_OUTHER", nullable = true)
     private MarketingContractOuther marketingContractOuther;
+    
+    @Transient
+    private String nameCompany;
 
     public Long getIdImage() {
         return idImage;
@@ -97,4 +101,13 @@ public class Image implements Serializable {
             MarketingContractOuther marketingContractOuther) {
         this.marketingContractOuther = marketingContractOuther;
     }
+
+	public String getNameCompany() {
+		return nameCompany;
+	}
+
+	public void setNameCompany(String nameCompany) {
+		this.nameCompany = nameCompany;
+	}
+    
 }

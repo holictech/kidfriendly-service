@@ -19,4 +19,11 @@ public interface CategoryLocal {
      * @throws KidFriendlyException
      */
     Collection<Category> listAll() throws KidFriendlyException;
+    
+    /**
+     * Method search name category
+     * @param category
+     * @return
+     */
+    String nameCategory(Integer category);
 }

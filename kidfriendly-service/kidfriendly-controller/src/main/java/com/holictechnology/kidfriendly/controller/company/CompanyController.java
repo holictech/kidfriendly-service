@@ -2,6 +2,7 @@ package com.holictechnology.kidfriendly.controller.company;
 
 
 import java.math.BigInteger;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,10 @@ import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
+import com.holictechnology.kidfriendly.domain.dtos.ImageDto;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
+import com.holictechnology.kidfriendly.ejbs.interfaces.CategoryLocal;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CharacteristicLocal;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
@@ -39,6 +42,9 @@ public class CompanyController extends AbstractController {
 
     @EJB
     private CharacteristicLocal characteristicLocal;
+    
+    @EJB
+    private CategoryLocal categoryLocal;
 
     @EJB
     private RatingLocal ratingLocal;
@@ -94,9 +100,16 @@ public class CompanyController extends AbstractController {
     	return ok(companyLocal.searchCompanySimple(nameEstablishment, responsibleEstablishment, cnpj, objCity));
     }
     
+    @POST
+    @Path("/image-selected")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void imageData(ImageDto imageDto){
+    	imageDto.setImgImage(Base64.getDecoder().decode(imageDto.getDataImage()));
+    	companyLocal.preparImageSaveCompany(imageDto);
+    }
+    
     @PUT
     @Path("/inative-company")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response inativeCompany(Company company){
     	return ok(companyLocal.inactivateCompany(company));
     }

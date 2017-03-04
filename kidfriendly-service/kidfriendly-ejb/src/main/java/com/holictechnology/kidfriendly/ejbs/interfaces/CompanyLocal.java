@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
+import com.holictechnology.kidfriendly.domain.dtos.ImageDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
@@ -87,5 +88,12 @@ public interface CompanyLocal {
      * @return
      */
     Company editCompany(Company company);
+    
+    /**
+     * Method in create list for save images company
+     * @param imageDto
+     * @return
+     */
+    void preparImageSaveCompany(ImageDto imageDto);
     
 }

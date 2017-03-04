@@ -2,6 +2,7 @@ package com.holictechnology.kidfriendly.ejbs;
 
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -13,14 +14,23 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import com.holictechnology.kidfriendly.domain.dtos.AddressDto;
+import com.holictechnology.kidfriendly.domain.dtos.CategoryDto;
 import com.holictechnology.kidfriendly.domain.dtos.CityDto;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
+import com.holictechnology.kidfriendly.domain.dtos.ImageDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entitys.Address;
+import com.holictechnology.kidfriendly.domain.entitys.Category;
+import com.holictechnology.kidfriendly.domain.entitys.CategoryCharacteristic;
+import com.holictechnology.kidfriendly.domain.entitys.Characteristic;
 import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
+import com.holictechnology.kidfriendly.domain.entitys.CompanyCategoryCharacteristic;
+import com.holictechnology.kidfriendly.domain.entitys.Image;
 import com.holictechnology.kidfriendly.domain.entitys.Phone;
+import com.holictechnology.kidfriendly.domain.entitys.pk.CategoryCharacteristicPK;
+import com.holictechnology.kidfriendly.domain.entitys.pk.CompanyCategoryCharacteristicPK;
 import com.holictechnology.kidfriendly.domain.enums.StatusKidFriendlyEnum;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
@@ -32,6 +42,7 @@ import com.holictechnology.kidfriendly.mount.dto.CompanyToCompanyDto;
 public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
     private static final long serialVersionUID = 1389485495399887684L;
+    private static List<Image> images = new ArrayList<Image>();
 
     /*
      * (non-Javadoc)
@@ -279,8 +290,54 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         companyDto.setIdCompany(company.getIdCompany());
 
         savePhone(companyDto, company);
+        
+        saveImage(company);
+        
+        saveCategoryCharacteristics(company, companyDto);
 
         return companyDto;
+    }
+    
+    /**
+     * Method in save data category and carachteristic
+     * @param company
+     * @param companyDto
+     * @throws KidFriendlyException 
+     */
+    private void saveCategoryCharacteristics(Company company, CompanyDto companyDto) throws KidFriendlyException{
+    	if(companyDto.getCategoryDtos() != null){
+    		if(!companyDto.getCategoryDtos().isEmpty()){
+    			for(CategoryDto categoryDto : companyDto.getCategoryDtos()){
+    				Category category = entityManager.find(Category.class, categoryDto.getCategory());
+    				Characteristic character = entityManager.find(Characteristic.class, categoryDto.getCharacteristcs());
+    				CategoryCharacteristic categoryCharacteristic = new CategoryCharacteristic();
+    				CategoryCharacteristicPK categoryCharacteristicPK = new CategoryCharacteristicPK();
+    				categoryCharacteristicPK.setCategory(category);
+    				categoryCharacteristicPK.setCharacteristic(character);
+    				categoryCharacteristic.setCategoryCharacteristicPK(categoryCharacteristicPK);
+    				CompanyCategoryCharacteristicPK companyCategoryCharacteristicPK = new CompanyCategoryCharacteristicPK();
+    				companyCategoryCharacteristicPK.setCategoryCharacteristic(categoryCharacteristic);
+    				companyCategoryCharacteristicPK.setCompany(company);
+    				CompanyCategoryCharacteristic companyCategoryCharacteristic = new CompanyCategoryCharacteristic();
+    				companyCategoryCharacteristic.setCompanyCategoryCharacteristicPK(companyCategoryCharacteristicPK);
+    				persist(companyCategoryCharacteristic);
+    			}
+    		}
+    	}
+    }
+    
+    /**
+     * Method save photos reference company
+     * @param company
+     * @throws KidFriendlyException
+     */
+    private void saveImage(Company company) throws KidFriendlyException{
+    	if(!images.isEmpty()){
+    		for(Image image : images){
+    			image.setCompany(company);
+    			persist(image);
+    		}
+    	}
     }
 
     /**
@@ -364,4 +421,31 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
         return null;
     }
+
+	@Override
+	public void preparImageSaveCompany(ImageDto imageDto) {
+		if(!images.isEmpty()){
+			if(!images.get(0).getNameCompany().equals(imageDto.getNameCompany())){
+				images = null;
+				images = new ArrayList<Image>();
+				Image image = new Image();
+				image.setDesImage(imageDto.getDesImage());
+				image.setImgImage(imageDto.getImgImage());
+				image.setNameCompany(imageDto.getNameCompany());
+				images.add(image);
+			}else{
+				Image image = new Image();
+				image.setDesImage(imageDto.getDesImage());
+				image.setImgImage(imageDto.getImgImage());
+				image.setNameCompany(imageDto.getNameCompany());
+				images.add(image);
+			}
+		}else{
+			Image image = new Image();
+			image.setDesImage(imageDto.getDesImage());
+			image.setImgImage(imageDto.getImgImage());
+			image.setNameCompany(imageDto.getNameCompany());
+			images.add(image);
+		}
+	}
 }

@@ -20,6 +20,8 @@ public class CompanyDto implements Serializable {
     private AddressDto addressDto;
     private List<ImageDto> imageDtos;
     private List<PhoneDto> phoneDtos;
+    private CategoryDto categoryDto;
+    private List<CategoryDto> categoryDtos;
 
     public Long getIdCompany() {
         return idCompany;
@@ -108,4 +110,21 @@ public class CompanyDto implements Serializable {
     public void setNamePearsonResponsible(String namePearsonResponsible) {
         this.namePearsonResponsible = namePearsonResponsible;
     }
+
+	public CategoryDto getCategoryDto() {
+		return categoryDto;
+	}
+
+	public void setCategoryDto(CategoryDto categoryDto) {
+		this.categoryDto = categoryDto;
+	}
+
+	public List<CategoryDto> getCategoryDtos() {
+		return categoryDtos;
+	}
+
+	public void setCategoryDtos(List<CategoryDto> categoryDtos) {
+		this.categoryDtos = categoryDtos;
+	}
+    
 }

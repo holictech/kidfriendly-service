@@ -9,12 +9,33 @@ kid.service('companyService', ['$http',
 	};
 	
 	/**
+	 * Image Company
+	 */
+	this.getImage = function(uri, imageDto){
+		return $http.post(uri + '/company/image-selected', imageDto);
+	};
+	
+	/**
 	 * List Company's
 	 */
 	this.getListCompany = function(uri, nameEstablishment, responsibleEstablishment,
 			cnpj, objCity){
 		return $http.get(uri + '/company/search-company/' + nameEstablishment + "/" + responsibleEstablishment + 
 				"/" + cnpj + "/" + objCity);
+	};
+	
+	/**
+	 * List Category
+	 */
+	this.getListCategory = function(uri){
+		return $http.get(uri + '/category/');
+	};
+	
+	/**
+	 * List Characteristic
+	 */
+	this.getListCharacteristic = function(uri, category){
+		return $http.get(uri + '/characteristic/listbycategory/'+category);
 	};
 	
 	/**
