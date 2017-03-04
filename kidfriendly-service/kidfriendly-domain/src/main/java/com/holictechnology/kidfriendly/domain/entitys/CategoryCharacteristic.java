@@ -11,7 +11,7 @@ import com.holictechnology.kidfriendly.domain.entitys.pk.CategoryCharacteristicP
 
 
 @Entity
-@Table(name = "CATEGORY_CHARACTERISTIC", schema = "sistemap_kidfriendly")
+@Table(name = "CATEGORY_CHARACTERISTIC")
 public class CategoryCharacteristic implements Serializable {
 
     private static final long serialVersionUID = 1013975327619818024L;

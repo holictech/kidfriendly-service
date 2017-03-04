@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
-@Table(name = "ADDRESS", schema = "sistemap_kidfriendly")
+@Table(name = "ADDRESS")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idAddress", scope = Address.class)
 public class Address implements Serializable {
 

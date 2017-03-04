@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
-@Table(name = "MARKETING_COMPANY_SALES", schema = "sistemap_kidfriendly")
+@Table(name = "MARKETING_COMPANY_SALES")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idMarketingComplaySales", scope = MarketingCompanySales.class)
 public class MarketingCompanySales implements Serializable {
 

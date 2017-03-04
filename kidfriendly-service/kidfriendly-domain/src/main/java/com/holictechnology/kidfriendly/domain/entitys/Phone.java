@@ -24,7 +24,7 @@ import com.holictechnology.kidfriendly.library.hibernate.EnumUserType;
 
 
 @Entity
-@Table(name = "PHONE", schema = "sistemap_kidfriendly")
+@Table(name = "PHONE")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idPhone", scope = Phone.class)
 public class Phone implements Serializable {
 

@@ -71,7 +71,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
         sql.append("INNER JOIN ( ");
-        sql.append("SELECT company.ID_COMPANY FROM company WHERE company.ST_ACTIVE = 1 AND company.ST_HIGHLIGHT = 1 ORDER BY RAND() LIMIT :limit ");
+        sql.append("SELECT _company.ID_COMPANY FROM COMPANY _company WHERE _company.ST_ACTIVE = 1 AND _company.ST_HIGHLIGHT = 1 ORDER BY RAND() LIMIT :limit ");
         sql.append(") _company ON (_company.ID_COMPANY = company.ID_COMPANY) ");
         sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
         sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
@@ -80,7 +80,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
         sql.append("INNER JOIN ( ");
-        sql.append("SELECT company.ID_COMPANY FROM company WHERE company.ST_ACTIVE = 1 AND company.ST_HIGHLIGHT = 0 ORDER BY RAND() LIMIT :limit ");
+        sql.append("SELECT _company.ID_COMPANY FROM COMPANY _company WHERE _company.ST_ACTIVE = 1 AND _company.ST_HIGHLIGHT = 0 ORDER BY RAND() LIMIT :limit ");
         sql.append(") _company ON (_company.ID_COMPANY = company.ID_COMPANY) ");
         sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
         sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");

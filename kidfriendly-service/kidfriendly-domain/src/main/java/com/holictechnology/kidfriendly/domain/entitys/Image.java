@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
-@Table(name = "IMAGE", schema = "sistemap_kidfriendly")
+@Table(name = "IMAGE")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idImage", scope = Image.class)
 public class Image implements Serializable {
 
