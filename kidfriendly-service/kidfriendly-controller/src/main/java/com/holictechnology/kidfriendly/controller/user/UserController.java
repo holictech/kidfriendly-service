@@ -7,7 +7,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -16,7 +15,6 @@ import com.holictechnology.kidfriendly.domain.entitys.User;
 import com.holictechnology.kidfriendly.ejbs.interfaces.UserLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
-import com.holictechnology.kidfriendly.library.utilites.ArrayUtilites;
 
 
 @Stateless
@@ -32,9 +30,8 @@ public class UserController extends AbstractController {
     @Path(value = "/includesocialnetwork")
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response includeSocialNetwork(User user, @QueryParam(value = "urlImg") String urlImg) throws KidFriendlyException {
+    public Response includeSocialNetwork(User user) throws KidFriendlyException {
         try {
-            user.setMgUser(ArrayUtilites.converter(urlImg));
             userLocal.includeSocialNetwork(user);
         } catch (Exception exception) {
             error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_USER);
