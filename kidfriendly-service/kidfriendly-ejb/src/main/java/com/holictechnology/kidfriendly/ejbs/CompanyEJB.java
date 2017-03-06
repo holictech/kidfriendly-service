@@ -110,7 +110,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
         sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
         sql.append(
-                "WHERE company.ST_ACTIVE = 1 AND ST_Contains(ST_MakeEnvelope(Point((:longitude+(10/100)), (:latitude+(10/100))), Point((:longitude-(10/100)), (:latitude-(10/100)))), Point(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
+                "WHERE company.ST_ACTIVE = 1 ");
+        sql.append(
+                "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*69), :latitude-(10/69)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*69), :latitude+(10/69)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
         sql.append("ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("longitude", longitude);
@@ -169,7 +171,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? " AND company.DES_NAME LIKE :desNameCompany" : " "));
         sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : " "));
         sql.append(((companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)
-                ? "AND ST_Contains(ST_MakeEnvelope(Point((:longitude+(10/100)), (:latitude+(10/100))), Point((:longitude-(10/100)), (:latitude-(10/100)))), Point(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
+                ? "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*69), :latitude-(10/69)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*69), :latitude+(10/69)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
                 : ""));
         sql.append("GROUP BY company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append(((isOrderBy) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : " "));
@@ -290,54 +292,56 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         companyDto.setIdCompany(company.getIdCompany());
 
         savePhone(companyDto, company);
-        
+
         saveImage(company);
-        
+
         saveCategoryCharacteristics(company, companyDto);
 
         return companyDto;
     }
-    
+
     /**
      * Method in save data category and carachteristic
+     * 
      * @param company
      * @param companyDto
-     * @throws KidFriendlyException 
+     * @throws KidFriendlyException
      */
-    private void saveCategoryCharacteristics(Company company, CompanyDto companyDto) throws KidFriendlyException{
-    	if(companyDto.getCategoryDtos() != null){
-    		if(!companyDto.getCategoryDtos().isEmpty()){
-    			for(CategoryDto categoryDto : companyDto.getCategoryDtos()){
-    				Category category = entityManager.find(Category.class, categoryDto.getCategory());
-    				Characteristic character = entityManager.find(Characteristic.class, categoryDto.getCharacteristcs());
-    				CategoryCharacteristic categoryCharacteristic = new CategoryCharacteristic();
-    				CategoryCharacteristicPK categoryCharacteristicPK = new CategoryCharacteristicPK();
-    				categoryCharacteristicPK.setCategory(category);
-    				categoryCharacteristicPK.setCharacteristic(character);
-    				categoryCharacteristic.setCategoryCharacteristicPK(categoryCharacteristicPK);
-    				CompanyCategoryCharacteristicPK companyCategoryCharacteristicPK = new CompanyCategoryCharacteristicPK();
-    				companyCategoryCharacteristicPK.setCategoryCharacteristic(categoryCharacteristic);
-    				companyCategoryCharacteristicPK.setCompany(company);
-    				CompanyCategoryCharacteristic companyCategoryCharacteristic = new CompanyCategoryCharacteristic();
-    				companyCategoryCharacteristic.setCompanyCategoryCharacteristicPK(companyCategoryCharacteristicPK);
-    				persist(companyCategoryCharacteristic);
-    			}
-    		}
-    	}
+    private void saveCategoryCharacteristics(Company company, CompanyDto companyDto) throws KidFriendlyException {
+        if (companyDto.getCategoryDtos() != null) {
+            if (!companyDto.getCategoryDtos().isEmpty()) {
+                for (CategoryDto categoryDto : companyDto.getCategoryDtos()) {
+                    Category category = entityManager.find(Category.class, categoryDto.getCategory());
+                    Characteristic character = entityManager.find(Characteristic.class, categoryDto.getCharacteristcs());
+                    CategoryCharacteristic categoryCharacteristic = new CategoryCharacteristic();
+                    CategoryCharacteristicPK categoryCharacteristicPK = new CategoryCharacteristicPK();
+                    categoryCharacteristicPK.setCategory(category);
+                    categoryCharacteristicPK.setCharacteristic(character);
+                    categoryCharacteristic.setCategoryCharacteristicPK(categoryCharacteristicPK);
+                    CompanyCategoryCharacteristicPK companyCategoryCharacteristicPK = new CompanyCategoryCharacteristicPK();
+                    companyCategoryCharacteristicPK.setCategoryCharacteristic(categoryCharacteristic);
+                    companyCategoryCharacteristicPK.setCompany(company);
+                    CompanyCategoryCharacteristic companyCategoryCharacteristic = new CompanyCategoryCharacteristic();
+                    companyCategoryCharacteristic.setCompanyCategoryCharacteristicPK(companyCategoryCharacteristicPK);
+                    persist(companyCategoryCharacteristic);
+                }
+            }
+        }
     }
-    
+
     /**
      * Method save photos reference company
+     * 
      * @param company
      * @throws KidFriendlyException
      */
-    private void saveImage(Company company) throws KidFriendlyException{
-    	if(!images.isEmpty()){
-    		for(Image image : images){
-    			image.setCompany(company);
-    			persist(image);
-    		}
-    	}
+    private void saveImage(Company company) throws KidFriendlyException {
+        if (!images.isEmpty()) {
+            for (Image image : images) {
+                image.setCompany(company);
+                persist(image);
+            }
+        }
     }
 
     /**
@@ -422,30 +426,30 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         return null;
     }
 
-	@Override
-	public void preparImageSaveCompany(ImageDto imageDto) {
-		if(!images.isEmpty()){
-			if(!images.get(0).getNameCompany().equals(imageDto.getNameCompany())){
-				images = null;
-				images = new ArrayList<Image>();
-				Image image = new Image();
-				image.setDesImage(imageDto.getDesImage());
-				image.setImgImage(imageDto.getImgImage());
-				image.setNameCompany(imageDto.getNameCompany());
-				images.add(image);
-			}else{
-				Image image = new Image();
-				image.setDesImage(imageDto.getDesImage());
-				image.setImgImage(imageDto.getImgImage());
-				image.setNameCompany(imageDto.getNameCompany());
-				images.add(image);
-			}
-		}else{
-			Image image = new Image();
-			image.setDesImage(imageDto.getDesImage());
-			image.setImgImage(imageDto.getImgImage());
-			image.setNameCompany(imageDto.getNameCompany());
-			images.add(image);
-		}
-	}
+    @Override
+    public void preparImageSaveCompany(ImageDto imageDto) {
+        if (!images.isEmpty()) {
+            if (!images.get(0).getNameCompany().equals(imageDto.getNameCompany())) {
+                images = null;
+                images = new ArrayList<Image>();
+                Image image = new Image();
+                image.setDesImage(imageDto.getDesImage());
+                image.setImgImage(imageDto.getImgImage());
+                image.setNameCompany(imageDto.getNameCompany());
+                images.add(image);
+            } else {
+                Image image = new Image();
+                image.setDesImage(imageDto.getDesImage());
+                image.setImgImage(imageDto.getImgImage());
+                image.setNameCompany(imageDto.getNameCompany());
+                images.add(image);
+            }
+        } else {
+            Image image = new Image();
+            image.setDesImage(imageDto.getDesImage());
+            image.setImgImage(imageDto.getImgImage());
+            image.setNameCompany(imageDto.getNameCompany());
+            images.add(image);
+        }
+    }
 }
