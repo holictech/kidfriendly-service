@@ -67,6 +67,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     @SuppressWarnings("unchecked")
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<CompanyDto> listSuggestions(final Integer limit) throws KidFriendlyException {
+        illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
@@ -103,6 +104,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     @SuppressWarnings("unchecked")
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<CompanyDto> listNextToMe(final Integer limit, final Double longitude, final Double latitude) throws KidFriendlyException {
+        illegalArgument(limit, longitude, latitude);
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
@@ -134,6 +136,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     @SuppressWarnings("unchecked")
     @Transactional(value = TxType.NOT_SUPPORTED)
     public ResultDto<CompanyDto> search(final CompanyFilterDto companyFilterDto) throws KidFriendlyException {
+        illegalArgument(companyFilterDto);
         Query query = entityManager.createNativeQuery(createSqlCount(createSqlSearch(companyFilterDto, Boolean.FALSE)).toString());
         setParametersSqlSearch(query, companyFilterDto);
         companyFilterDto.getPaginatorDto().setSize(((Number) query.getSingleResult()).longValue());

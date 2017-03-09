@@ -45,6 +45,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<State> listStateByCountry(Integer idCountry) throws KidFriendlyException {
+        illegalArgument(idCountry);
         StringBuffer hql = new StringBuffer();
         hql.append(
                 "SELECT state FROM com.holictechnology.kidfriendly.domain.entitys.State AS state WHERE state.country.idCountry = :idCountry ORDER BY state.desState ASC");
@@ -63,6 +64,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<State> listStateWithCityByCountry(Integer idCountry) throws KidFriendlyException {
+        illegalArgument(idCountry);
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT state ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.City AS city INNER JOIN city.state AS state ");
@@ -84,6 +86,7 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<City> listCityByState(Integer idState) throws KidFriendlyException {
+        illegalArgument(idState);
         StringBuffer hql = new StringBuffer();
         hql.append(
                 "SELECT city FROM com.holictechnology.kidfriendly.domain.entitys.City AS city WHERE city.state.idState = :idState ORDER BY city.desCity ASC");

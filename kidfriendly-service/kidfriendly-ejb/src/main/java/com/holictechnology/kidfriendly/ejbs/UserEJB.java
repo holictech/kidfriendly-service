@@ -1,9 +1,11 @@
 package com.holictechnology.kidfriendly.ejbs;
 
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 import com.holictechnology.kidfriendly.domain.entitys.User;
+import com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal;
 import com.holictechnology.kidfriendly.ejbs.interfaces.UserLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
@@ -12,6 +14,25 @@ import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 public class UserEJB extends AbstractEJB implements UserLocal {
 
     private static final long serialVersionUID = -1879194541495435139L;
+
+    @EJB
+    private LoginLocal loginLocal;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.holictechnology.kidfriendly.ejbs.interfaces.UserLocal#
+     * includeWithLogin(com.holictechnology.kidfriendly.domain.entitys.User)
+     */
+    @Override
+    public void includeWithLogin(User user) throws KidFriendlyException {
+        illegalArgument(user);
+        illegalArgument(user.getLogin());
+        loginLocal.exist(user.getLogin());
+        user.getLogin().setUser(user);
+        persist(user);
+        persist(user.getLogin());
+    }
 
     /*
      * (non-Javadoc)
@@ -22,6 +43,7 @@ public class UserEJB extends AbstractEJB implements UserLocal {
      */
     @Override
     public void includeSocialNetwork(User user) throws KidFriendlyException {
+        illegalArgument(user);
         persist(user);
     }
 }

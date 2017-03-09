@@ -73,4 +73,13 @@ public interface LoginLocal {
      * @throws KidFriendlyException
      */
     User authenticateSocialNetwork(Long idSocialNetwork) throws KidFriendlyException;
+
+    /**
+     * Method that checks if the login exists. If true an exception will be
+     * thrown.
+     * 
+     * @param login
+     * @throws KidFriendlyException
+     */
+    void exist(Login login) throws KidFriendlyException;
 }

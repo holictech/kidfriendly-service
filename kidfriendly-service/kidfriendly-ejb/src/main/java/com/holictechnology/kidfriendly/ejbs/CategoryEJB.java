@@ -34,15 +34,14 @@ public class CategoryEJB extends AbstractEJB implements CategoryLocal {
         return typedQuery.getResultList();
     }
 
-	@Override
-	public String nameCategory(Integer category) {
-		StringBuffer hql = new StringBuffer();
+    @Override
+    public String nameCategory(Integer category) {
+        StringBuffer hql = new StringBuffer();
         hql.append("SELECT category FROM com.holictechnology.kidfriendly.domain.entitys.Category AS category WHERE category.idCategory = :idCategory ");
         TypedQuery<Category> typedQuery = entityManager.createQuery(hql.toString(), Category.class);
         typedQuery.setParameter("idCategory", category);
-        
         Category categ = typedQuery.getSingleResult();
-        
-		return categ.getDesCategory();
-	}
+
+        return categ.getDesCategory();
+    }
 }

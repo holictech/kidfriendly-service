@@ -11,6 +11,12 @@ import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 public interface UserLocal {
 
     /**
+     * @param user
+     * @throws KidFriendlyException
+     */
+    void includeWithLogin(User user) throws KidFriendlyException;
+
+    /**
      * TODO - COLOCAR O COMENTÁRIO.
      * 
      * @param user

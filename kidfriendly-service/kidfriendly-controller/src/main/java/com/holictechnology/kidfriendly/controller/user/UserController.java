@@ -1,6 +1,8 @@
 package com.holictechnology.kidfriendly.controller.user;
 
 
+import java.security.NoSuchAlgorithmException;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -15,6 +17,7 @@ import com.holictechnology.kidfriendly.domain.entitys.User;
 import com.holictechnology.kidfriendly.ejbs.interfaces.UserLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
+import com.holictechnology.kidfriendly.library.utilites.CriptographUtilites;
 
 
 @Stateless
@@ -25,6 +28,23 @@ public class UserController extends AbstractController {
 
     @EJB
     private UserLocal userLocal;
+
+    @POST
+    @Consumes(value = MediaType.APPLICATION_JSON)
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response include(User user) throws KidFriendlyException {
+        try {
+            userLocal.includeWithLogin(user);
+            user.getLogin()
+                    .setDesPassword(CriptographUtilites.getInstance().createToken(user.getLogin().getIdLogin().concat(user.getLogin().getDesPassword())));
+        } catch (NoSuchAlgorithmException exception) {
+            getLogger(getClass()).error(exception.getMessage(), exception);
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_USER);
+        }
+
+        return ok(user);
+    }
 
     @POST
     @Path(value = "/includesocialnetwork")

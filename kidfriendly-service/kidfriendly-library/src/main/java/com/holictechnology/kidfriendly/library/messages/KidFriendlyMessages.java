@@ -6,6 +6,11 @@ public final class KidFriendlyMessages {
     private KidFriendlyMessages() {}
 
     /*
+     * DEFAULT
+     */
+    public static final String ERROR_ILLEGALARGUMENT = "O argumento informdo n\u00e3o \u00e9 valido.";
+
+    /*
      * CATEGORY
      */
     public static final String ERROR_LIST_CATEGORY = "N\u00e3o foi poss\u00edvel listar as categorias.";
@@ -50,6 +55,7 @@ public final class KidFriendlyMessages {
     public static final String ERROR_AUTHENTICATE_LOGIN_NOT_FOUND = "Email n\u00e3o encontrado.";
     public static final String ERROR_AUTHENTICATE_CREATE_TOKEN = "N\u00e3o foi poss\u00edvel gerar o token de autentica\u00e7\u00e3o.";
     public static final String ERROR_AUTHENTICATE_LOGIN = "N\u00e3o foi poss\u00edvel efetuar o login.";
+    public static final String ERROR_INCLUDE_LOGIN = "O email informado j\u00e1 existente.";
 
     /*
      * USER

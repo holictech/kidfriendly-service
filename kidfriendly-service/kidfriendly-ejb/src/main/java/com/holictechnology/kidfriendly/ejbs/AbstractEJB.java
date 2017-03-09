@@ -18,6 +18,7 @@ import org.hibernate.Hibernate;
 
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
+import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 import com.holictechnology.kidfriendly.library.utilites.ArrayUtilites;
 import com.holictechnology.kidfriendly.library.utilites.ReflectionUtilites;
 
@@ -149,5 +150,18 @@ public abstract class AbstractEJB implements Serializable {
      */
     protected <T> void remove(Class<T> entityClass, Serializable primaryKey) throws KidFriendlyException {
         entityManager.remove(find(entityClass, primaryKey));
+    }
+
+    /**
+     * @param argument
+     * @return
+     * @throws KidFriendlyException
+     */
+    protected void illegalArgument(Object ... argument) throws KidFriendlyException {
+        for (Object object : argument) {
+            if (object == null) {
+                throw new KidFriendlyException(KidFriendlyMessages.ERROR_ILLEGALARGUMENT);
+            }
+        }
     }
 }

@@ -119,6 +119,7 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public User authenticateUser(String email) throws KidFriendlyException {
+        illegalArgument(email);
         User user = null;
 
         try {
@@ -126,6 +127,8 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
             hql.append("SELECT user ");
             hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.User AS user ");
             hql.append("INNER JOIN FETCH user.login AS login ");
+            hql.append("LEFT JOIN FETCH user.city as City ");
+            hql.append("LEFT JOIN FETCH city.state AS state ");
             hql.append("WHERE login.idLogin LIKE :email ");
             TypedQuery<User> typedQuery = entityManager.createQuery(hql.toString(), User.class);
             typedQuery.setParameter("email", email);
@@ -149,12 +152,15 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public User authenticateSocialNetwork(Long idSocialNetwork) throws KidFriendlyException {
+        illegalArgument(idSocialNetwork);
         User user = null;
 
         try {
             StringBuffer hql = new StringBuffer();
             hql.append("SELECT user ");
             hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.User AS user ");
+            hql.append("LEFT JOIN FETCH user.city as City ");
+            hql.append("LEFT JOIN FETCH city.state AS state ");
             hql.append("WHERE user.idSocialNetwork = :idSocialNetwork ");
             TypedQuery<User> typedQuery = entityManager.createQuery(hql.toString(), User.class);
             typedQuery.setParameter("idSocialNetwork", idSocialNetwork);
@@ -162,5 +168,21 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
         } catch (NoResultException e) {}
 
         return user;
+    }
+
+    @Override
+    public void exist(Login login) throws KidFriendlyException {
+        illegalArgument(login);
+
+        try {
+            StringBuffer hql = new StringBuffer();
+            hql.append("SELECT login.idLogin ");
+            hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Login as login ");
+            hql.append("WHERE login = :login ");
+            TypedQuery<String> typedQuery = entityManager.createQuery(hql.toString(), String.class);
+            typedQuery.setParameter("login", login);
+            typedQuery.getSingleResult();
+            throw new KidFriendlyException(KidFriendlyMessages.ERROR_INCLUDE_LOGIN);
+        } catch (NoResultException exception) {}
     }
 }

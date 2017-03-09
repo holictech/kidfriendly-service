@@ -28,6 +28,7 @@ public class ImageEJB extends AbstractEJB implements ImageLocal {
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<Image> listByCompany(Long idCompany) throws KidFriendlyException {
+        illegalArgument(idCompany);
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT image ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.Image AS image ");

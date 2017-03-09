@@ -19,7 +19,7 @@ import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 public class CharacteristicEJB extends AbstractEJB implements CharacteristicLocal {
 
     private static final long serialVersionUID = -9100126414841729617L;
-    
+
     @EJB
     private CategoryLocal categoryLocal;
 
@@ -32,6 +32,7 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<Characteristic> listByCategory(Integer idCategory) throws KidFriendlyException {
+        illegalArgument(idCategory);
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT characteristic ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.CategoryCharacteristic AS categoryCharacteristic ");
@@ -41,7 +42,7 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
         hql.append("ORDER BY characteristic.desCharacteristic ASC");
         TypedQuery<Characteristic> typedQuery = entityManager.createQuery(hql.toString(), Characteristic.class);
         typedQuery.setParameter("idCategory", idCategory);
-        
+
         return typedQuery.getResultList();
     }
 
@@ -54,6 +55,7 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<Characteristic> listByCompanyCategory(Long idCompany, Integer idCategory) throws KidFriendlyException {
+        illegalArgument(idCompany);
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT DISTINCT characteristic ");
         hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.CompanyCategoryCharacteristic AS companyCategoryCharacteristic ");
@@ -64,7 +66,6 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
         hql.append("WHERE company.idCompany = :idCompany ");
         hql.append((idCategory == null) ? "" : "AND category.idCategory = :idCategory ");
         hql.append("ORDER BY characteristic.desCharacteristic ASC");
-
         TypedQuery<Characteristic> typedQuery = entityManager.createQuery(hql.toString(), Characteristic.class);
         typedQuery.setParameter("idCompany", idCompany);
 
