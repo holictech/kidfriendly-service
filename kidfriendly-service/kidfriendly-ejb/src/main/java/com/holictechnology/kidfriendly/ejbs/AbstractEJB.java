@@ -19,8 +19,8 @@ import org.hibernate.Hibernate;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
-import com.holictechnology.kidfriendly.library.utilites.ArrayUtilites;
-import com.holictechnology.kidfriendly.library.utilites.ReflectionUtilites;
+import com.holictechnology.kidfriendly.library.utilites.ArrayUtilities;
+import com.holictechnology.kidfriendly.library.utilites.ReflectionUtilities;
 
 
 @Transactional
@@ -84,12 +84,12 @@ public abstract class AbstractEJB implements Serializable {
             for (String strLazyAttribute : lazyAttributes) {
                 _lazyAttributes = strLazyAttribute.split("\\.");
                 lazyAttribute = _lazyAttributes[BigInteger.ZERO.intValue()];
-                _lazyAttributes = ArrayUtilites.removeItem(_lazyAttributes, BigInteger.ZERO.intValue());
-                _object = ReflectionUtilites.invoke(entity, ReflectionUtilites.createMethodGet(lazyAttribute));
+                _lazyAttributes = ArrayUtilities.removeItem(_lazyAttributes, BigInteger.ZERO.intValue());
+                _object = ReflectionUtilities.invoke(entity, ReflectionUtilities.createMethodGet(lazyAttribute));
                 lazyInitialization(_object);
 
                 if (_object != null && _lazyAttributes != null && _lazyAttributes.length > BigInteger.ZERO.intValue()) {
-                    if (ReflectionUtilites.isCollection(_object.getClass())) {
+                    if (ReflectionUtilities.isCollection(_object.getClass())) {
                         for (Object item : (Collection<?>) _object) {
                             lazyInitialization(item, String.join(".", _lazyAttributes));
                         }

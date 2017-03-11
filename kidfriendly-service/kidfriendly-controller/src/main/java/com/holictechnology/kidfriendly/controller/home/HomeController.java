@@ -44,6 +44,8 @@ public class HomeController extends AbstractController {
             error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COMPANY);
         }
 
+        System.out.println();
+
         return ok(map);
     }
 }

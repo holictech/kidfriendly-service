@@ -20,13 +20,13 @@ import java.util.Set;
 import java.util.TreeSet;
 
 
-public final class ReflectionUtilites implements Serializable {
+public final class ReflectionUtilities implements Serializable {
 
     private static final long serialVersionUID = -8234969027302168443L;
     private static final String GET = "get";
     private static final String SET = "set";
 
-    private ReflectionUtilites() {}
+    private ReflectionUtilities() {}
 
     /**
      * @param clazz

@@ -19,7 +19,7 @@ import com.holictechnology.kidfriendly.domain.entitys.User;
 import com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
-import com.holictechnology.kidfriendly.library.utilites.CriptographUtilites;
+import com.holictechnology.kidfriendly.library.utilites.CriptographUtilities;
 import com.holictechnology.kidfriendly.mount.dto.LoginToLoginDto;
 
 
@@ -133,7 +133,7 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
             TypedQuery<User> typedQuery = entityManager.createQuery(hql.toString(), User.class);
             typedQuery.setParameter("email", email);
             user = typedQuery.getSingleResult();
-            user.getLogin().setDesPassword(CriptographUtilites.getInstance().createToken(email.concat(user.getLogin().getDesPassword())));
+            user.getLogin().setDesPassword(CriptographUtilities.getInstance().createToken(email.concat(user.getLogin().getDesPassword())));
         } catch (NoResultException e) {
             throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_AUTHENTICATE_LOGIN_NOT_FOUND);
         } catch (NoSuchAlgorithmException e) {

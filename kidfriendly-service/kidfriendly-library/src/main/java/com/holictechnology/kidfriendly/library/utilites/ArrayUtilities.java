@@ -13,11 +13,11 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 
 
-public final class ArrayUtilites implements Serializable {
+public final class ArrayUtilities implements Serializable {
 
     private static final long serialVersionUID = 218461799210063403L;
 
-    private ArrayUtilites() {}
+    private ArrayUtilities() {}
 
     /**
      * @param object

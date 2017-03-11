@@ -2,10 +2,13 @@ package com.holictechnology.kidfriendly.controller.user;
 
 
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -17,7 +20,8 @@ import com.holictechnology.kidfriendly.domain.entitys.User;
 import com.holictechnology.kidfriendly.ejbs.interfaces.UserLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
-import com.holictechnology.kidfriendly.library.utilites.CriptographUtilites;
+import com.holictechnology.kidfriendly.library.utilites.CriptographUtilities;
+import com.holictechnology.kidfriendly.library.utilites.DateUtilities;
 
 
 @Stateless
@@ -25,6 +29,7 @@ import com.holictechnology.kidfriendly.library.utilites.CriptographUtilites;
 public class UserController extends AbstractController {
 
     private static final long serialVersionUID = 8835168701212508626L;
+    private static final String PATTERN = "yyyy-MM-dd";
 
     @EJB
     private UserLocal userLocal;
@@ -36,7 +41,7 @@ public class UserController extends AbstractController {
         try {
             userLocal.includeWithLogin(user);
             user.getLogin()
-                    .setDesPassword(CriptographUtilites.getInstance().createToken(user.getLogin().getIdLogin().concat(user.getLogin().getDesPassword())));
+                    .setDesPassword(CriptographUtilities.getInstance().createToken(user.getLogin().getIdLogin().concat(user.getLogin().getDesPassword())));
         } catch (NoSuchAlgorithmException exception) {
             getLogger(getClass()).error(exception.getMessage(), exception);
         } catch (Exception exception) {
@@ -58,5 +63,16 @@ public class UserController extends AbstractController {
         }
 
         return ok(user);
+    }
+
+    @GET
+    @Path(value = "/minmaxdtbirthday")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response minMaxDtBirthDay() throws KidFriendlyException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("minDate", DateUtilities.subtractYear(-100, PATTERN));
+        map.put("maxDate", DateUtilities.subtractYear(0, PATTERN));
+
+        return ok(map);
     }
 }

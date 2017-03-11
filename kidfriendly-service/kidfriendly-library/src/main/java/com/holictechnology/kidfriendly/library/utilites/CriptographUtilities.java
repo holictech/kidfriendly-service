@@ -7,21 +7,21 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
-public final class CriptographUtilites implements Serializable {
+public final class CriptographUtilities implements Serializable {
 
     private static final long serialVersionUID = 1623424675100052733L;
     private static final String PREFIX = "fRiEnDlY";
     private static final String SUFFIX = "KiD";
 
-    private CriptographUtilites() {}
+    private CriptographUtilities() {}
 
     /**
      * Return instance class
      * 
      * @return
      */
-    public synchronized static CriptographUtilites getInstance() {
-        return new CriptographUtilites();
+    public synchronized static CriptographUtilities getInstance() {
+        return new CriptographUtilities();
     }
 
     /**
