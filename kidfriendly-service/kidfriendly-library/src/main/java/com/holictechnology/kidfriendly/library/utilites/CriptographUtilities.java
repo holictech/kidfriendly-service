@@ -25,12 +25,22 @@ public final class CriptographUtilities implements Serializable {
     }
 
     /**
+     * @param email
+     * @param password
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public String createToken(String email, String password) throws NoSuchAlgorithmException {
+        return createToken(email.concat(password));
+    }
+
+    /**
      * @param value
      * @return
      * @throws NoSuchAlgorithmException
      */
     public String createToken(String value) throws NoSuchAlgorithmException {
-        return PREFIX.concat(criptograph(value)).concat(SUFFIX);
+        return criptograph(PREFIX.concat(criptograph(value)).concat(SUFFIX));
     }
 
     /**

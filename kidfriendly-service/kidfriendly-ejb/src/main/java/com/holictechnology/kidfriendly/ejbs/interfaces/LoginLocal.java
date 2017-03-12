@@ -1,6 +1,7 @@
 package com.holictechnology.kidfriendly.ejbs.interfaces;
 
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -82,4 +83,14 @@ public interface LoginLocal {
      * @throws KidFriendlyException
      */
     void exist(Login login) throws KidFriendlyException;
+
+    /**
+     * TODO - COLOCAR O COMENTÁRIO.
+     * 
+     * @param login
+     * @return
+     * @throws KidFriendlyException
+     * @throws NoSuchAlgorithmException
+     */
+    Login update(Login login) throws KidFriendlyException, NoSuchAlgorithmException;
 }

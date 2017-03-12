@@ -56,9 +56,11 @@ public final class KidFriendlyMessages {
     public static final String ERROR_AUTHENTICATE_CREATE_TOKEN = "N\u00e3o foi poss\u00edvel gerar o token de autentica\u00e7\u00e3o.";
     public static final String ERROR_AUTHENTICATE_LOGIN = "N\u00e3o foi poss\u00edvel efetuar o login.";
     public static final String ERROR_INCLUDE_LOGIN = "O email informado j\u00e1 existente.";
+    public static final String ERROR_UPDATE_PASSWORD = "N\u00e3o foi poss\u00edvel atualizar a sua senha.";
 
     /*
      * USER
      */
-    public static final String ERROR_INCLUDE_USER = "N\u00e3o foi poss\u00edvel efetuar o cadastro.";
+    public static final String ERROR_INCLUDE_USER = "N\u00e3o foi poss\u00edvel cadastrar as suas informa\u00e7\u00f5es.";
+    public static final String ERROR_UPDATE_USER = "N\u00e3o foi poss\u00edvel atualizar as suas informa\u00e7\u00f5es.";
 }

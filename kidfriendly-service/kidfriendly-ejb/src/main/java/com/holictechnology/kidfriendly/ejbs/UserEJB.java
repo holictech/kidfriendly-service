@@ -1,6 +1,8 @@
 package com.holictechnology.kidfriendly.ejbs;
 
 
+import java.security.NoSuchAlgorithmException;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -25,7 +27,7 @@ public class UserEJB extends AbstractEJB implements UserLocal {
      * includeWithLogin(com.holictechnology.kidfriendly.domain.entitys.User)
      */
     @Override
-    public void includeWithLogin(User user) throws KidFriendlyException {
+    public void includeWithLogin(User user) throws KidFriendlyException, NoSuchAlgorithmException {
         illegalArgument(user);
         illegalArgument(user.getLogin());
         loginLocal.exist(user.getLogin());
@@ -45,5 +47,19 @@ public class UserEJB extends AbstractEJB implements UserLocal {
     public void includeSocialNetwork(User user) throws KidFriendlyException {
         illegalArgument(user);
         persist(user);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.UserLocal#update(com.
+     * holictechnology.kidfriendly.domain.entitys.User)
+     */
+    @Override
+    public User update(User user) throws KidFriendlyException {
+        illegalArgument(user);
+
+        return merge(user);
     }
 }

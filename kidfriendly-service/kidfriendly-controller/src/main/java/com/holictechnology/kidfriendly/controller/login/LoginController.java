@@ -1,10 +1,12 @@
 package com.holictechnology.kidfriendly.controller.login;
 
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -22,6 +24,7 @@ import com.holictechnology.kidfriendly.domain.entitys.User;
 import com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
+import com.holictechnology.kidfriendly.library.utilites.CriptographUtilities;
 
 
 @Stateless
@@ -123,6 +126,22 @@ public class LoginController extends AbstractController {
             login = loginLocal.login(user, pws);
         } catch (Exception e) {
             error(getClass(), e, KidFriendlyMessages.ERROR_AUTHENTICATE_LOGIN_NOT_FOUND);
+        }
+
+        return ok(login);
+    }
+
+    @PUT
+    @Consumes(value = MediaType.APPLICATION_JSON)
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response update(Login login) throws KidFriendlyException {
+        try {
+            login = loginLocal.update(login);
+            login.setDesPassword(CriptographUtilities.getInstance().createToken(login.getIdLogin(), login.getDesPassword()));
+        } catch (NoSuchAlgorithmException exception) {
+            getLogger(getClass()).error(exception.getMessage(), exception);
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_UPDATE_PASSWORD);
         }
 
         return ok(login);

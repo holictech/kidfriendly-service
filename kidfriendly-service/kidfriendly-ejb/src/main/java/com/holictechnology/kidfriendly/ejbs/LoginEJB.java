@@ -133,7 +133,7 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
             TypedQuery<User> typedQuery = entityManager.createQuery(hql.toString(), User.class);
             typedQuery.setParameter("email", email);
             user = typedQuery.getSingleResult();
-            user.getLogin().setDesPassword(CriptographUtilities.getInstance().createToken(email.concat(user.getLogin().getDesPassword())));
+            user.getLogin().setDesPassword(CriptographUtilities.getInstance().createToken(user.getLogin().getIdLogin(), user.getLogin().getDesPassword()));
         } catch (NoResultException e) {
             throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_AUTHENTICATE_LOGIN_NOT_FOUND);
         } catch (NoSuchAlgorithmException e) {
@@ -184,5 +184,20 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
             typedQuery.getSingleResult();
             throw new KidFriendlyException(KidFriendlyMessages.ERROR_INCLUDE_LOGIN);
         } catch (NoResultException exception) {}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal#update(com.
+     * holictechnology.kidfriendly.domain.entitys.Login)
+     */
+    @Override
+    public Login update(Login login) throws KidFriendlyException, NoSuchAlgorithmException {
+        illegalArgument(login);
+        login = merge(login);
+
+        return login;
     }
 }

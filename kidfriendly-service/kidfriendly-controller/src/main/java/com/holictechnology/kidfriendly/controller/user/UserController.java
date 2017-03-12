@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -40,8 +41,7 @@ public class UserController extends AbstractController {
     public Response include(User user) throws KidFriendlyException {
         try {
             userLocal.includeWithLogin(user);
-            user.getLogin()
-                    .setDesPassword(CriptographUtilities.getInstance().createToken(user.getLogin().getIdLogin().concat(user.getLogin().getDesPassword())));
+            user.getLogin().setDesPassword(CriptographUtilities.getInstance().createToken(user.getLogin().getIdLogin(), user.getLogin().getDesPassword()));
         } catch (NoSuchAlgorithmException exception) {
             getLogger(getClass()).error(exception.getMessage(), exception);
         } catch (Exception exception) {
@@ -74,5 +74,18 @@ public class UserController extends AbstractController {
         map.put("maxDate", DateUtilities.subtractYear(0, PATTERN));
 
         return ok(map);
+    }
+
+    @PUT
+    @Consumes(value = MediaType.APPLICATION_JSON)
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response update(User user) throws KidFriendlyException {
+        try {
+            userLocal.update(user);
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_UPDATE_USER);
+        }
+
+        return ok(user);
     }
 }
