@@ -7,9 +7,35 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
+/**
+ * @author Wesley
+ *
+ */
 public final class CriptographUtilities implements Serializable {
 
+    public enum TypeCriptograph {
+        MD5("MD5"), SHA256("SHA-256");
+
+        private String typeCriptograph;
+
+        /**
+         *
+         */
+        private TypeCriptograph(String typeCriptograph) {
+            this.typeCriptograph = typeCriptograph;
+        }
+
+        /**
+         * @return the typeCriptograph
+         */
+        public String getTypeCriptograph() {
+            return typeCriptograph;
+        }
+    }
+
     private static final long serialVersionUID = 1623424675100052733L;
+    private static final int SIGNUM = 1;
+    private static final int RADIX = 16;
     private static final String PREFIX = "fRiEnDlY";
     private static final String SUFFIX = "KiD";
 
@@ -48,10 +74,20 @@ public final class CriptographUtilities implements Serializable {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String criptograph(String value) throws NoSuchAlgorithmException {
-        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-        byte [] criptograph = messageDigest.digest(value.getBytes());
+    public static String criptograph(String value) throws NoSuchAlgorithmException {
+        return criptograph(value, TypeCriptograph.SHA256);
+    }
 
-        return new BigInteger(1, criptograph).toString(16);
+    /**
+     * @param value
+     * @param typeCriptograph
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public static String criptograph(String value, TypeCriptograph typeCriptograph) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance(typeCriptograph.getTypeCriptograph());
+        byte [] bytes = messageDigest.digest(value.getBytes());
+
+        return new BigInteger(SIGNUM, bytes).toString(RADIX);
     }
 }
