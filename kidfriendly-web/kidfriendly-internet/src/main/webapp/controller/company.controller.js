@@ -90,7 +90,6 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	/**
 	 * Method loaded states in country Brazil
 	 */
-	//locationService.getStates(util.getUri(), 2).success(function(data, status, headers, config) {
 	locationService.getStates(util.getUri(), 1).success(function(data, status, headers, config) {
 		$scope.states = data;
 	}).error(function(data, status, headers, config) {
@@ -199,6 +198,11 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 			$scope.categorys = {};
 			$scope.characteristcs = {};
 			document.getElementById("photo-upload").value = "";
+			locationService.getStates(util.getUri(), 1).success(function(data, status, headers, config) {
+				$scope.states = data;
+			}).error(function(data, status, headers, config) {
+				
+		    });
 			companyService.getListCategory(util.getUri()).success(function(data, status, headers, config) {
 				$scope.categorys = data;
 			}).error(function(data, status, headers, config) {
