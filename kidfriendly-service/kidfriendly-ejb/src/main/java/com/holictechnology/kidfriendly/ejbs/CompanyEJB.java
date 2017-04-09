@@ -114,12 +114,12 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
         sql.append(
                 "WHERE company.ST_ACTIVE = 1 ");
-        /*sql.append(
-                "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*69), :latitude-(10/69)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*69), :latitude+(10/69)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");*/
+        sql.append(
+                "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*69), :latitude-(10/69)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*69), :latitude+(10/69)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
         sql.append("ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
-        /*query.setParameter("longitude", longitude);
-        query.setParameter("latitude", latitude);*/
+        query.setParameter("longitude", longitude);
+        query.setParameter("latitude", latitude);
         query.setFirstResult(BigInteger.ZERO.intValue());
         query.setMaxResults(limit);
 
