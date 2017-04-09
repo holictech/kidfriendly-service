@@ -43,6 +43,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
     private static final long serialVersionUID = 1389485495399887684L;
     private static List<Image> images = new ArrayList<Image>();
+    private static String nameLocal = "";
 
     /*
      * (non-Javadoc)
@@ -295,7 +296,14 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         companyDto.setIdCompany(company.getIdCompany());
 
         savePhone(companyDto, company);
-
+        
+        if(nameLocal.equals(""))
+        	nameLocal = companyDto.getDesName();
+        
+        if(!nameLocal.equals(companyDto.getDesName())){
+        	images = new ArrayList<Image>();
+        }
+        
         saveImage(company);
 
         saveCategoryCharacteristics(company, companyDto);
