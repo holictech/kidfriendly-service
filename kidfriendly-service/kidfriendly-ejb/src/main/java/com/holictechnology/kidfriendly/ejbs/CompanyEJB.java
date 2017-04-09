@@ -115,7 +115,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append(
                 "WHERE company.ST_ACTIVE = 1 ");
         sql.append(
-                "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*69), :latitude-(10/69)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*69), :latitude+(10/69)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
+                "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*290), :latitude-(10/290)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*290), :latitude+(10/290)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
         sql.append("ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("longitude", longitude);
@@ -175,7 +175,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? " AND company.DES_NAME LIKE :desNameCompany" : " "));
         sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : " "));
         sql.append(((companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)
-                ? "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*69), :latitude-(10/69)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*69), :latitude+(10/69)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
+                ? "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*290), :latitude-(10/290)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*290), :latitude+(10/290)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
                 : ""));
         sql.append("GROUP BY company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append(((isOrderBy) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : " "));
@@ -297,14 +297,14 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         companyDto.setIdCompany(company.getIdCompany());
 
         savePhone(companyDto, company);
-        
-        if(nameLocal.equals(""))
-        	nameLocal = companyDto.getDesName();
-        
-        if(!nameLocal.equals(companyDto.getDesName())){
-        	images = new ArrayList<Image>();
+
+        if (nameLocal.equals(""))
+            nameLocal = companyDto.getDesName();
+
+        if (!nameLocal.equals(companyDto.getDesName())) {
+            images = new ArrayList<Image>();
         }
-        
+
         saveImage(company);
 
         saveCategoryCharacteristics(company, companyDto);
