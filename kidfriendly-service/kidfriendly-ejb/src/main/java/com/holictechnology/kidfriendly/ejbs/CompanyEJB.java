@@ -290,6 +290,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         company.setAddress(address);
         company.setDtRegister(new Date());
         company.setStActive(Boolean.TRUE);
+        company.setStHighlight(Boolean.FALSE);
 
         company = entityManager.merge(company);
 
