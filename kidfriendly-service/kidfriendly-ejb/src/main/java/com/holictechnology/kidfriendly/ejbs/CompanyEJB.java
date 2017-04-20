@@ -44,6 +44,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     private static final long serialVersionUID = 1389485495399887684L;
     private static List<Image> images = new ArrayList<Image>();
     private static String nameLocal = "";
+    private static int KM_DISTANCE = 5;
+    private static int KM_DEGREE = 111; // degree of latitude
 
     /*
      * (non-Javadoc)
@@ -70,24 +72,15 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     public Collection<CompanyDto> listSuggestions(final Integer limit) throws KidFriendlyException {
         illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
+        sql.append("SELECT TEMP.* FROM (");
         sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
-        sql.append("INNER JOIN ( ");
-        sql.append("SELECT _company.ID_COMPANY FROM COMPANY _company WHERE _company.ST_ACTIVE = 1 AND _company.ST_HIGHLIGHT = 1 ORDER BY RAND() LIMIT :limit ");
-        sql.append(") _company ON (_company.ID_COMPANY = company.ID_COMPANY) ");
         sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
         sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
         sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
-        sql.append("UNION ALL ");
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
-        sql.append("FROM COMPANY AS company ");
-        sql.append("INNER JOIN ( ");
-        sql.append("SELECT _company.ID_COMPANY FROM COMPANY _company WHERE _company.ST_ACTIVE = 1 AND _company.ST_HIGHLIGHT = 0 ORDER BY RAND() LIMIT :limit ");
-        sql.append(") _company ON (_company.ID_COMPANY = company.ID_COMPANY) ");
-        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
-        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
-        sql.append("ORDER BY ST_HIGHLIGHT DESC, NUM_RATE DESC, DES_NAME LIMIT :limit ");
+        sql.append("WHERE company.ST_ACTIVE = 1 ");
+        sql.append("ORDER BY RAND() LIMIT :limit ");
+        sql.append(") AS TEMP ORDER BY TEMP.ST_HIGHLIGHT DESC, TEMP.NUM_RATE DESC, TEMP.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("limit", limit);
 
@@ -115,7 +108,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append(
                 "WHERE company.ST_ACTIVE = 1 ");
         sql.append(
-                "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*290), :latitude-(10/290)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*290), :latitude+(10/290)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
+                "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude-("
+                        + KM_DISTANCE + "/" + KM_DEGREE + ")), POINT(:longitude+" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude+("
+                        + KM_DISTANCE + "/" + KM_DEGREE + ")))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
         sql.append("ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("longitude", longitude);
@@ -175,7 +170,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? " AND company.DES_NAME LIKE :desNameCompany" : " "));
         sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : " "));
         sql.append(((companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)
-                ? "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-10/ABS(COS(RADIANS(:latitude))*290), :latitude-(10/290)), POINT(:longitude+10/ABS(COS(RADIANS(:latitude))*290), :latitude+(10/290)))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
+                ? "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude-("
+                        + KM_DISTANCE + "/" + KM_DEGREE + ")), POINT(:longitude+" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude+("
+                        + KM_DISTANCE + "/" + KM_DEGREE + ")))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
                 : ""));
         sql.append("GROUP BY company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
         sql.append(((isOrderBy) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : " "));
