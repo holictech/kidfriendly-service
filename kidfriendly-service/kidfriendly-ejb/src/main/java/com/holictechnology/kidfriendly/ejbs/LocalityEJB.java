@@ -67,8 +67,8 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
         illegalArgument(idCountry);
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT state ");
-        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.City AS city INNER JOIN city.state AS state ");
-        hql.append("WHERE state.country.idCountry = :idCountry ");
+        hql.append("FROM com.holictechnology.kidfriendly.domain.entitys.City AS city INNER JOIN city.state AS state INNER JOIN state.country AS country ");
+        hql.append("WHERE country.idCountry = :idCountry ");
         hql.append("GROUP BY state ");
         hql.append("ORDER BY state.desState ASC ");
         TypedQuery<State> typedQuery = entityManager.createQuery(hql.toString(), State.class);

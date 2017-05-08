@@ -196,8 +196,7 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
     @Override
     public Login update(Login login) throws KidFriendlyException, NoSuchAlgorithmException {
         illegalArgument(login);
-        login = merge(login);
 
-        return login;
+        return merge(login);
     }
 }
