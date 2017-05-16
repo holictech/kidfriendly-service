@@ -48,6 +48,10 @@ public class Company implements Serializable {
     @Lob
     @Column(name = "IMG_LOGO", nullable = true)
     private byte [] imgLogo;
+    
+    @Lob
+    @Column(name = "MG_HOME", nullable = true)
+    private byte [] mgHome;
 
     @Column(name = "NUM_RATE", nullable = true)
     private Short numRate;
@@ -167,4 +171,13 @@ public class Company implements Serializable {
     public void setPhones(Set<Phone> phones) {
         this.phones = phones;
     }
+
+	public byte[] getMgHome() {
+		return mgHome;
+	}
+
+	public void setMgHome(byte[] mgHome) {
+		this.mgHome = mgHome;
+	}
+    
 }
