@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -29,9 +28,6 @@ public class Characteristic implements Serializable {
 
     @Column(name = "DES_CHARACTERISTIC", nullable = false, length = 100)
     private String desCharacteristic;
-    
-    @Transient
-    private String nameCategory;
 
     public Integer getIdCharacteristic() {
         return idCharacteristic;
@@ -48,13 +44,4 @@ public class Characteristic implements Serializable {
     public void setDesCharacteristic(String desCharacteristic) {
         this.desCharacteristic = desCharacteristic;
     }
-
-	public String getNameCategory() {
-		return nameCategory;
-	}
-
-	public void setNameCategory(String nameCategory) {
-		this.nameCategory = nameCategory;
-	}
-    
 }

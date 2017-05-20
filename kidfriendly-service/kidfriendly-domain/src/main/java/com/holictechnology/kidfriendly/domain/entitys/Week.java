@@ -1,46 +1,44 @@
 package com.holictechnology.kidfriendly.domain.entitys;
 
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
-/**
- * The persistent class for the WEEK database table.
- * 
- */
 @Entity
-@NamedQuery(name="Week.findAll", query="SELECT w FROM Week w")
+@Table(name = "WEEK")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "idWeek", scope = Week.class)
 public class Week implements Serializable {
-	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name="ID_WEEK")
-	private String idWeek;
+    private static final long serialVersionUID = 1472981879928602217L;
 
-	@Column(name="DS_WEEK")
-	private String dsWeek;
+    @Id
+    @Column(name = "ID_WEEK", nullable = false, unique = true)
+    private Long idWeek;
 
-	public Week() {
-	}
+    @Column(name = "DS_WEEK", nullable = false, length = 80)
+    private String dsWeek;
 
-	public String getIdWeek() {
-		return this.idWeek;
-	}
+    public Long getIdWeek() {
+        return idWeek;
+    }
 
-	public void setIdWeek(String idWeek) {
-		this.idWeek = idWeek;
-	}
+    public void setIdWeek(Long idWeek) {
+        this.idWeek = idWeek;
+    }
 
-	public String getDsWeek() {
-		return this.dsWeek;
-	}
+    public String getDsWeek() {
+        return dsWeek;
+    }
 
-	public void setDsWeek(String dsWeek) {
-		this.dsWeek = dsWeek;
-	}
-
+    public void setDsWeek(String dsWeek) {
+        this.dsWeek = dsWeek;
+    }
 }

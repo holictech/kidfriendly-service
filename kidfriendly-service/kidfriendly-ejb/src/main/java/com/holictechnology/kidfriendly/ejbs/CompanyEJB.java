@@ -437,28 +437,32 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
     @Override
     public void preparImageSaveCompany(ImageDto imageDto) {
+        Image image = null;
+
         if (!images.isEmpty()) {
-            if (!images.get(0).getNameCompany().equals(imageDto.getNameCompany())) {
+            image = images.get(0);
+
+            if (image.getCompany() != null && image.getCompany().getDesName().equals(imageDto.getNameCompany())) {
                 images = null;
                 images = new ArrayList<Image>();
-                Image image = new Image();
-                image.setDesImage(imageDto.getDesImage());
-                image.setImgImage(imageDto.getImgImage());
-                image.setNameCompany(imageDto.getNameCompany());
-                images.add(image);
-            } else {
-                Image image = new Image();
-                image.setDesImage(imageDto.getDesImage());
-                image.setImgImage(imageDto.getImgImage());
-                image.setNameCompany(imageDto.getNameCompany());
-                images.add(image);
             }
-        } else {
-            Image image = new Image();
-            image.setDesImage(imageDto.getDesImage());
-            image.setImgImage(imageDto.getImgImage());
-            image.setNameCompany(imageDto.getNameCompany());
-            images.add(image);
         }
+
+        image = create(imageDto);
+        images.add(image);
+    }
+
+    /**
+     * @param imageDto
+     * @return
+     */
+    private Image create(ImageDto imageDto) {
+        Image image = new Image();
+        image.setCompany(new Company());
+        image.setDesImage(imageDto.getDesImage());
+        image.setImgImage(imageDto.getImgImage());
+        image.getCompany().setDesName(imageDto.getNameCompany());
+
+        return image;
     }
 }
