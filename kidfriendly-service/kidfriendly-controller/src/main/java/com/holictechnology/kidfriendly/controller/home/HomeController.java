@@ -1,8 +1,8 @@
 package com.holictechnology.kidfriendly.controller.home;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
+import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
@@ -24,26 +25,39 @@ import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 public class HomeController extends AbstractController {
 
     private static final long serialVersionUID = -8310756154712464910L;
-    private static final String SUGGESTIONS = "suggestions";
-    private static final String NEXT_TO_ME = "nextToMe";
-    private static final Integer DEFAULT_LIMIT = 5;
+    private static final Integer DEFAULT_LIMIT = 20;
 
     @EJB
     private CompanyLocal companyLocal;
 
     @GET
+    @Path(value = "/suggestions")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response listCompanies(@QueryParam(value = "longitude") Double longitude, @QueryParam(value = "latitude") Double latitude)
-            throws KidFriendlyException {
-        Map<String, Object> map = new HashMap<String, Object>();
+    public Response listSuggestions() throws KidFriendlyException {
+        Collection<CompanyDto> listCompanyDto = new LinkedList<>();
 
         try {
-            map.put(SUGGESTIONS, companyLocal.listSuggestions(DEFAULT_LIMIT));
-            map.put(NEXT_TO_ME, companyLocal.listNextToMe(DEFAULT_LIMIT, longitude, latitude));
+            listCompanyDto.addAll(companyLocal.listSuggestions(DEFAULT_LIMIT));
         } catch (Exception exception) {
-            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COMPANY);
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COMPANY_SUGGESTIONS);
         }
 
-        return ok(map);
+        return ok(listCompanyDto);
+    }
+
+    @GET
+    @Path(value = "/nexttome")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response listNextToMe(@QueryParam(value = "longitude") Double longitude, @QueryParam(value = "latitude") Double latitude)
+            throws KidFriendlyException {
+        Collection<CompanyDto> listCompanyDto = new LinkedList<>();
+
+        try {
+            listCompanyDto.addAll(companyLocal.listNextToMe(DEFAULT_LIMIT, longitude, latitude));
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COMpANY_NEXTTOME);
+        }
+
+        return ok(listCompanyDto);
     }
 }

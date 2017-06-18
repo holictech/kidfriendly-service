@@ -18,7 +18,8 @@ public final class KidFriendlyMessages {
     /*
      * COMPANY
      */
-    public static final String ERROR_LIST_COMPANY = "N\u00e3o foi poss\u00edvel listar os estabelecimentos.";
+    public static final String ERROR_LIST_COMPANY_SUGGESTIONS = "N\u00e3o foi poss\u00edvel listar os estabelecimentos de sugest\u00d5es.";
+    public static final String ERROR_LIST_COMpANY_NEXTTOME = "N\u00e3o foi poss\u00edvel listar os estabelecimentos pr\u00d3ximos.";
     public static final String ERROR_COMPANY_BY_PRIMARY_KEY = "N\u00e3o foi poss\u00edvel obter o estabelecimento.";
     public static final String ERROR_COMPANY_SAVE = "N\u00e3o foi poss\u00edvel cadastrar o estabelecimento.";
 

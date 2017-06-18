@@ -13,9 +13,7 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
-import com.holictechnology.kidfriendly.domain.dtos.AddressDto;
 import com.holictechnology.kidfriendly.domain.dtos.CategoryDto;
-import com.holictechnology.kidfriendly.domain.dtos.CityDto;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dtos.ImageDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
@@ -45,7 +43,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     private static List<Image> images = new ArrayList<Image>();
     private static String nameLocal = "";
     private static int KM_DISTANCE = 5;
-    private static int KM_DEGREE = 111; // degree of latitude
+    private static int KM_DEGREE = 111;
 
     /*
      * (non-Javadoc)
@@ -73,18 +71,24 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT TEMP.* FROM (");
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
+        sql.append("SELECT company.ID_COMPANY, company.MG_HOME, company.ST_HIGHLIGHT, company.NUM_RATE, company.DES_NAME ");
         sql.append("FROM COMPANY AS company ");
-        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
-        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
-        sql.append("WHERE company.ST_ACTIVE = 1 ");
+        sql.append("WHERE company.ST_ACTIVE = 1 AND company.MG_HOME IS NOT NULL ");
         sql.append("ORDER BY RAND() LIMIT :limit ");
         sql.append(") AS TEMP ORDER BY TEMP.ST_HIGHLIGHT DESC, TEMP.NUM_RATE DESC, TEMP.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("limit", limit);
+        CompanyDto companyDto = null;
+        Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
 
-        return createResult(query.getResultList());
+        for (Object [] item : (List<Object []>) query.getResultList()) {
+            companyDto = new CompanyDto();
+            companyDto.setIdCompany((Long) item[0]);
+            companyDto.setMgHome((byte []) item[1]);
+            listCompanyDto.add(companyDto);
+        }
+
+        return listCompanyDto;
     }
 
     /*
@@ -100,25 +104,29 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     public Collection<CompanyDto> listNextToMe(final Integer limit, final Double longitude, final Double latitude) throws KidFriendlyException {
         illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
-        sql.append("FROM COMPANY AS company ");
-        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY) ");
-        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE) ");
-        sql.append(
-                "WHERE company.ST_ACTIVE = 1 ");
-        sql.append(
-                "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude-("
-                        + KM_DISTANCE + "/" + KM_DEGREE + ")), POINT(:longitude+" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude+("
-                        + KM_DISTANCE + "/" + KM_DEGREE + ")))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
+        sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO ");
+        sql.append("FROM COMPANY AS company INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
+        sql.append("WHERE company.ST_ACTIVE = 1 AND company.IMG_LOGO IS NOT NULL ");
+        sql.append("AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude-("
+                + KM_DISTANCE + "/" + KM_DEGREE + ")), POINT(:longitude+" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude+("
+                + KM_DISTANCE + "/" + KM_DEGREE + ")))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
         sql.append("ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("longitude", longitude);
         query.setParameter("latitude", latitude);
         query.setFirstResult(BigInteger.ZERO.intValue());
         query.setMaxResults(limit);
+        CompanyDto companyDto = null;
+        Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
 
-        return createResult(query.getResultList());
+        for (Object [] item : (List<Object []>) query.getResultList()) {
+            companyDto = new CompanyDto();
+            companyDto.setIdCompany((Long) item[0]);
+            companyDto.setMgHome((byte []) item[1]);
+            listCompanyDto.add(companyDto);
+        }
+
+        return listCompanyDto;
     }
 
     /*
@@ -129,7 +137,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto)
      */
     @Override
-    @SuppressWarnings("unchecked")
     @Transactional(value = TxType.NOT_SUPPORTED)
     public ResultDto<CompanyDto> search(final CompanyFilterDto companyFilterDto) throws KidFriendlyException {
         illegalArgument(companyFilterDto);
@@ -142,7 +149,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             query = entityManager.createNativeQuery(createSqlSearch(companyFilterDto, Boolean.TRUE).toString());
             setParametersSqlSearch(query, companyFilterDto);
             setParametersPaginator(query, companyFilterDto.getPaginatorDto());
-            companys.addAll(createResult(query.getResultList()));
+            // companys.addAll(createResult(query.getResultList()));
         }
 
         ResultDto<CompanyDto> resultDto = new ResultDto<CompanyDto>();
@@ -248,33 +255,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
                 query.setParameter("characteristc" + index++, characteristic);
             }
         }
-    }
-
-    /**
-     * @param listObject
-     * @return
-     */
-    private Collection<CompanyDto> createResult(final List<Object []> listObject) {
-        Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
-
-        if (listObject != null) {
-            CompanyDto companyDto;
-
-            for (Object [] object : listObject) {
-                companyDto = new CompanyDto();
-                companyDto.setAddressDto(new AddressDto());
-                companyDto.getAddressDto().setCityDto(new CityDto());
-                companyDto.setIdCompany((object[0] != null) ? Long.valueOf(object[0].toString()) : null);
-                companyDto.setDesName((object[1] != null) ? object[1].toString() : null);
-                companyDto.setImgLogo((object[2] != null) ? (byte []) object[2] : null);
-                companyDto.setNumRate((object[3] != null) ? Short.valueOf(object[3].toString()) : null);
-                companyDto.getAddressDto().getCityDto().setDesCity((object[5] != null) ? object[5].toString() : null);
-                companyDto.getAddressDto().getCityDto().setDesState((object[6] != null) ? object[6].toString() : null);
-                listCompanyDto.add(companyDto);
-            }
-        }
-
-        return listCompanyDto;
     }
 
     @Override

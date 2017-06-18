@@ -16,7 +16,6 @@ import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
-import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
 
 @Stateless
@@ -36,7 +35,7 @@ public class SearchController extends AbstractController {
         try {
             resultDto = companyLocal.search(companyFilterDto);
         } catch (Exception exception) {
-            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COMPANY);
+            error(getClass(), exception, "");
         }
 
         return ok(resultDto);
