@@ -118,8 +118,8 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
      */
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
-    public User authenticateUser(String email) throws KidFriendlyException {
-        illegalArgument(email);
+    public User authenticateUser(String email, String token) throws KidFriendlyException {
+        illegalArgument(email, token);
         User user = null;
 
         try {
@@ -129,11 +129,13 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
             hql.append("INNER JOIN FETCH user.login AS login ");
             hql.append("LEFT JOIN FETCH user.city as City ");
             hql.append("LEFT JOIN FETCH city.state AS state ");
-            hql.append("WHERE login.idLogin LIKE :email ");
+            hql.append("WHERE login.stActive = :stActive AND login.idLogin = :email AND login.desPassword = :desPassword ");
             TypedQuery<User> typedQuery = entityManager.createQuery(hql.toString(), User.class);
+            typedQuery.setParameter("stActive", Boolean.TRUE);
             typedQuery.setParameter("email", email);
+            typedQuery.setParameter("desPassword", CriptographUtilities.getInstance().createToken(email, token));
             user = typedQuery.getSingleResult();
-            user.getLogin().setDesPassword(CriptographUtilities.getInstance().createToken(user.getLogin().getIdLogin(), user.getLogin().getDesPassword()));
+            user.getLogin().setDesPassword(null);
         } catch (NoResultException e) {
             throw new KidFriendlyException(Status.NOT_FOUND, KidFriendlyMessages.ERROR_AUTHENTICATE_LOGIN_NOT_FOUND);
         } catch (NoSuchAlgorithmException e) {

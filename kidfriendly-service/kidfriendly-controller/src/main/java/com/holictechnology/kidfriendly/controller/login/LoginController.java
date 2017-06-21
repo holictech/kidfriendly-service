@@ -37,13 +37,13 @@ public class LoginController extends AbstractController {
     private LoginLocal loginLocal;
 
     @GET
-    @Path(value = "/authenticateuser/{email}")
+    @Path(value = "/authenticateuser/{token}/{email}")
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response authenticateUser(@PathParam(value = "email") String email) throws KidFriendlyException {
+    public Response authenticateUser(@PathParam(value = "token") String token, @PathParam(value = "email") String email) throws KidFriendlyException {
         User user = null;
 
         try {
-            user = loginLocal.authenticateUser(email);
+            user = loginLocal.authenticateUser(email, token);
         } catch (Exception exception) {
             error(getClass(), exception, KidFriendlyMessages.ERROR_AUTHENTICATE_LOGIN);
         }

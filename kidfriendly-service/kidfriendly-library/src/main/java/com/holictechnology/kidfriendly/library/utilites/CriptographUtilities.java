@@ -36,8 +36,6 @@ public final class CriptographUtilities implements Serializable {
     private static final long serialVersionUID = 1623424675100052733L;
     private static final int SIGNUM = 1;
     private static final int RADIX = 16;
-    private static final String PREFIX = "fRiEnDlY";
-    private static final String SUFFIX = "KiD";
 
     private CriptographUtilities() {}
 
@@ -57,7 +55,7 @@ public final class CriptographUtilities implements Serializable {
      * @throws NoSuchAlgorithmException
      */
     public String createToken(String email, String password) throws NoSuchAlgorithmException {
-        return createToken(email.concat(password));
+        return criptograph(email.concat(password));
     }
 
     /**
@@ -65,16 +63,7 @@ public final class CriptographUtilities implements Serializable {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String createToken(String value) throws NoSuchAlgorithmException {
-        return criptograph(PREFIX.concat(criptograph(value)).concat(SUFFIX));
-    }
-
-    /**
-     * @param value
-     * @return
-     * @throws NoSuchAlgorithmException
-     */
-    public static String criptograph(String value) throws NoSuchAlgorithmException {
+    public String criptograph(String value) throws NoSuchAlgorithmException {
         return criptograph(value, TypeCriptograph.SHA256);
     }
 
@@ -84,7 +73,7 @@ public final class CriptographUtilities implements Serializable {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public static String criptograph(String value, TypeCriptograph typeCriptograph) throws NoSuchAlgorithmException {
+    public String criptograph(String value, TypeCriptograph typeCriptograph) throws NoSuchAlgorithmException {
         MessageDigest messageDigest = MessageDigest.getInstance(typeCriptograph.getTypeCriptograph());
         byte [] bytes = messageDigest.digest(value.getBytes());
 

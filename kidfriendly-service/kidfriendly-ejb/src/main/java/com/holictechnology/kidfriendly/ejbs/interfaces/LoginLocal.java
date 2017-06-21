@@ -61,10 +61,11 @@ public interface LoginLocal {
      * Method that authenticates the user.
      * 
      * @param email
+     * @param token
      * @return
-     * @throws Exception
+     * @throws KidFriendlyException
      */
-    User authenticateUser(String email) throws KidFriendlyException;
+    User authenticateUser(String email, String token) throws KidFriendlyException;
 
     /**
      * TODO - COLOCAR O COMENTÁRIO.
