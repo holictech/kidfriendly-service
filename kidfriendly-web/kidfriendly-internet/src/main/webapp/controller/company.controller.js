@@ -60,40 +60,29 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	 */
 	$scope.uploadFile = function (input, typeImage) {
 		console.log(input.files[0]);
-		for (var i = 0; i < input.files.length; i++) {
-		    if (input.files && input.files[i]) {
-		        var reader = new FileReader();
-		        reader.onload = function (e) {
-		            $('#photo-id').attr('src', e.target.result);
-		 
-		            var canvas = document.createElement("canvas");
-		            var imageElement = document.createElement("img");
-		 
-		            imageElement.setAttribute('src', e.target.result);
-		            canvas.width = imageElement.width;
-		            canvas.height = imageElement.height;
-		            var context = canvas.getContext("2d");
-		            context.drawImage(imageElement, 0, 0);
-		            var base64Image = canvas.toDataURL("image/jpeg");
-		 
-		            $scope.userPhoto = base64Image.replace(/data:image\/jpeg;base64,/g, '');
-		            console.log(e);
-		            $scope.imageDto.dataImage = $scope.userPhoto;
-		            $scope.imageDto.desImage = e.type;
-		            $scope.imageDto.nameCompany = $scope.companyDto.desName;
-		            $scope.imageDto.type = typeImage;
-		            console.log($scope.imageDto);
-		            companyService.getImage(util.getUri(), $scope.imageDto).success(function(data, status, headers, config) {
-		    			console.log(data);
-		    		}).error(function(data, status, headers, config) {
-		    			$scope.messages = "Error: não foi processado...";
-		    			$scope.visibleMessage = true;
-		    			$scope.cssMessage = "message-table-incorret";
-		    	    });
-		        }
-		        reader.readAsDataURL(input.files[i]);
-		    }
-	    }
+		console.log(document.getElementById('photo-upload').files[0]);
+		var arquivo = document.getElementById('photo-upload').files[0];
+		var reader = new FileReader();
+	   reader.readAsDataURL(arquivo);
+	   reader.onload = function (e) {
+		 console.log(e);
+	     console.log(reader.result);
+	     $scope.userPhoto = reader.result.replace(/data:image\/jpeg;base64,/g, '');
+         $scope.imageDto.dataImage = $scope.userPhoto;
+         $scope.imageDto.desImage = e.type;
+         $scope.imageDto.nameCompany = $scope.companyDto.desName;
+         $scope.imageDto.type = typeImage;
+         companyService.getImage(util.getUri(), $scope.imageDto).success(function(data, status, headers, config) {
+ 			console.log(data);
+ 		}).error(function(data, status, headers, config) {
+ 			$scope.messages = "Error: não foi processado...";
+ 			$scope.visibleMessage = true;
+ 			$scope.cssMessage = "message-table-incorret";
+ 	    });
+	   };
+	   reader.onerror = function (error) {
+	     console.log('Error: ', error);
+	   };
 	};
 	
 	$scope.initEdit = function(){
@@ -239,6 +228,7 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 		$scope.phoneDto.numPhone = numPhone;
 		$scope.companyDto.phoneDtos.push($scope.phoneDto);
 		$scope.phoneDto.numPhone = cellPhone;
+		$scope.companyDto.typeFood = food;
 		$scope.companyDto.phoneDtos.push($scope.phoneDto);
 		console.log($scope.companyDto);
 		companyService.getCompany(util.getUri(), $scope.companyDto).success(function(data, status, headers, config) {

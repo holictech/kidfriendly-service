@@ -26,6 +26,8 @@ import com.holictechnology.kidfriendly.domain.entitys.Characteristic;
 import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.domain.entitys.CompanyCategoryCharacteristic;
+import com.holictechnology.kidfriendly.domain.entitys.CompanyFoodType;
+import com.holictechnology.kidfriendly.domain.entitys.CompanyWeekSchedule;
 import com.holictechnology.kidfriendly.domain.entitys.FoodType;
 import com.holictechnology.kidfriendly.domain.entitys.Image;
 import com.holictechnology.kidfriendly.domain.entitys.Phone;
@@ -47,7 +49,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
     private static final long serialVersionUID = 1389485495399887684L;
     private static List<Image> images = new ArrayList<Image>();
-    private static String nameLocal = "";
     private static int KM_DISTANCE = 5;
     private static int KM_DEGREE = 111;
     private static Company companyAux = new Company();
@@ -287,12 +288,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         savePhone(companyDto, company);
         saveTypeFood(companyDto.getTypeFood(), company);
 
-        if (nameLocal.equals(""))
-            nameLocal = companyDto.getDesName();
-
-        if (!nameLocal.equals(companyDto.getDesName())) {
-            images = new ArrayList<Image>();
-        }
+        images = new ArrayList<Image>();
 
         saveImage(company);
 
@@ -307,8 +303,10 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     	FoodType foodType = new FoodType();
     	foodType.setIdFoodType(type);
     	companyFoodTypePK.setFoodType(foodType);
+    	CompanyFoodType companyFoodType = new CompanyFoodType();
+    	companyFoodType.setCompanyFoodTypePK(companyFoodTypePK);
     	
-    	entityManager.persist(companyFoodTypePK);
+    	entityManager.persist(companyFoodType);
     }
     
     /**
@@ -331,7 +329,10 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     		companyWeekSchedulePK.setScheduleFinish(scheduleFinish);
     		companyWeekSchedulePK.setWeek(week);
     		
-    		entityManager.persist(companyWeekSchedulePK);
+    		CompanyWeekSchedule companyWeekSchedule = new CompanyWeekSchedule();
+    		companyWeekSchedule.setCompanyWeekSchedulePK(companyWeekSchedulePK);
+    		
+    		entityManager.persist(companyWeekSchedule);
     	}
     }
 
@@ -358,7 +359,11 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
                     companyCategoryCharacteristicPK.setCompany(company);
                     CompanyCategoryCharacteristic companyCategoryCharacteristic = new CompanyCategoryCharacteristic();
                     companyCategoryCharacteristic.setCompanyCategoryCharacteristicPK(companyCategoryCharacteristicPK);
-                    persist(companyCategoryCharacteristic);
+                    
+                    CompanyCategoryCharacteristic categoryCharacterist = new CompanyCategoryCharacteristic();
+                    categoryCharacterist.setCompanyCategoryCharacteristicPK(companyCategoryCharacteristicPK);
+                    
+                    persist(categoryCharacterist);
                 }
             }
         }
@@ -468,11 +473,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         if(imageDto.getType() == 0){
 	        if (!images.isEmpty()) {
 	            image = images.get(0);
-	
-	            if (image.getCompany() != null && image.getCompany().getDesName().equals(imageDto.getNameCompany())) {
-	                images = null;
-	                images = new ArrayList<Image>();
-	            }
 	        }
 	
 	        image = create(imageDto);
