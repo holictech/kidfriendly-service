@@ -56,8 +56,8 @@ public class User implements Serializable {
     @Column(name = "DT_BIRTHDAY", nullable = true)
     private Date dtBirthDay;
 
-    @Column(name = "BL_HAS_CHILDREN", nullable = true)
-    private Boolean blHasChildren;
+    @Column(name = "NM_CHILDREN", nullable = true)
+    private Byte nmChildren;
 
     @Column(name = "ID_SOCIAL_NETWORK", nullable = true)
     private Long idSocialNetwork;
@@ -109,12 +109,12 @@ public class User implements Serializable {
         this.dtBirthDay = dtBirthDay;
     }
 
-    public Boolean getBlHasChildren() {
-        return blHasChildren;
+    public Byte getNmChildren() {
+        return nmChildren;
     }
 
-    public void setBlHasChildren(Boolean blHasChildren) {
-        this.blHasChildren = blHasChildren;
+    public void setNmChildren(Byte nmChildren) {
+        this.nmChildren = nmChildren;
     }
 
     public Long getIdSocialNetwork() {

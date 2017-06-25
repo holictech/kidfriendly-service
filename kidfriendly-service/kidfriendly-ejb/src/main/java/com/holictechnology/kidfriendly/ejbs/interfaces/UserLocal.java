@@ -19,7 +19,7 @@ public interface UserLocal {
      * @throws KidFriendlyException
      * @throws NoSuchAlgorithmException
      */
-    void includeWithLogin(User user) throws KidFriendlyException, NoSuchAlgorithmException;
+    void includeWithLogin(User user) throws KidFriendlyException;
 
     /**
      * TODO - COLOCAR O COMENTÁRIO.

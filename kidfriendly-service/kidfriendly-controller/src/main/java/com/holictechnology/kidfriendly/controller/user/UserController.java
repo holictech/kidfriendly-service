@@ -1,7 +1,6 @@
 package com.holictechnology.kidfriendly.controller.user;
 
 
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,6 @@ import com.holictechnology.kidfriendly.domain.entitys.User;
 import com.holictechnology.kidfriendly.ejbs.interfaces.UserLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
-import com.holictechnology.kidfriendly.library.utilites.CriptographUtilities;
 import com.holictechnology.kidfriendly.library.utilites.DateUtilities;
 
 
@@ -38,12 +36,10 @@ public class UserController extends AbstractController {
     @POST
     @Consumes(value = MediaType.APPLICATION_JSON)
     @Produces(value = MediaType.APPLICATION_JSON)
-    public Response include(User user) throws KidFriendlyException {
+    public Response includeWithLogin(User user) throws KidFriendlyException {
         try {
             userLocal.includeWithLogin(user);
-            user.getLogin().setDesPassword(CriptographUtilities.getInstance().createToken(user.getLogin().getIdLogin(), user.getLogin().getDesPassword()));
-        } catch (NoSuchAlgorithmException exception) {
-            getLogger(getClass()).error(exception.getMessage(), exception);
+            user.getLogin().setDesPassword(null);
         } catch (Exception exception) {
             error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_USER);
         }

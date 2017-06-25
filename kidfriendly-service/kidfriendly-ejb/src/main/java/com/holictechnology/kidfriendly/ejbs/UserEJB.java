@@ -1,8 +1,6 @@
 package com.holictechnology.kidfriendly.ejbs;
 
 
-import java.security.NoSuchAlgorithmException;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -27,7 +25,7 @@ public class UserEJB extends AbstractEJB implements UserLocal {
      * includeWithLogin(com.holictechnology.kidfriendly.domain.entitys.User)
      */
     @Override
-    public void includeWithLogin(User user) throws KidFriendlyException, NoSuchAlgorithmException {
+    public void includeWithLogin(User user) throws KidFriendlyException {
         illegalArgument(user);
         illegalArgument(user.getLogin());
         loginLocal.exist(user.getLogin());
