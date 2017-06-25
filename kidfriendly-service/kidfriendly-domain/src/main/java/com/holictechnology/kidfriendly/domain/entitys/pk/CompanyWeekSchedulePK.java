@@ -27,8 +27,12 @@ public class CompanyWeekSchedulePK implements Serializable {
     private Week week;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_SCHEDULE", nullable = false)
+    @JoinColumn(name = "ID_SCHEDULE_INITIAL", nullable = false)
     private Schedule schedule;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_SCHEDULE_FINISH", nullable = false)
+    private Schedule scheduleFinish;
 
     public Company getCompany() {
         return company;
@@ -53,8 +57,16 @@ public class CompanyWeekSchedulePK implements Serializable {
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
+    
+    public Schedule getScheduleFinish() {
+		return scheduleFinish;
+	}
 
-    @Override
+	public void setScheduleFinish(Schedule scheduleFinish) {
+		this.scheduleFinish = scheduleFinish;
+	}
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

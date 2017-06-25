@@ -20,13 +20,45 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	$scope.auxIds = [];
 	$scope.listCatCha = [];
 	$scope.objCatCha = {};
+	$scope.listWeek = [];
+	$scope.listSchedule = [];
+	$scope.companyDto.hourDateDtos = [];
+	$scope.hourDateDto = {};
+	$scope.hourDateDtoAux = {};
+	$scope.hourDates = [];
+	$scope.listTypeFood = [];
 	
 	$scope.progressbar = ngProgressFactory.createInstance();
+	
+	$scope.addHourDate = function(week, hourI, hourF){
+		$scope.hourDateDto = {};
+		$scope.hourDateDtoAux = {};
+		$scope.hourDateDto.week = week;
+		$scope.hourDateDto.hourInitial = hourI;
+		$scope.hourDateDto.hourFinish = hourF;
+		for (var i = 0; i < $scope.listWeek.length; i++) {
+			if($scope.listWeek[i].idWeek == week){
+				$scope.hourDateDtoAux.week = $scope.listWeek[i].dsWeek;
+			}
+		}
+		for (var i = 0; i < $scope.listSchedule.length; i++) {
+			if($scope.listSchedule[i].idSchedule == hourI){
+				$scope.hourDateDtoAux.hourInitial = $scope.listSchedule[i].dsSchedule;
+			}
+			
+			if($scope.listSchedule[i].idSchedule == hourF){
+				$scope.hourDateDtoAux.hourFinish = $scope.listSchedule[i].dsSchedule;
+			}
+		}
+		
+		$scope.companyDto.hourDateDtos.push($scope.hourDateDto);
+		$scope.hourDates.push($scope.hourDateDtoAux);
+	};
 	
 	/**
 	 * Method upload file
 	 */
-	$scope.uploadFile = function (input) {
+	$scope.uploadFile = function (input, typeImage) {
 		console.log(input.files[0]);
 		for (var i = 0; i < input.files.length; i++) {
 		    if (input.files && input.files[i]) {
@@ -49,6 +81,7 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 		            $scope.imageDto.dataImage = $scope.userPhoto;
 		            $scope.imageDto.desImage = e.type;
 		            $scope.imageDto.nameCompany = $scope.companyDto.desName;
+		            $scope.imageDto.type = typeImage;
 		            console.log($scope.imageDto);
 		            companyService.getImage(util.getUri(), $scope.imageDto).success(function(data, status, headers, config) {
 		    			console.log(data);
@@ -86,6 +119,33 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 		$cookieStore.put("company", company);
 		$state.go('editCompany');
 	};
+	
+	/**
+	 * List schedule
+	 */
+	companyService.getListSchedule(util.getUri()).success(function(data, status, headers, config) {
+		$scope.listSchedule = data;
+	}).error(function(data, status, headers, config) {
+		
+    });
+	
+	/**
+	 * List schedule
+	 */
+	companyService.getListTypeFood(util.getUri()).success(function(data, status, headers, config) {
+		$scope.listTypeFood = data;
+	}).error(function(data, status, headers, config) {
+		
+    });
+	
+	/**
+	 * List week
+	 */
+	companyService.getListWeek(util.getUri()).success(function(data, status, headers, config) {
+		$scope.listWeek = data;
+	}).error(function(data, status, headers, config) {
+		
+    });
 	
 	/**
 	 * Method loaded states in country Brazil
@@ -171,7 +231,7 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 	/**
 	 * Method save company
 	 */
-	$scope.saveCompany = function(numPhone, cellPhone){
+	$scope.saveCompany = function(numPhone, cellPhone, food){
 		$scope.progressbar.start();
 		$timeout($scope.progressbar.complete(), 10000);
 		$scope.progressbar.set(100);
@@ -190,6 +250,7 @@ kid.controller('companyController', ['$scope', 'companyService', '$state', '$coo
 			$scope.companyDto = {};
 			$scope.phoneDto = {};
 			$scope.companyDto.phoneDtos = [];
+			$scope.companyDto.typeFood = food;
 			$scope.phoneFixed = "";
 			$scope.celPhone = "";
 			$scope.listCatCha = [];

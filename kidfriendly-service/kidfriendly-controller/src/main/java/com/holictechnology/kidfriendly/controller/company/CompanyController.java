@@ -22,7 +22,6 @@ import javax.ws.rs.core.Response;
 import com.holictechnology.kidfriendly.controller.AbstractController;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dtos.ImageDto;
-import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CategoryLocal;
@@ -122,14 +121,6 @@ public class CompanyController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editCompany(Company company){
     	return ok(companyLocal.editCompany(company));
-    }
-    
-    @POST
-    @Path("/teste")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response testePost(LoginDto loginDto){
-    	return Response.ok(loginDto).build();
     }
     
 }

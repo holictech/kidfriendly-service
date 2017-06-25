@@ -15,6 +15,7 @@ import javax.transaction.Transactional.TxType;
 
 import com.holictechnology.kidfriendly.domain.dtos.CategoryDto;
 import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
+import com.holictechnology.kidfriendly.domain.dtos.HourDateDto;
 import com.holictechnology.kidfriendly.domain.dtos.ImageDto;
 import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
@@ -25,10 +26,15 @@ import com.holictechnology.kidfriendly.domain.entitys.Characteristic;
 import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Company;
 import com.holictechnology.kidfriendly.domain.entitys.CompanyCategoryCharacteristic;
+import com.holictechnology.kidfriendly.domain.entitys.FoodType;
 import com.holictechnology.kidfriendly.domain.entitys.Image;
 import com.holictechnology.kidfriendly.domain.entitys.Phone;
+import com.holictechnology.kidfriendly.domain.entitys.Schedule;
+import com.holictechnology.kidfriendly.domain.entitys.Week;
 import com.holictechnology.kidfriendly.domain.entitys.pk.CategoryCharacteristicPK;
 import com.holictechnology.kidfriendly.domain.entitys.pk.CompanyCategoryCharacteristicPK;
+import com.holictechnology.kidfriendly.domain.entitys.pk.CompanyFoodTypePK;
+import com.holictechnology.kidfriendly.domain.entitys.pk.CompanyWeekSchedulePK;
 import com.holictechnology.kidfriendly.domain.enums.StatusKidFriendlyEnum;
 import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
@@ -44,6 +50,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     private static String nameLocal = "";
     private static int KM_DISTANCE = 5;
     private static int KM_DEGREE = 111;
+    private static Company companyAux = new Company();
 
     /*
      * (non-Javadoc)
@@ -268,12 +275,17 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         company.setDtRegister(new Date());
         company.setStActive(Boolean.TRUE);
         company.setStHighlight(Boolean.FALSE);
+        company.setImgLogo(companyAux.getImgLogo());
+        company.setMgHome(companyAux.getMgHome());
 
         company = entityManager.merge(company);
+        companyAux = new Company();
 
         companyDto.setIdCompany(company.getIdCompany());
-
+        
+        saveHourDate(company, companyDto.getHourDateDtos());
         savePhone(companyDto, company);
+        saveTypeFood(companyDto.getTypeFood(), company);
 
         if (nameLocal.equals(""))
             nameLocal = companyDto.getDesName();
@@ -287,6 +299,40 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         saveCategoryCharacteristics(company, companyDto);
 
         return companyDto;
+    }
+    
+    private void saveTypeFood(Long type, Company company){
+    	CompanyFoodTypePK companyFoodTypePK = new CompanyFoodTypePK();
+    	companyFoodTypePK.setCompany(company);
+    	FoodType foodType = new FoodType();
+    	foodType.setIdFoodType(type);
+    	companyFoodTypePK.setFoodType(foodType);
+    	
+    	entityManager.persist(companyFoodTypePK);
+    }
+    
+    /**
+     * Save hour and date
+     * @param company
+     * @param hourDateDtos
+     */
+    private void saveHourDate(Company company, List<HourDateDto> hourDateDtos){
+    	for(HourDateDto dto : hourDateDtos){
+    		CompanyWeekSchedulePK companyWeekSchedulePK = new CompanyWeekSchedulePK();
+    		Week week = new Week();
+    		Schedule schedule = new Schedule();
+    		Schedule scheduleFinish = new Schedule();
+    		week.setIdWeek(dto.getWeek());
+    		schedule.setIdSchedule(dto.getHourInitial());
+    		scheduleFinish.setIdSchedule(dto.getHourFinish());
+    		
+    		companyWeekSchedulePK.setCompany(company);
+    		companyWeekSchedulePK.setSchedule(schedule);
+    		companyWeekSchedulePK.setScheduleFinish(scheduleFinish);
+    		companyWeekSchedulePK.setWeek(week);
+    		
+    		entityManager.persist(companyWeekSchedulePK);
+    	}
     }
 
     /**
@@ -419,17 +465,23 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     public void preparImageSaveCompany(ImageDto imageDto) {
         Image image = null;
 
-        if (!images.isEmpty()) {
-            image = images.get(0);
-
-            if (image.getCompany() != null && image.getCompany().getDesName().equals(imageDto.getNameCompany())) {
-                images = null;
-                images = new ArrayList<Image>();
-            }
+        if(imageDto.getType() == 0){
+	        if (!images.isEmpty()) {
+	            image = images.get(0);
+	
+	            if (image.getCompany() != null && image.getCompany().getDesName().equals(imageDto.getNameCompany())) {
+	                images = null;
+	                images = new ArrayList<Image>();
+	            }
+	        }
+	
+	        image = create(imageDto);
+	        images.add(image);
+        }else if(imageDto.getType() == 1){
+        	companyAux.setImgLogo(imageDto.getImgImage());
+        }else{
+        	companyAux.setMgHome(imageDto.getImgImage());
         }
-
-        image = create(imageDto);
-        images.add(image);
     }
 
     /**

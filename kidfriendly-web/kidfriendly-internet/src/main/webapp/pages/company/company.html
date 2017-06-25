@@ -166,14 +166,94 @@
 		</fieldset>
 	</div>
 	
-	<div class="contentform space-blank">
+	<fieldset title="Fotos da Galeria">
+			<legend>Fotos da galeria</legend>
+			<div class="contentform space-blank">
+				<div class="form-group">
+					<input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this, 0)" id="photo-upload" placeholder="Selecione uma ou mais fotos de uma vez"
+					multiple="multiple"/>
+				</div>
+			</div>
+	</fieldset>
+	
+	<fieldset title="Fotos da Logomarca">
+			<legend>Fotos da Logomarca</legend>
+			<div class="contentform space-blank">
+				<div class="form-group">
+					<input type="file" name="file1" onchange="angular.element(this).scope().uploadFile(this, 1)" id="photo-upload1" placeholder="Selecione uma foto"/>
+				</div>
+			</div>
+	</fieldset>
+	
+	<fieldset title="Fotos da home">
+			<legend>Fotos da home</legend>
+			<div class="contentform space-blank">
+				<div class="form-group">
+					<input type="file" name="file2" onchange="angular.element(this).scope().uploadFile(this, 2)" id="photo-upload2" placeholder="Selecione uma foto"/>
+				</div>
+			</div>
+	</fieldset>
+	
+	<div class="leftcontact">
 		<div class="form-group">
-			<input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this)" id="photo-upload" placeholder="Selecione uma ou mais fotos de uma vez"
-			multiple="multiple"/>
+			<p>Dias da semana <span>*</span></p>	
+				<div class="styled-select blue semi-square">
+				  <select ng-model="week">
+				    <option ng-repeat="w in listWeek" value="{{w.idWeek}}">{{w.dsWeek}}</option>
+				  </select>
+				</div>
+		              <div class="validation"></div>
+		</div>
+		
+		<div class="form-group">
+			<p>Horário início <span>*</span></p>	
+				<div class="styled-select blue semi-square">
+				  <select ng-model="hourInit">
+				    <option ng-repeat="s in listSchedule" value="{{s.idSchedule}}">{{s.dsSchedule}}</option>
+				  </select>
+				</div>
+		              <div class="validation"></div>
+		</div>
+		
+		<div class="form-group">
+			<p>Horário fim <span>*</span></p>	
+				<div class="styled-select blue semi-square">
+				  <select ng-model="hourFinish">
+				    <option ng-repeat="s in listSchedule" value="{{s.idSchedule}}">{{s.dsSchedule}}</option>
+				  </select>
+				</div>
+		              <div class="validation"></div>
+		</div><br>
+		<div class="form-group">
+			<p>Tipo de comida <span>*</span></p>	
+				<div class="styled-select blue semi-square">
+				  <select ng-model="food">
+				    <option ng-repeat="t in listTypeFood" value="{{s.idFoodType}}">{{s.dsFoodType}}</option>
+				  </select>
+				</div>
+		              <div class="validation"></div>
+		</div><br>
+		<button type="button" class="bouton-contact" ng-click="addHourDate(week, hourInit, hourFinish)">Adicionar</button>
+	</div>
+	
+	<div class="rightcontact">
+		<div class="form-group">
+			<table>
+				<tr>
+					<td>Dia da semana</td>
+					<td>Horário de início</td>
+					<td>Horário de Termino</td>
+				</tr>
+				<tr ng-repeat="days in hourDates">
+					<td>{{days.week}}</td>
+					<td>{{days.hourInitial}}</td>
+					<td>{{days.hourFinish}}</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 	
-	<button type="button" class="bouton-contact" ng-click="saveCompany(phoneFixed, celPhone)">Cadastrar</button>
+	<button type="button" class="bouton-contact" ng-click="saveCompany(phoneFixed, celPhone, food)">Cadastrar</button>
 	<button type="button" class="bouton-search" ng-click="search()">Pesquisar</button>
 	
 	</form>

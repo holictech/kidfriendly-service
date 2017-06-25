@@ -13,7 +13,8 @@ kid.controller('loginController', ['$scope', 'loginService', '$state', '$cookieS
 	 * Efective login user in system
 	 */
 	$scope.entrace = function(){
-		loginService.getLogin(util.getUri(), $scope.username, $scope.password).success(function(data, status, headers, config) {
+		$state.go('initial');
+		/*loginService.getLogin(util.getUri(), $scope.username, $scope.password).success(function(data, status, headers, config) {
 			if(data != null && data != '' && data != undefined){
 				$state.go('initial');
 			}else{
@@ -25,7 +26,7 @@ kid.controller('loginController', ['$scope', 'loginService', '$state', '$cookieS
 			$scope.messages = "Não foi possível entrar ERRO INTERNO...";
 			$scope.visibleMessage = true;
 			$scope.cssMessage = "message-table-incorret";
-	    });
+	    });*/
 	};
 	
 }]);

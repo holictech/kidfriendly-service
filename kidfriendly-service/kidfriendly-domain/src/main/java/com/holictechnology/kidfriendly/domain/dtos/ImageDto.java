@@ -16,6 +16,8 @@ public class ImageDto {
     private String desImage;
     
     private String nameCompany;
+    
+    private Integer type;
 
 	public Long getIdImage() {
 		return idImage;
@@ -23,6 +25,14 @@ public class ImageDto {
 
 	public void setIdImage(Long idImage) {
 		this.idImage = idImage;
+	}
+	
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
 	public byte[] getImgImage() {

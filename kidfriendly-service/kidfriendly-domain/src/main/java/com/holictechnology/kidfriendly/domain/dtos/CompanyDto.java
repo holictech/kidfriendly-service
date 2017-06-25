@@ -23,14 +23,24 @@ public class CompanyDto implements Serializable {
     private List<ImageDto> imageDtos;
     private CategoryDto categoryDto;
     private List<CategoryDto> categoryDtos;
+    private List<HourDateDto> hourDateDtos;
+    private Long typeFood;
 
     public CompanyDto() {}
 
     public Long getIdCompany() {
         return idCompany;
     }
+    
+    public Long getTypeFood() {
+		return typeFood;
+	}
 
-    public void setIdCompany(Long idCompany) {
+	public void setTypeFood(Long typeFood) {
+		this.typeFood = typeFood;
+	}
+
+	public void setIdCompany(Long idCompany) {
         this.idCompany = idCompany;
     }
 
@@ -137,4 +147,13 @@ public class CompanyDto implements Serializable {
     public void setCategoryDtos(List<CategoryDto> categoryDtos) {
         this.categoryDtos = categoryDtos;
     }
+
+	public List<HourDateDto> getHourDateDtos() {
+		return hourDateDtos;
+	}
+
+	public void setHourDateDtos(List<HourDateDto> hourDateDtos) {
+		this.hourDateDtos = hourDateDtos;
+	}
+    
 }

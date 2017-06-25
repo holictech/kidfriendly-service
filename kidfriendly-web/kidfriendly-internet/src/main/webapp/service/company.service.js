@@ -32,6 +32,27 @@ kid.service('companyService', ['$http',
 	};
 	
 	/**
+	 * List schedule
+	 */
+	this.getListSchedule = function(uri){
+		return $http.get(uri + '/schedule/schedule/');
+	};
+	
+	/**
+	 * List type food
+	 */
+	this.getListTypeFood = function(uri){
+		return $http.get(uri + '/typefood/typefood/');
+	};
+	
+	/**
+	 * List week
+	 */
+	this.getListWeek = function(uri){
+		return $http.get(uri + '/week/week/');
+	};
+	
+	/**
 	 * List Characteristic
 	 */
 	this.getListCharacteristic = function(uri, category){
