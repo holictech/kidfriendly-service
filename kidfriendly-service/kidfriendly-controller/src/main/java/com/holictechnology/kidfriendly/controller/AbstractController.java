@@ -38,10 +38,17 @@ public abstract class AbstractController implements Serializable {
      * @throws KidFriendlyException
      */
     protected void error(Class<?> clazz, Throwable throwable, String message) throws KidFriendlyException {
-        KidFriendlyException kidFriendlyException = (KidFriendlyException.class.isAssignableFrom(throwable.getClass()) ? (KidFriendlyException) throwable
-                : new KidFriendlyException(message, throwable));
-        getLogger(clazz).error(((kidFriendlyException.getCause() == null) ? kidFriendlyException.getMessage() : kidFriendlyException.getCause().getMessage()),
-                kidFriendlyException);
+        KidFriendlyException kidFriendlyException = null;
+
+        if (iskidFriendlyException(throwable)) {
+            kidFriendlyException = (KidFriendlyException) throwable;
+        } else {
+            kidFriendlyException = new KidFriendlyException(message, throwable);
+            getLogger(clazz).error(
+                    ((kidFriendlyException.getCause() == null) ? kidFriendlyException.getMessage() : kidFriendlyException.getCause().getMessage()),
+                    kidFriendlyException);
+        }
+
         ConstraintViolationException constraintViolationException = getConstraintViolationException(kidFriendlyException);
 
         if (constraintViolationException != null && StringUtils.isNotBlank(constraintViolationException.getConstraintName())) {
@@ -83,5 +90,13 @@ public abstract class AbstractController implements Serializable {
         }
 
         return constraintViolationException;
+    }
+
+    /**
+     * @param throwable
+     * @return
+     */
+    private boolean iskidFriendlyException(Throwable throwable) {
+        return (KidFriendlyException.class.isAssignableFrom(throwable.getClass()));
     }
 }

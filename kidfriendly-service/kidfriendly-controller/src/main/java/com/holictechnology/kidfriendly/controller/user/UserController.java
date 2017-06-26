@@ -41,7 +41,7 @@ public class UserController extends AbstractController {
             userLocal.includeWithLogin(user);
             user.getLogin().setDesPassword(null);
         } catch (Exception exception) {
-            error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_USER);
+            error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_UPDATE_USER);
         }
 
         return ok(user);
@@ -55,7 +55,7 @@ public class UserController extends AbstractController {
         try {
             userLocal.includeSocialNetwork(user);
         } catch (Exception exception) {
-            error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_USER);
+            error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_UPDATE_USER);
         }
 
         return ok(user);
@@ -79,7 +79,7 @@ public class UserController extends AbstractController {
         try {
             userLocal.update(user);
         } catch (Exception exception) {
-            error(getClass(), exception, KidFriendlyMessages.ERROR_UPDATE_USER);
+            error(getClass(), exception, KidFriendlyMessages.ERROR_INCLUDE_UPDATE_USER);
         }
 
         return ok(user);

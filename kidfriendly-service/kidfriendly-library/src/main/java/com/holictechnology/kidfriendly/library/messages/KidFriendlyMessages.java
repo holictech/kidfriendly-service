@@ -62,6 +62,5 @@ public final class KidFriendlyMessages {
     /*
      * USER
      */
-    public static final String ERROR_INCLUDE_USER = "N\u00e3o foi poss\u00edvel cadastrar as suas informa\u00e7\u00f5es.";
-    public static final String ERROR_UPDATE_USER = "N\u00e3o foi poss\u00edvel atualizar as suas informa\u00e7\u00f5es.";
+    public static final String ERROR_INCLUDE_UPDATE_USER = "N\u00e3o foi poss\u00edvel salvar as suas informa\u00e7\u00f5es.";
 }
