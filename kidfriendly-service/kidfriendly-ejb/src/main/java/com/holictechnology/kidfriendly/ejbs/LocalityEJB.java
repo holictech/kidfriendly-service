@@ -1,6 +1,8 @@
 package com.holictechnology.kidfriendly.ejbs;
 
 
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Collection;
 
 import javax.ejb.Stateless;
@@ -8,11 +10,17 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.LatLng;
 import com.holictechnology.kidfriendly.domain.entitys.City;
 import com.holictechnology.kidfriendly.domain.entitys.Country;
 import com.holictechnology.kidfriendly.domain.entitys.State;
 import com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
+import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
 
 @Stateless
@@ -94,5 +102,32 @@ public class LocalityEJB extends AbstractEJB implements LocalityLocal {
         typedQuery.setParameter("idState", idState);
 
         return typedQuery.getResultList();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal#
+     * formattedAddress(java.lang.Double, java.lang.Double)
+     */
+    @Override
+    @Transactional(value = TxType.NOT_SUPPORTED)
+    public String formattedAddress(Double longitude, Double latitude) throws KidFriendlyException {
+        illegalArgument(longitude, latitude);
+        String address = null;
+
+        try {
+            GeoApiContext geoApiContext = new GeoApiContext().setApiKey("AIzaSyCxciD9NWnidLOnaWAD5CB1Xjklirkftbg");
+            GeocodingResult [] results = GeocodingApi.reverseGeocode(geoApiContext, new LatLng(latitude, longitude)).language("pt-BR").await();
+
+            if (results != null && results.length > BigInteger.ZERO.intValue()) {
+                address = results[BigInteger.ZERO.intValue()].formattedAddress;
+            }
+        } catch (ApiException | InterruptedException | IOException exception) {
+            getLogger(getClass()).error(exception.getMessage(), exception);
+            throw new KidFriendlyException(KidFriendlyMessages.ERROR_GET_ADDRESS, exception);
+        }
+
+        return address;
     }
 }

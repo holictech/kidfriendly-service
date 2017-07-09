@@ -9,6 +9,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -88,5 +89,13 @@ public class LocalityController extends AbstractController {
         }
 
         return ok(listCity);
+    }
+
+    @GET
+    @Path(value = "/formattedaddress")
+    @Produces(value = MediaType.TEXT_PLAIN)
+    public Response formattedAddress(@QueryParam(value = "longitude") Double longitude, @QueryParam(value = "latitude") Double latitude)
+            throws KidFriendlyException {
+        return ok(localityLocal.formattedAddress(longitude, latitude));
     }
 }

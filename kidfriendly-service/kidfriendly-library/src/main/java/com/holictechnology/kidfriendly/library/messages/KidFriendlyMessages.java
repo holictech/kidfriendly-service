@@ -8,7 +8,7 @@ public final class KidFriendlyMessages {
     /*
      * DEFAULT
      */
-    public static final String ERROR_ILLEGALARGUMENT = "O argumento informdo n\u00e3o \u00e9 valido.";
+    public static final String ERROR_ILLEGALARGUMENT = "O argumento informado n\u00e3o \u00e9 valido.";
 
     /*
      * CATEGORY
@@ -44,6 +44,7 @@ public final class KidFriendlyMessages {
     public static final String ERROR_LIST_COUNTRY = "N\u00e3o foi poss\u00edvel listar os pa\u00edses.";
     public static final String ERROR_LIST_STATE = "N\u00e3o foi poss\u00edvel listar os estados.";
     public static final String ERROR_LIST_CITY = "N\u00e3o foi poss\u00edvel lista as cidades.";
+    public static final String ERROR_GET_ADDRESS = "N\u00e3o foi poss\u00edvel obter o endere\u00e7o.";
 
     /*
      * IMAGE
@@ -67,6 +68,5 @@ public final class KidFriendlyMessages {
     /*
      * EMAIL
      */
-    public static final String ERROR_EMAIL_SEND = "N\u00e3o foi poss\u00edvel enviar sua mensagem.";
     public static final String ERROR_EMAIL_NOT_RECIPIENT = "Destinat\u00e1rio n\u00e3o informado.";
 }

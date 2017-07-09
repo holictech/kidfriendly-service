@@ -52,4 +52,12 @@ public interface LocalityLocal {
      * @throws KidFriendlyException
      */
     Collection<City> listCityByState(Integer idState) throws KidFriendlyException;
+
+    /**
+     * @param longitude
+     * @param latitude
+     * @return
+     * @throws KidFriendlyException
+     */
+    String formattedAddress(Double longitude, Double latitude) throws KidFriendlyException;
 }

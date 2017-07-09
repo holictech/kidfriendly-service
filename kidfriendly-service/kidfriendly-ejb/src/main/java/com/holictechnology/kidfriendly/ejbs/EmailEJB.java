@@ -14,7 +14,6 @@ import org.apache.commons.mail.SimpleEmail;
 import com.holictechnology.kidfriendly.domain.dtos.EmailDto;
 import com.holictechnology.kidfriendly.domain.dtos.EmailDto.Recipient;
 import com.holictechnology.kidfriendly.ejbs.interfaces.EmailLocal;
-import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
 
@@ -30,15 +29,15 @@ public class EmailEJB extends AbstractEJB implements EmailLocal {
     @Override
     @Asynchronous
     @Transactional(value = TxType.NOT_SUPPORTED)
-    public void sendSimpleEmail(EmailDto emailDto) throws KidFriendlyException {
-        illegalArgument(emailDto);
+    public void sendSimpleEmail(EmailDto emailDto) {
 
         try {
+            illegalArgument(emailDto);
             SimpleEmail simpleEmail = new SimpleEmail();
             simpleEmail.setMsg(emailDto.getMessage());
             send(simpleEmail, emailDto);
-        } catch (EmailException ee) {
-            throw new KidFriendlyException(KidFriendlyMessages.ERROR_EMAIL_SEND, ee);
+        } catch (Exception exception) {
+            getLogger(getClass()).error(exception.getMessage(), exception);
         }
     }
 

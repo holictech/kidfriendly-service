@@ -15,6 +15,8 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
@@ -163,5 +165,13 @@ public abstract class AbstractEJB implements Serializable {
                 throw new KidFriendlyException(KidFriendlyMessages.ERROR_ILLEGALARGUMENT);
             }
         }
+    }
+
+    /**
+     * @param clazz
+     * @return
+     */
+    protected Logger getLogger(Class<?> clazz) {
+        return LoggerFactory.getLogger(clazz);
     }
 }

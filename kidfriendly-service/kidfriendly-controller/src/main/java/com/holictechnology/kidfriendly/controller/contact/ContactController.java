@@ -10,9 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
 import com.holictechnology.kidfriendly.domain.dtos.EmailDto;
-import com.holictechnology.kidfriendly.domain.dtos.EmailDto.Recipient;
-import com.holictechnology.kidfriendly.ejbs.interfaces.EmailLocal;
-import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
+import com.holictechnology.kidfriendly.ejbs.interfaces.ContactLocal;
 
 
 @Stateless
@@ -22,20 +20,19 @@ public class ContactController extends AbstractController {
     private static final long serialVersionUID = -4409979256028470431L;
 
     @EJB
-    private EmailLocal emailLocal;
-
-    @POST
-    @Path(value = "/send")
-    @Consumes(value = MediaType.APPLICATION_JSON)
-    public void send(EmailDto emailDto) throws KidFriendlyException {
-        emailLocal.sendSimpleEmail(emailDto);
-    }
+    private ContactLocal contactLocal;
 
     @POST
     @Path(value = "/contact-us")
     @Consumes(value = MediaType.APPLICATION_JSON)
-    public void contactUs(EmailDto emailDto) throws KidFriendlyException {
-        emailDto.getRecipients().add(new Recipient("Kid Friendly", "faleconosco@kidfriendly.com.br"));
-        send(emailDto);
+    public void contactUs(EmailDto emailDto) {
+        contactLocal.contactUs(emailDto);
+    }
+
+    @POST
+    @Path(value = "/indicate")
+    @Consumes(value = MediaType.APPLICATION_JSON)
+    public void indicate(EmailDto emailDto) {
+        contactLocal.indicate(emailDto);
     }
 }

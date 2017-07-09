@@ -16,7 +16,6 @@
 		<slf4j.version>1.7.7</slf4j.version>
 		<logback-classic.version>1.0.13</logback-classic.version>
 		<resteasy.version>3.0.9.Final</resteasy.version>
-
 		<hibernate-core.version>5.1.0.Final</hibernate-core.version>
 		<hibernate-commons-annotations.version>5.0.1.Final</hibernate-commons-annotations.version>
 		<hibernate-jpa-2.0-api.version>1.0.1.Final</hibernate-jpa-2.0-api.version>
@@ -27,11 +26,11 @@
 		<jboss-logging.version>3.3.0.Final</jboss-logging.version>
 		<mysql-connector-java.version>5.1.34</mysql-connector-java.version>
 		<jackson.version>2.8.0</jackson.version>
-
 		<jboss-javaee-6.0.version>3.0.0.Final</jboss-javaee-6.0.version>
 		<jboss-transaction-api_1.2_spec.version>1.0.1.Final</jboss-transaction-api_1.2_spec.version>
 		<javaee-api.version>6.0</javaee-api.version>
 		<jboss-ejb-client.version>2.1.6.Final</jboss-ejb-client.version>
+		<google-maps-services.version>0.1.21</google-maps-services.version>
 	</properties>
 
 	<build>
