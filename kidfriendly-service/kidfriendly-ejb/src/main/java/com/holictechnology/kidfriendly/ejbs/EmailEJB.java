@@ -1,4 +1,4 @@
-package com.holictechnology.kidfriendly.ejbs.interfaces;
+package com.holictechnology.kidfriendly.ejbs;
 
 
 import javax.ejb.Asynchronous;
@@ -13,7 +13,7 @@ import org.apache.commons.mail.SimpleEmail;
 
 import com.holictechnology.kidfriendly.domain.dtos.EmailDto;
 import com.holictechnology.kidfriendly.domain.dtos.EmailDto.Recipient;
-import com.holictechnology.kidfriendly.ejbs.AbstractEJB;
+import com.holictechnology.kidfriendly.ejbs.interfaces.EmailLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
