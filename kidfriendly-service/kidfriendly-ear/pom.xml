@@ -112,6 +112,13 @@
 			<scope>provided</scope>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-email</artifactId>
+			<version>${commons-email.version}</version>
+			<scope>provided</scope>
+			<type>jar</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -166,6 +173,11 @@
 							<groupId>commons-io</groupId>
 							<artifactId>commons-io</artifactId>
 							<bundleFileName>commons-io.jar</bundleFileName>
+						</jarModule>
+						<jarModule>
+							<groupId>org.apache.commons</groupId>
+							<artifactId>commons-email</artifactId>
+							<bundleFileName>commons-email.jar</bundleFileName>
 						</jarModule>
 						<ejbModule>
 							<groupId>com.holictechnology.kidfriendly.service</groupId>

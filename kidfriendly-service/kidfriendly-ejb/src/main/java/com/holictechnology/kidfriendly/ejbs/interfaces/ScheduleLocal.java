@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import com.holictechnology.kidfriendly.domain.entitys.Schedule;
 
 @Local
-public interface ScheduleEJBLocal {
+public interface ScheduleLocal {
 
 	/**
 	 * Method schedule

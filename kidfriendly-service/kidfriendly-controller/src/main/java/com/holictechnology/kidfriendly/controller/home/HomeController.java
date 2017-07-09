@@ -55,7 +55,7 @@ public class HomeController extends AbstractController {
         try {
             listCompanyDto.addAll(companyLocal.listNextToMe(DEFAULT_LIMIT, longitude, latitude));
         } catch (Exception exception) {
-            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COMpANY_NEXTTOME);
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_COMPANY_NEXTTOME);
         }
 
         return ok(listCompanyDto);

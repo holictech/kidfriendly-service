@@ -7,7 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.ejbs.interfaces.ScheduleEJBLocal;
+import com.holictechnology.kidfriendly.ejbs.interfaces.ScheduleLocal;
 
 @Stateless
 @Path("/schedule")
@@ -19,7 +19,7 @@ public class ScheduleController extends AbstractController {
 	private static final long serialVersionUID = 273995064529353565L;
 	
 	@EJB
-	private ScheduleEJBLocal schedule;
+	private ScheduleLocal schedule;
 
 	@GET
 	@Path("/schedule")

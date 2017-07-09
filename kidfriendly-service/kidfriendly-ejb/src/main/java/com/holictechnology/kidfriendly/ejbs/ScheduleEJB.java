@@ -6,13 +6,13 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import com.holictechnology.kidfriendly.domain.entitys.Schedule;
-import com.holictechnology.kidfriendly.ejbs.interfaces.ScheduleEJBLocal;
+import com.holictechnology.kidfriendly.ejbs.interfaces.ScheduleLocal;
 
 /**
  * Session Bean implementation class ScheduleEJB
  */
 @Stateless
-public class ScheduleEJB extends AbstractEJB implements ScheduleEJBLocal {
+public class ScheduleEJB extends AbstractEJB implements ScheduleLocal {
 
     /**
 	 * 

@@ -1,7 +1,7 @@
 package com.holictechnology.kidfriendly.ejbs;
 
 import com.holictechnology.kidfriendly.domain.entitys.FoodType;
-import com.holictechnology.kidfriendly.ejbs.interfaces.TypeFoodEJBLocal;
+import com.holictechnology.kidfriendly.ejbs.interfaces.TypeFoodLocal;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import javax.persistence.Query;
  * Session Bean implementation class TypeFoodEJB
  */
 @Stateless
-public class TypeFoodEJB extends AbstractEJB implements TypeFoodEJBLocal {
+public class TypeFoodEJB extends AbstractEJB implements TypeFoodLocal {
 
     /**
 	 * 

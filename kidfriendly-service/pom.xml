@@ -12,6 +12,7 @@
 		<javaee-web-api.version>6.0</javaee-web-api.version>
 		<commons-lang3.version>3.0.1</commons-lang3.version>
 		<commons-io.version>2.5</commons-io.version>
+		<commons-email.version>1.4</commons-email.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<logback-classic.version>1.0.13</logback-classic.version>
 		<resteasy.version>3.0.9.Final</resteasy.version>

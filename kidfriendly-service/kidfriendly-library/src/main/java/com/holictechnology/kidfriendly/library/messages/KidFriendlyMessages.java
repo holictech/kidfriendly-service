@@ -19,7 +19,7 @@ public final class KidFriendlyMessages {
      * COMPANY
      */
     public static final String ERROR_LIST_COMPANY_SUGGESTIONS = "N\u00e3o foi poss\u00edvel listar os estabelecimentos de sugest\u00d5es.";
-    public static final String ERROR_LIST_COMpANY_NEXTTOME = "N\u00e3o foi poss\u00edvel listar os estabelecimentos pr\u00d3ximos.";
+    public static final String ERROR_LIST_COMPANY_NEXTTOME = "N\u00e3o foi poss\u00edvel listar os estabelecimentos pr\u00d3ximos.";
     public static final String ERROR_COMPANY_BY_PRIMARY_KEY = "N\u00e3o foi poss\u00edvel obter o estabelecimento.";
     public static final String ERROR_COMPANY_SAVE = "N\u00e3o foi poss\u00edvel cadastrar o estabelecimento.";
 
@@ -63,4 +63,10 @@ public final class KidFriendlyMessages {
      * USER
      */
     public static final String ERROR_INCLUDE_UPDATE_USER = "N\u00e3o foi poss\u00edvel salvar as suas informa\u00e7\u00f5es.";
+
+    /*
+     * EMAIL
+     */
+    public static final String ERROR_EMAIL_SEND = "N\u00e3o foi poss\u00edvel enviar sua mensagem.";
+    public static final String ERROR_EMAIL_NOT_RECIPIENT = "Destinat\u00e1rio n\u00e3o informado.";
 }

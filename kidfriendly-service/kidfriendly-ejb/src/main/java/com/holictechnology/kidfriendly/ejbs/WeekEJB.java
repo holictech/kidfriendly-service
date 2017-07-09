@@ -6,13 +6,13 @@ import javax.ejb.Stateless;
 import javax.persistence.Query;
 
 import com.holictechnology.kidfriendly.domain.entitys.Week;
-import com.holictechnology.kidfriendly.ejbs.interfaces.WeekEJBLocal;
+import com.holictechnology.kidfriendly.ejbs.interfaces.WeekLocal;
 
 /**
  * Session Bean implementation class WeekEJB
  */
 @Stateless
-public class WeekEJB extends AbstractEJB implements WeekEJBLocal {
+public class WeekEJB extends AbstractEJB implements WeekLocal {
 
     /**
 	 * 

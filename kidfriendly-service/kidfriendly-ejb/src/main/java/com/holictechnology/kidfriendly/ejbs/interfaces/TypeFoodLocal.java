@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import com.holictechnology.kidfriendly.domain.entitys.FoodType;
 
 @Local
-public interface TypeFoodEJBLocal {
+public interface TypeFoodLocal {
 
 	/**
 	 * Foods all

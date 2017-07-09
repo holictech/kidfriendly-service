@@ -7,7 +7,7 @@ import javax.ejb.Local;
 import com.holictechnology.kidfriendly.domain.entitys.Week;
 
 @Local
-public interface WeekEJBLocal {
+public interface WeekLocal {
 
 	/**
 	 * Method week all
