@@ -54,12 +54,24 @@ public final class ObjectUtilities implements Serializable {
      * @return
      */
     public static String utf8(String s) {
+        return conveterCharset(s, "UTF-8");
+    }
+
+    /**
+     * @param s
+     *            {@link String}
+     * @return
+     */
+    public static String iso88591(String s) {
+        return conveterCharset(s, "ISO-8859-1");
+    }
+
+    private static String conveterCharset(String s, final String charSet) {
         if (isNotEmptyOrNull(s)) {
             try {
-                s = new String(s.getBytes("UTF-8"));
+                s = new String(s.getBytes(charSet));
             } catch (UnsupportedEncodingException e) {}
         }
-
         return s;
     }
 }
