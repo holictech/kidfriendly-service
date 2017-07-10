@@ -15,6 +15,7 @@ import com.holictechnology.kidfriendly.domain.dtos.EmailDto;
 import com.holictechnology.kidfriendly.domain.dtos.EmailDto.Recipient;
 import com.holictechnology.kidfriendly.ejbs.interfaces.EmailLocal;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
+import com.holictechnology.kidfriendly.library.utilites.ObjectUtilities;
 
 
 @Stateless
@@ -33,7 +34,7 @@ public class EmailEJB extends AbstractEJB implements EmailLocal {
         try {
             illegalArgument(emailDto);
             SimpleEmail simpleEmail = new SimpleEmail();
-            simpleEmail.setMsg(emailDto.getMessage());
+            simpleEmail.setMsg(ObjectUtilities.utf8(emailDto.getMessage()));
             send(simpleEmail, emailDto);
         } catch (Exception exception) {
             getLogger(getClass()).error(exception.getMessage(), exception);
@@ -55,17 +56,17 @@ public class EmailEJB extends AbstractEJB implements EmailLocal {
         email.setStartTLSEnabled(Boolean.TRUE);
         email.setSSLOnConnect(Boolean.TRUE);
         email.setAuthenticator(new DefaultAuthenticator(USERNAME, PASSWORD));
-        email.setFrom(emailDto.getFromEmail(), emailDto.getFromName());
+        email.setFrom(emailDto.getFromEmail(), ObjectUtilities.utf8(emailDto.getFromName()));
 
         if (emailDto.getRecipients() != null && !emailDto.getRecipients().isEmpty()) {
             for (Recipient recipient : emailDto.getRecipients()) {
-                email.addTo(recipient.getEmail(), recipient.getName());
+                email.addTo(recipient.getEmail(), ObjectUtilities.utf8(recipient.getName()));
             }
         } else {
             throw new EmailException(KidFriendlyMessages.ERROR_EMAIL_NOT_RECIPIENT);
         }
 
-        email.setSubject(emailDto.getSubject());
+        email.setSubject(ObjectUtilities.utf8(emailDto.getSubject()));
         email.send();
     }
 }

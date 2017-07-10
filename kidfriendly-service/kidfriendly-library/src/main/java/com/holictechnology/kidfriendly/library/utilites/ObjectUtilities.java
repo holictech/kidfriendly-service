@@ -2,6 +2,7 @@ package com.holictechnology.kidfriendly.library.utilites;
 
 
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 
@@ -45,5 +46,20 @@ public final class ObjectUtilities implements Serializable {
      */
     public static boolean isNotEmptyOrNull(Collection<?> c) {
         return !isEmptyOrNull(c);
+    }
+
+    /**
+     * @param s
+     *            {@link String}
+     * @return
+     */
+    public static String utf8(String s) {
+        if (isNotEmptyOrNull(s)) {
+            try {
+                s = new String(s.getBytes("UTF-8"));
+            } catch (UnsupportedEncodingException e) {}
+        }
+
+        return s;
     }
 }
