@@ -21,16 +21,15 @@ import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 public class EmailEJB extends AbstractEJB implements EmailLocal {
 
     private static final long serialVersionUID = -4488307229929149557L;
-    private static final String HOST_NAME = "smtp.gmail.com";
-    private static final int SMTP_PORT = 587;
-    private static final String USERNAME = "holictechnology@gmail.com";
-    private static final String PASSWORD = "fabiane0912@";
+    private static final String HOST_NAME = "mail.kidfriendly.com.br";
+    private static final int SMTP_PORT = 25;
+    private static final String USERNAME = "contatos@kidfriendly.com.br";
+    private static final String PASSWORD = "@123456holic";
 
     @Override
     @Asynchronous
     @Transactional(value = TxType.NOT_SUPPORTED)
     public void sendSimpleEmail(EmailDto emailDto) {
-
         try {
             illegalArgument(emailDto);
             SimpleEmail simpleEmail = new SimpleEmail();
