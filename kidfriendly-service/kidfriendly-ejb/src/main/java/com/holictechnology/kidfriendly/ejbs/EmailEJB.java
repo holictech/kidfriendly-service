@@ -34,7 +34,7 @@ public class EmailEJB extends AbstractEJB implements EmailLocal {
         try {
             illegalArgument(emailDto);
             SimpleEmail simpleEmail = new SimpleEmail();
-            simpleEmail.setMsg(ObjectUtilities.iso88591(emailDto.getMessage()));
+            simpleEmail.setMsg(ObjectUtilities.utf8(emailDto.getMessage()));
             send(simpleEmail, emailDto);
         } catch (Exception exception) {
             getLogger(getClass()).error(exception.getMessage(), exception);
@@ -56,17 +56,17 @@ public class EmailEJB extends AbstractEJB implements EmailLocal {
         email.setStartTLSEnabled(Boolean.TRUE);
         email.setSSLOnConnect(Boolean.TRUE);
         email.setAuthenticator(new DefaultAuthenticator(USERNAME, PASSWORD));
-        email.setFrom(emailDto.getFromEmail(), ObjectUtilities.iso88591(emailDto.getFromName()));
+        email.setFrom(emailDto.getFromEmail(), ObjectUtilities.utf8(emailDto.getFromName()));
 
         if (emailDto.getRecipients() != null && !emailDto.getRecipients().isEmpty()) {
             for (Recipient recipient : emailDto.getRecipients()) {
-                email.addTo(recipient.getEmail(), ObjectUtilities.iso88591(recipient.getName()));
+                email.addTo(recipient.getEmail(), ObjectUtilities.utf8(recipient.getName()));
             }
         } else {
             throw new EmailException(KidFriendlyMessages.ERROR_EMAIL_NOT_RECIPIENT);
         }
 
-        email.setSubject(ObjectUtilities.iso88591(emailDto.getSubject()));
+        email.setSubject(ObjectUtilities.utf8(emailDto.getSubject()));
         email.send();
     }
 }
