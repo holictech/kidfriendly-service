@@ -73,7 +73,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * listSuggestions(java.lang.Integer)
      */
     @Override
-    @SuppressWarnings("unchecked")
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<CompanyDto> listSuggestions(final Integer limit) throws KidFriendlyException {
         illegalArgument(limit);
@@ -86,17 +85,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         sql.append(") AS TEMP ORDER BY TEMP.ST_HIGHLIGHT DESC, TEMP.NUM_RATE DESC, TEMP.DES_NAME ");
         Query query = entityManager.createNativeQuery(sql.toString());
         query.setParameter("limit", limit);
-        CompanyDto companyDto = null;
-        Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
 
-        for (Object [] item : (List<Object []>) query.getResultList()) {
-            companyDto = new CompanyDto();
-            companyDto.setIdCompany((Long) item[0]);
-            companyDto.setMgHome((byte []) item[1]);
-            listCompanyDto.add(companyDto);
-        }
-
-        return listCompanyDto;
+        return createResult(query);
     }
 
     /*
@@ -107,7 +97,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * (java.lang.Integer, java.lang.Double, java.lang.Double)
      */
     @Override
-    @SuppressWarnings("unchecked")
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<CompanyDto> listNextToMe(final Integer limit, final Double longitude, final Double latitude) throws KidFriendlyException {
         illegalArgument(limit);
@@ -124,17 +113,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         query.setParameter("latitude", latitude);
         query.setFirstResult(BigInteger.ZERO.intValue());
         query.setMaxResults(limit);
-        CompanyDto companyDto = null;
-        Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
 
-        for (Object [] item : (List<Object []>) query.getResultList()) {
-            companyDto = new CompanyDto();
-            companyDto.setIdCompany((Long) item[0]);
-            companyDto.setMgHome((byte []) item[1]);
-            listCompanyDto.add(companyDto);
-        }
-
-        return listCompanyDto;
+        return createResult(query);
     }
 
     /*
@@ -151,18 +131,18 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         Query query = entityManager.createNativeQuery(createSqlCount(createSqlSearch(companyFilterDto, Boolean.FALSE)).toString());
         setParametersSqlSearch(query, companyFilterDto);
         companyFilterDto.getPaginatorDto().setSize(((Number) query.getSingleResult()).longValue());
-        List<CompanyDto> companys = new LinkedList<CompanyDto>();
+        List<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
 
         if (companyFilterDto.getPaginatorDto().getSize() > BigInteger.ZERO.intValue()) {
             query = entityManager.createNativeQuery(createSqlSearch(companyFilterDto, Boolean.TRUE).toString());
             setParametersSqlSearch(query, companyFilterDto);
             setParametersPaginator(query, companyFilterDto.getPaginatorDto());
-            // companys.addAll(createResult(query.getResultList()));
+            listCompanyDto.addAll(createResult(query));
         }
 
         ResultDto<CompanyDto> resultDto = new ResultDto<CompanyDto>();
         resultDto.setPaginatorDto(companyFilterDto.getPaginatorDto());
-        resultDto.setResults(companys);
+        resultDto.setResults(listCompanyDto);
 
         return resultDto;
     }
@@ -173,14 +153,16 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     private StringBuffer createSqlSearch(final CompanyFilterDto companyFilterDto, final boolean isOrderBy) {
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
+        sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO ");
         sql.append("FROM COMPANY AS company ");
         sql.append(createSqlSearch(companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics()));
-        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "")
-                + ") ");
-        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE"
-                + ((companyFilterDto.getIdState() != null) ? " AND state.ID_STATE = :idState" : "") + ") ");
+        
+        if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null) {
+            sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
+            sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
+            sql.append(((companyFilterDto.getIdState() != null) ? "INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE AND state.ID_STATE = :idState) " : " "));
+        }
+        
         sql.append("WHERE company.ST_ACTIVE = 1 ");
         sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? " AND company.DES_NAME LIKE :desNameCompany" : " "));
         sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : " "));
@@ -189,8 +171,8 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
                         + KM_DISTANCE + "/" + KM_DEGREE + ")), POINT(:longitude+" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude+("
                         + KM_DISTANCE + "/" + KM_DEGREE + ")))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
                 : ""));
-        sql.append("GROUP BY company.ID_COMPANY, company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.ST_HIGHLIGHT, city.DES_CITY, state.DES_SIGLA ");
-        sql.append(((isOrderBy) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : " "));
+        sql.append("GROUP BY company.ID_COMPANY, company.IMG_LOGO ");
+        sql.append(((isOrderBy) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : ""));
 
         return sql;
     }
@@ -265,6 +247,25 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         }
     }
 
+    /**
+     * @param query
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    private Collection<CompanyDto> createResult(Query query) {
+        Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
+        CompanyDto companyDto = null;
+
+        for (Object [] item : (List<Object []>) query.getResultList()) {
+            companyDto = new CompanyDto();
+            companyDto.setIdCompany((Long) item[0]);
+            companyDto.setMgHome((byte []) item[1]);
+            listCompanyDto.add(companyDto);
+        }
+
+        return listCompanyDto;
+    }
+
     @Override
     public CompanyDto saveCompany(CompanyDto companyDto) throws KidFriendlyException {
         Company company = CompanyToCompanyDto.getInstance().companyDtoToCompany(companyDto);
@@ -283,7 +284,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         companyAux = new Company();
 
         companyDto.setIdCompany(company.getIdCompany());
-        
+
         saveHourDate(company, companyDto.getHourDateDtos());
         savePhone(companyDto, company);
         saveTypeFood(companyDto.getTypeFood(), company);
@@ -296,44 +297,45 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
         return companyDto;
     }
-    
-    private void saveTypeFood(Long type, Company company){
-    	CompanyFoodTypePK companyFoodTypePK = new CompanyFoodTypePK();
-    	companyFoodTypePK.setCompany(company);
-    	FoodType foodType = new FoodType();
-    	foodType.setIdFoodType(type);
-    	companyFoodTypePK.setFoodType(foodType);
-    	CompanyFoodType companyFoodType = new CompanyFoodType();
-    	companyFoodType.setCompanyFoodTypePK(companyFoodTypePK);
-    	
-    	entityManager.persist(companyFoodType);
+
+    private void saveTypeFood(Long type, Company company) {
+        CompanyFoodTypePK companyFoodTypePK = new CompanyFoodTypePK();
+        companyFoodTypePK.setCompany(company);
+        FoodType foodType = new FoodType();
+        foodType.setIdFoodType(type);
+        companyFoodTypePK.setFoodType(foodType);
+        CompanyFoodType companyFoodType = new CompanyFoodType();
+        companyFoodType.setCompanyFoodTypePK(companyFoodTypePK);
+
+        entityManager.persist(companyFoodType);
     }
-    
+
     /**
      * Save hour and date
+     * 
      * @param company
      * @param hourDateDtos
      */
-    private void saveHourDate(Company company, List<HourDateDto> hourDateDtos){
-    	for(HourDateDto dto : hourDateDtos){
-    		CompanyWeekSchedulePK companyWeekSchedulePK = new CompanyWeekSchedulePK();
-    		Week week = new Week();
-    		Schedule schedule = new Schedule();
-    		Schedule scheduleFinish = new Schedule();
-    		week.setIdWeek(dto.getWeek());
-    		schedule.setIdSchedule(dto.getHourInitial());
-    		scheduleFinish.setIdSchedule(dto.getHourFinish());
-    		
-    		companyWeekSchedulePK.setCompany(company);
-    		companyWeekSchedulePK.setSchedule(schedule);
-    		companyWeekSchedulePK.setScheduleFinish(scheduleFinish);
-    		companyWeekSchedulePK.setWeek(week);
-    		
-    		CompanyWeekSchedule companyWeekSchedule = new CompanyWeekSchedule();
-    		companyWeekSchedule.setCompanyWeekSchedulePK(companyWeekSchedulePK);
-    		
-    		entityManager.persist(companyWeekSchedule);
-    	}
+    private void saveHourDate(Company company, List<HourDateDto> hourDateDtos) {
+        for (HourDateDto dto : hourDateDtos) {
+            CompanyWeekSchedulePK companyWeekSchedulePK = new CompanyWeekSchedulePK();
+            Week week = new Week();
+            Schedule schedule = new Schedule();
+            Schedule scheduleFinish = new Schedule();
+            week.setIdWeek(dto.getWeek());
+            schedule.setIdSchedule(dto.getHourInitial());
+            scheduleFinish.setIdSchedule(dto.getHourFinish());
+
+            companyWeekSchedulePK.setCompany(company);
+            companyWeekSchedulePK.setSchedule(schedule);
+            companyWeekSchedulePK.setScheduleFinish(scheduleFinish);
+            companyWeekSchedulePK.setWeek(week);
+
+            CompanyWeekSchedule companyWeekSchedule = new CompanyWeekSchedule();
+            companyWeekSchedule.setCompanyWeekSchedulePK(companyWeekSchedulePK);
+
+            entityManager.persist(companyWeekSchedule);
+        }
     }
 
     /**
@@ -359,10 +361,10 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
                     companyCategoryCharacteristicPK.setCompany(company);
                     CompanyCategoryCharacteristic companyCategoryCharacteristic = new CompanyCategoryCharacteristic();
                     companyCategoryCharacteristic.setCompanyCategoryCharacteristicPK(companyCategoryCharacteristicPK);
-                    
+
                     CompanyCategoryCharacteristic categoryCharacterist = new CompanyCategoryCharacteristic();
                     categoryCharacterist.setCompanyCategoryCharacteristicPK(companyCategoryCharacteristicPK);
-                    
+
                     persist(categoryCharacterist);
                 }
             }
@@ -470,17 +472,17 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     public void preparImageSaveCompany(ImageDto imageDto) {
         Image image = null;
 
-        if(imageDto.getType() == 0){
-	        if (!images.isEmpty()) {
-	            image = images.get(0);
-	        }
-	
-	        image = create(imageDto);
-	        images.add(image);
-        }else if(imageDto.getType() == 1){
-        	companyAux.setImgLogo(imageDto.getImgImage());
-        }else{
-        	companyAux.setMgHome(imageDto.getImgImage());
+        if (imageDto.getType() == 0) {
+            if (!images.isEmpty()) {
+                image = images.get(0);
+            }
+
+            image = create(imageDto);
+            images.add(image);
+        } else if (imageDto.getType() == 1) {
+            companyAux.setImgLogo(imageDto.getImgImage());
+        } else {
+            companyAux.setMgHome(imageDto.getImgImage());
         }
     }
 
