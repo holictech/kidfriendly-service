@@ -155,22 +155,25 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO ");
         sql.append("FROM COMPANY AS company ");
-        sql.append(createSqlSearch(companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics()));
         
-        if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null) {
+        if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null || (companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)) {
             sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-            sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
-            sql.append(((companyFilterDto.getIdState() != null) ? "INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE AND state.ID_STATE = :idState) " : " "));
+            
+            if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null) {
+                sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
+                sql.append(((companyFilterDto.getIdState() != null) ? "INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE AND state.ID_STATE = :idState) " : " "));
+            }
         }
         
+        sql.append(createSqlSearch(companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics()));
         sql.append("WHERE company.ST_ACTIVE = 1 ");
         sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? " AND company.DES_NAME LIKE :desNameCompany" : " "));
-        sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : " "));
         sql.append(((companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)
                 ? "AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude-("
                         + KM_DISTANCE + "/" + KM_DEGREE + ")), POINT(:longitude+" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude+("
                         + KM_DISTANCE + "/" + KM_DEGREE + ")))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
                 : ""));
+        sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : " "));
         sql.append("GROUP BY company.ID_COMPANY, company.IMG_LOGO ");
         sql.append(((isOrderBy) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : ""));
 
@@ -205,10 +208,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @param companyFilterDto
      */
     private void setParametersSqlSearch(final Query query, final CompanyFilterDto companyFilterDto) {
-        if (ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany())) {
-            query.setParameter("desNameCompany", "%" + companyFilterDto.getDesNameCompany() + "%");
-        }
-
         if (companyFilterDto.getIdCity() != null) {
             query.setParameter("idCity", companyFilterDto.getIdCity());
         }
@@ -216,17 +215,21 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         if (companyFilterDto.getIdState() != null) {
             query.setParameter("idState", companyFilterDto.getIdState());
         }
-
-        if (companyFilterDto.isSuperKidFriendly()) {
-            query.setParameter("superKidFriendly", StatusKidFriendlyEnum.SUPER.getValue());
+        
+        if (ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany())) {
+            query.setParameter("desNameCompany", "%" + companyFilterDto.getDesNameCompany() + "%");
         }
-
-        setParametersSqlSearch(query, companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics());
 
         if (companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null) {
             query.setParameter("longitude", companyFilterDto.getLongitude());
             query.setParameter("latitude", companyFilterDto.getLatitude());
         }
+        
+        if (companyFilterDto.isSuperKidFriendly()) {
+            query.setParameter("superKidFriendly", StatusKidFriendlyEnum.SUPER.getValue());
+        }
+        
+        setParametersSqlSearch(query, companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics());
     }
 
     /**
