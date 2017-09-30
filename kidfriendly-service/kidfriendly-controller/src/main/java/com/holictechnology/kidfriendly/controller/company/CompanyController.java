@@ -20,14 +20,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
-import com.holictechnology.kidfriendly.domain.dtos.ImageDto;
-import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
-import com.holictechnology.kidfriendly.domain.entitys.Company;
-import com.holictechnology.kidfriendly.ejbs.interfaces.CategoryLocal;
-import com.holictechnology.kidfriendly.ejbs.interfaces.CharacteristicLocal;
-import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
-import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
+import com.holictechnology.kidfriendly.domain.dto.CompanyDto;
+import com.holictechnology.kidfriendly.domain.dto.ImageDto;
+import com.holictechnology.kidfriendly.domain.dto.paginator.PaginatorDto;
+import com.holictechnology.kidfriendly.domain.entity.Company;
+import com.holictechnology.kidfriendly.ejb.interfaces.CategoryLocal;
+import com.holictechnology.kidfriendly.ejb.interfaces.CharacteristicLocal;
+import com.holictechnology.kidfriendly.ejb.interfaces.CompanyLocal;
+import com.holictechnology.kidfriendly.ejb.interfaces.RatingLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 

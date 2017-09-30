@@ -11,10 +11,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
-import com.holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto;
-import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
-import com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal;
+import com.holictechnology.kidfriendly.domain.dto.CompanyDto;
+import com.holictechnology.kidfriendly.domain.dto.filter.CompanyFilterDto;
+import com.holictechnology.kidfriendly.domain.dto.result.ResultDto;
+import com.holictechnology.kidfriendly.ejb.interfaces.CompanyLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 

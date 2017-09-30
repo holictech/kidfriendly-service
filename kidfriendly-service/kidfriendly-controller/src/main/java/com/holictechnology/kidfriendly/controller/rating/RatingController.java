@@ -17,11 +17,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.domain.dtos.RatingDto;
-import com.holictechnology.kidfriendly.domain.dtos.paginator.PaginatorDto;
-import com.holictechnology.kidfriendly.domain.dtos.result.ResultDto;
-import com.holictechnology.kidfriendly.domain.entitys.Rating;
-import com.holictechnology.kidfriendly.ejbs.interfaces.RatingLocal;
+import com.holictechnology.kidfriendly.domain.dto.RatingDto;
+import com.holictechnology.kidfriendly.domain.dto.paginator.PaginatorDto;
+import com.holictechnology.kidfriendly.domain.dto.result.ResultDto;
+import com.holictechnology.kidfriendly.domain.entity.Rating;
+import com.holictechnology.kidfriendly.ejb.interfaces.RatingLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 

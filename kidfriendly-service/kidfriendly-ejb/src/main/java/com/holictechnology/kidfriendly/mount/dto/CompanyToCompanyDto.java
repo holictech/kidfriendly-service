@@ -4,14 +4,14 @@ package com.holictechnology.kidfriendly.mount.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.holictechnology.kidfriendly.domain.dtos.CompanyDto;
-import com.holictechnology.kidfriendly.domain.dtos.PhoneDto;
-import com.holictechnology.kidfriendly.domain.entitys.Address;
-import com.holictechnology.kidfriendly.domain.entitys.City;
-import com.holictechnology.kidfriendly.domain.entitys.Company;
-import com.holictechnology.kidfriendly.domain.entitys.Image;
-import com.holictechnology.kidfriendly.domain.entitys.Phone;
-import com.holictechnology.kidfriendly.domain.enums.TypePhoneEnum;
+import com.holictechnology.kidfriendly.domain.dto.CompanyDto;
+import com.holictechnology.kidfriendly.domain.dto.PhoneDto;
+import com.holictechnology.kidfriendly.domain.entity.Address;
+import com.holictechnology.kidfriendly.domain.entity.City;
+import com.holictechnology.kidfriendly.domain.entity.Company;
+import com.holictechnology.kidfriendly.domain.entity.Image;
+import com.holictechnology.kidfriendly.domain.entity.Phone;
+import com.holictechnology.kidfriendly.domain.enumerator.TypePhoneEnum;
 
 
 /**

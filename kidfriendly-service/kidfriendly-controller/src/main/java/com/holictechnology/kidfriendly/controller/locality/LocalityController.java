@@ -14,10 +14,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.domain.entitys.City;
-import com.holictechnology.kidfriendly.domain.entitys.Country;
-import com.holictechnology.kidfriendly.domain.entitys.State;
-import com.holictechnology.kidfriendly.ejbs.interfaces.LocalityLocal;
+import com.holictechnology.kidfriendly.domain.entity.City;
+import com.holictechnology.kidfriendly.domain.entity.Country;
+import com.holictechnology.kidfriendly.domain.entity.State;
+import com.holictechnology.kidfriendly.ejb.interfaces.LocalityLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 

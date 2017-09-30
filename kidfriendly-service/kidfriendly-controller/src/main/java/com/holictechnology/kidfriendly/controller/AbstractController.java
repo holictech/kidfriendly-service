@@ -68,7 +68,10 @@ public abstract class AbstractController implements Serializable {
      * @return
      */
     protected Response ok(Object object) {
-        return Response.ok(object).build();
+        // return Response.ok(object).build();
+        return Response.ok(object).header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization").header("Access-Control-Allow-Credentials", "true")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD").header("Access-Control-Max-Age", "1209600").build();
     }
 
     /**

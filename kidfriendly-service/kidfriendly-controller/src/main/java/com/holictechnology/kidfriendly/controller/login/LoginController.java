@@ -18,10 +18,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
-import com.holictechnology.kidfriendly.domain.entitys.Login;
-import com.holictechnology.kidfriendly.domain.entitys.User;
-import com.holictechnology.kidfriendly.ejbs.interfaces.LoginLocal;
+import com.holictechnology.kidfriendly.domain.dto.LoginDto;
+import com.holictechnology.kidfriendly.domain.entity.Login;
+import com.holictechnology.kidfriendly.domain.entity.User;
+import com.holictechnology.kidfriendly.ejb.interfaces.LoginLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 import com.holictechnology.kidfriendly.library.utilites.CriptographUtilities;

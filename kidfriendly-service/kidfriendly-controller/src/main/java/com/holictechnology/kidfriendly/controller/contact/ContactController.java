@@ -9,8 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.domain.dtos.EmailDto;
-import com.holictechnology.kidfriendly.ejbs.interfaces.ContactLocal;
+import com.holictechnology.kidfriendly.domain.dto.EmailDto;
+import com.holictechnology.kidfriendly.ejb.interfaces.ContactLocal;
 
 
 @Stateless

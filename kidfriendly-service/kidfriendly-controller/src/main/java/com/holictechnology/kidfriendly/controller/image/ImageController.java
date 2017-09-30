@@ -13,8 +13,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holictechnology.kidfriendly.controller.AbstractController;
-import com.holictechnology.kidfriendly.domain.entitys.Image;
-import com.holictechnology.kidfriendly.ejbs.interfaces.ImageLocal;
+import com.holictechnology.kidfriendly.domain.entity.Image;
+import com.holictechnology.kidfriendly.ejb.interfaces.ImageLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 

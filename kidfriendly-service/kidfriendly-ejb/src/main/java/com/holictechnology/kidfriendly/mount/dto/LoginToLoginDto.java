@@ -3,8 +3,8 @@ package com.holictechnology.kidfriendly.mount.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.holictechnology.kidfriendly.domain.dtos.LoginDto;
-import com.holictechnology.kidfriendly.domain.entitys.Login;
+import com.holictechnology.kidfriendly.domain.dto.LoginDto;
+import com.holictechnology.kidfriendly.domain.entity.Login;
 
 /**
  * Classa mount data login for logindto
