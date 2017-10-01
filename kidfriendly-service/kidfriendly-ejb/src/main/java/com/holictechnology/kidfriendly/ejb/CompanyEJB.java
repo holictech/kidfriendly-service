@@ -13,7 +13,9 @@ import javax.persistence.Query;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
+import com.holictechnology.kidfriendly.domain.dto.AddressDto;
 import com.holictechnology.kidfriendly.domain.dto.CategoryDto;
+import com.holictechnology.kidfriendly.domain.dto.CityDto;
 import com.holictechnology.kidfriendly.domain.dto.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dto.HourDateDto;
 import com.holictechnology.kidfriendly.domain.dto.ImageDto;
@@ -125,6 +127,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * holictechnology.kidfriendly.domain.dtos.filters.CompanyFilterDto)
      */
     @Override
+    @SuppressWarnings("unchecked")
     @Transactional(value = TxType.NOT_SUPPORTED)
     public ResultDto<CompanyDto> search(final CompanyFilterDto companyFilterDto) throws KidFriendlyException {
         illegalArgument(companyFilterDto);
@@ -137,7 +140,19 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             query = entityManager.createNativeQuery(createSqlSearch(companyFilterDto, Boolean.TRUE).toString());
             setParametersSqlSearch(query, companyFilterDto);
             setParametersPaginator(query, companyFilterDto.getPaginatorDto());
-            listCompanyDto.addAll(createResult(query));
+            CompanyDto companyDto = null;
+
+            for (Object [] item : (List<Object []>) query.getResultList()) {
+                companyDto = new CompanyDto();
+                companyDto.setIdCompany(new BigInteger(String.valueOf(item[0])).longValue());
+                companyDto.setMgHome((byte []) item[1]);
+                companyDto.setDesName((String) item[2]);
+                companyDto.setAddressDto(new AddressDto());
+                companyDto.getAddressDto().setCityDto(new CityDto());
+                companyDto.getAddressDto().getCityDto().setDesCity((String) item[3]);
+                companyDto.getAddressDto().getCityDto().setDesState((String) item[4]);
+                listCompanyDto.add(companyDto);
+            }
         }
 
         ResultDto<CompanyDto> resultDto = new ResultDto<CompanyDto>();
@@ -153,22 +168,11 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     private StringBuffer createSqlSearch(final CompanyFilterDto companyFilterDto, final boolean isOrderBy) {
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO, company.DES_NAME ");
+        sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO, company.DES_NAME, city.DES_CITY, state.DES_SIGLA  ");
         sql.append("FROM COMPANY AS company ");
-
-        if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null
-                || (companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)) {
-            sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-
-            if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null) {
-                sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY"
-                        + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
-                sql.append(((companyFilterDto.getIdState() != null)
-                        ? "INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE AND state.ID_STATE = :idState) "
-                        : " "));
-            }
-        }
-
+        sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
+        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
+        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE" + ((companyFilterDto.getIdState() != null) ? " AND state.ID_STATE = :idState" : "") + ") ");
         sql.append(createSqlSearch(companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics()));
         sql.append("WHERE company.ST_ACTIVE = 1 ");
         sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? " AND company.DES_NAME LIKE :desNameCompany" : " "));
@@ -268,6 +272,10 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             companyDto.setIdCompany(new BigInteger(String.valueOf(item[0])).longValue());
             companyDto.setMgHome((byte []) item[1]);
             companyDto.setDesName((String) item[2]);
+            companyDto.setAddressDto(new AddressDto());
+            companyDto.getAddressDto().setCityDto(new CityDto());
+            companyDto.getAddressDto().getCityDto().setDesCity((String) item[3]);
+            companyDto.getAddressDto().getCityDto().setDesState((String) item[4]);
             listCompanyDto.add(companyDto);
         }
 
