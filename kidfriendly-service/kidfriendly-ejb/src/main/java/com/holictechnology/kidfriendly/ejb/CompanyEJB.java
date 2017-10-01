@@ -155,16 +155,20 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO ");
         sql.append("FROM COMPANY AS company ");
-        
-        if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null || (companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)) {
+
+        if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null
+                || (companyFilterDto.getLongitude() != null && companyFilterDto.getLatitude() != null)) {
             sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-            
+
             if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null) {
-                sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
-                sql.append(((companyFilterDto.getIdState() != null) ? "INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE AND state.ID_STATE = :idState) " : " "));
+                sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY"
+                        + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
+                sql.append(((companyFilterDto.getIdState() != null)
+                        ? "INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE AND state.ID_STATE = :idState) "
+                        : " "));
             }
         }
-        
+
         sql.append(createSqlSearch(companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics()));
         sql.append("WHERE company.ST_ACTIVE = 1 ");
         sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? " AND company.DES_NAME LIKE :desNameCompany" : " "));
@@ -215,7 +219,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         if (companyFilterDto.getIdState() != null) {
             query.setParameter("idState", companyFilterDto.getIdState());
         }
-        
+
         if (ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany())) {
             query.setParameter("desNameCompany", "%" + companyFilterDto.getDesNameCompany() + "%");
         }
@@ -224,11 +228,11 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             query.setParameter("longitude", companyFilterDto.getLongitude());
             query.setParameter("latitude", companyFilterDto.getLatitude());
         }
-        
+
         if (companyFilterDto.isSuperKidFriendly()) {
             query.setParameter("superKidFriendly", StatusKidFriendlyEnum.SUPER.getValue());
         }
-        
+
         setParametersSqlSearch(query, companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics());
     }
 
@@ -261,7 +265,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
 
         for (Object [] item : (List<Object []>) query.getResultList()) {
             companyDto = new CompanyDto();
-            companyDto.setIdCompany((Long) item[0]);
+            companyDto.setIdCompany(new BigInteger(String.valueOf(item[0])).longValue());
             companyDto.setMgHome((byte []) item[1]);
             listCompanyDto.add(companyDto);
         }
