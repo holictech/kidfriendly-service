@@ -101,7 +101,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     public Collection<CompanyDto> listNextToMe(final Integer limit, final Double longitude, final Double latitude) throws KidFriendlyException {
         illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO ");
+        sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO, company.DES_NAME ");
         sql.append("FROM COMPANY AS company INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
         sql.append("WHERE company.ST_ACTIVE = 1 AND company.IMG_LOGO IS NOT NULL ");
         sql.append("AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude-("
@@ -153,7 +153,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     private StringBuffer createSqlSearch(final CompanyFilterDto companyFilterDto, final boolean isOrderBy) {
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO ");
+        sql.append("SELECT company.ID_COMPANY, company.IMG_LOGO, company.DES_NAME ");
         sql.append("FROM COMPANY AS company ");
 
         if (companyFilterDto.getIdCity() != null || companyFilterDto.getIdState() != null
@@ -267,6 +267,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             companyDto = new CompanyDto();
             companyDto.setIdCompany(new BigInteger(String.valueOf(item[0])).longValue());
             companyDto.setMgHome((byte []) item[1]);
+            companyDto.setDesName((String) item[2]);
             listCompanyDto.add(companyDto);
         }
 
