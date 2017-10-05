@@ -65,4 +65,10 @@ public class PaginatorDto implements Serializable {
 
         return pageTotal;
     }
+
+    public boolean isPagination() {
+        Long pageTotal = getPageTotal();
+
+        return !pageTotal.equals(BigInteger.ZERO.longValue()) && !getCurrentPage().equals(pageTotal);
+    }
 }
