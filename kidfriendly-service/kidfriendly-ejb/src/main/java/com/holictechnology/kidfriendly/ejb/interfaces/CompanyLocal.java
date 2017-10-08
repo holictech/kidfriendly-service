@@ -18,16 +18,6 @@ import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 public interface CompanyLocal {
 
     /**
-     * Method to find establishment.
-     * 
-     * @param primaryKey
-     * @param lazyAttributes
-     * @return
-     * @throws KidFriendlyException
-     */
-    Company find(Long primaryKey, final String ... lazyAttributes) throws KidFriendlyException;
-
-    /**
      * Method to list suggestions.
      * 
      * @param limit
