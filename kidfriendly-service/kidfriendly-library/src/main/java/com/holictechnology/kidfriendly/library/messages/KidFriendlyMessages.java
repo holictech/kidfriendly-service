@@ -70,4 +70,9 @@ public final class KidFriendlyMessages {
      * EMAIL
      */
     public static final String ERROR_EMAIL_NOT_RECIPIENT = "Destinat\u00e1rio n\u00e3o informado.";
+
+    /*
+     * FOOD TYPE
+     */
+    public static final String ERROR_LIST_FOOD_TYPE_BY_COMPANY = "N\\u00e3o foi poss\\u00edvel listar os tipos de comida do estabelecimento.";
 }

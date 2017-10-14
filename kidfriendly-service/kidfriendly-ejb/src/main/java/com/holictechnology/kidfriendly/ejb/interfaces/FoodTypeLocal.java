@@ -9,7 +9,7 @@ import com.holictechnology.kidfriendly.domain.entity.FoodType;
 
 
 @Local
-public interface TypeFoodLocal {
+public interface FoodTypeLocal {
 
     /**
      * Method that lists all types of food.
@@ -17,4 +17,12 @@ public interface TypeFoodLocal {
      * @return
      */
     List<FoodType> listAll();
+
+    /**
+     * Method that lists types of food for a company.
+     * 
+     * @param idCompany
+     * @return
+     */
+    List<FoodType> listByCompany(Long idCompany);
 }

@@ -42,7 +42,7 @@ kid.service('companyService', ['$http',
 	 * List type food
 	 */
 	this.getListTypeFood = function(uri){
-		return $http.get(uri + '/typefood/typefood/');
+		return $http.get(uri + '/foodtype/listall/');
 	};
 	
 	/**
