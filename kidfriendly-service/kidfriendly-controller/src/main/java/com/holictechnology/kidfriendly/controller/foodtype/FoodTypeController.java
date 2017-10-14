@@ -20,7 +20,7 @@ import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
 
 @Stateless
-@Path("/foodtype")
+@Path(value = "/foodtype")
 public class FoodTypeController extends AbstractController {
 
     private static final long serialVersionUID = 3068889304248681412L;
@@ -29,7 +29,7 @@ public class FoodTypeController extends AbstractController {
     private FoodTypeLocal foodTypeLocal;
 
     @GET
-    @Path("/listall")
+    @Path(value = "/listall")
     @Produces(value = MediaType.APPLICATION_JSON)
     public Response listAll() {
         return ok(foodTypeLocal.listAll());

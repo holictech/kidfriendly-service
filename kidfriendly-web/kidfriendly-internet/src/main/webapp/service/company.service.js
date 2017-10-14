@@ -35,7 +35,7 @@ kid.service('companyService', ['$http',
 	 * List schedule
 	 */
 	this.getListSchedule = function(uri){
-		return $http.get(uri + '/schedule/schedule/');
+		return $http.get(uri + '/schedule/listall/');
 	};
 	
 	/**
@@ -49,14 +49,14 @@ kid.service('companyService', ['$http',
 	 * List week
 	 */
 	this.getListWeek = function(uri){
-		return $http.get(uri + '/week/week/');
+		return $http.get(uri + '/week/listall/');
 	};
 	
 	/**
 	 * List Characteristic
 	 */
-	this.getListCharacteristic = function(uri, category){
-		return $http.get(uri + '/characteristic/listbycategory/'+category);
+	this.getListCharacteristic = function(uri, idCategory){
+		return $http.get(uri + '/characteristic/listbycategory/' + idCategory);
 	};
 	
 	/**
