@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 public class DateUtilities implements Serializable {
@@ -45,6 +47,18 @@ public class DateUtilities implements Serializable {
     }
 
     /**
+     * Method that gets the day of the week.
+     * 
+     * @return
+     */
+    public static int getDayOfWeek() {
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+
+        return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    /**
      * @param amountToAddSubtract
      * @param temporalUnit
      * @param pattern
@@ -55,6 +69,5 @@ public class DateUtilities implements Serializable {
         localDate = localDate.plus(amountToAddSubtract, temporalUnit);
 
         return localDate.format(DateTimeFormatter.ofPattern(pattern));
-        
     }
 }

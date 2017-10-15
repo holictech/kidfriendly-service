@@ -137,9 +137,11 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
                 companyDto.setMgHome((byte []) item[3]);
                 companyDto.setImgLogo((byte []) item[4]);
                 companyDto.setAddressDto(new AddressDto());
+                companyDto.getAddressDto().setNumLatitude((Double) item[5]);
+                companyDto.getAddressDto().setNumLongitude((Double) item[6]);
                 companyDto.getAddressDto().setCityDto(new CityDto());
-                companyDto.getAddressDto().getCityDto().setDesCity((String) item[5]);
-                companyDto.getAddressDto().getCityDto().setDesState((String) item[6]);
+                companyDto.getAddressDto().getCityDto().setDesCity((String) item[7]);
+                companyDto.getAddressDto().getCityDto().setDesState((String) item[8]);
                 listCompanyDto.add(companyDto);
             }
         }
@@ -157,7 +159,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     private StringBuffer createSqlSearch(final CompanyFilterDto companyFilterDto, final boolean isOrderBy) {
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.NUM_RATE, company.MG_HOME, company.IMG_LOGO, city.DES_CITY, state.DES_SIGLA ");
+        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.NUM_RATE, company.MG_HOME, company.IMG_LOGO, address.NUM_LATITUDE, address.NUM_LONGITUDE, city.DES_CITY, state.DES_SIGLA ");
         sql.append("FROM COMPANY AS company ");
         sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
         sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
