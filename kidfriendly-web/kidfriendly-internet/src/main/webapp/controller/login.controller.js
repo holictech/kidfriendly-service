@@ -5,15 +5,10 @@ kid.controller('loginController', ['$scope', 'loginService', '$state', '$cookieS
 	$scope.cssMessage = "";
 	$scope.visibleMessage = false;
 	
-	$scope.login = function(){
-		$state.go('initial');
-	};
-	
 	/**
 	 * Efective login user in system
 	 */
 	$scope.entrace = function(){
-		$state.go('initial');
 		loginService.getLogin(util.getUri(), $scope.username, $scope.password).success(function(data, status, headers, config) {
 			if(data != null && data != '' && data != undefined){
 				$state.go('initial');
