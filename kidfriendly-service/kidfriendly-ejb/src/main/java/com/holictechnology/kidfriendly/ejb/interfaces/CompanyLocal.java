@@ -11,6 +11,7 @@ import com.holictechnology.kidfriendly.domain.dto.ImageDto;
 import com.holictechnology.kidfriendly.domain.dto.filter.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dto.result.ResultDto;
 import com.holictechnology.kidfriendly.domain.entity.Company;
+import com.holictechnology.kidfriendly.domain.entity.Phone;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 
 
@@ -90,4 +91,12 @@ public interface CompanyLocal {
      * @return
      */
     void preparImageSaveCompany(ImageDto imageDto);
+
+    /**
+     * Method that lists the company's phones.
+     * 
+     * @param idCompany
+     * @return
+     */
+    List<Phone> listPhonesByCompany(Long idCompany);
 }

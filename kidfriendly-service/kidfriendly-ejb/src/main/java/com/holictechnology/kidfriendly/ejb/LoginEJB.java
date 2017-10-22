@@ -89,6 +89,7 @@ public class LoginEJB extends AbstractEJB implements LoginLocal {
     }
 
     @Override
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public Login login(String user, String pws) {
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT l FROM Login l WHERE l.stActive = :stActive AND l.user = null ");

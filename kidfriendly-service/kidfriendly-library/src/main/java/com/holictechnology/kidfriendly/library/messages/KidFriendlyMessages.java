@@ -23,6 +23,7 @@ public final class KidFriendlyMessages {
     public static final String ERROR_COMPANY_BY_PRIMARY_KEY = "N\u00e3o foi poss\u00edvel obter o estabelecimento.";
     public static final String ERROR_COMPANY_SAVE = "N\u00e3o foi poss\u00edvel cadastrar o estabelecimento.";
     public static final String ERROR_COMPANY_SEARCH = "N\u00e3o foi poss\u00edvel pesquisar o estabelecimento.";
+    public static final String ERROR_COMPANY_DETAILS = "N\u00e3o foi poss\u00edvel obter os detalhes do estabelecimento.";
 
     /*
      * CHARACTERISTIC

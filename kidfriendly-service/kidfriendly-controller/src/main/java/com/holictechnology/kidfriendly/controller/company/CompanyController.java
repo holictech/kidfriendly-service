@@ -2,6 +2,8 @@ package com.holictechnology.kidfriendly.controller.company;
 
 
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -19,7 +21,9 @@ import com.holictechnology.kidfriendly.controller.AbstractController;
 import com.holictechnology.kidfriendly.domain.dto.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dto.ImageDto;
 import com.holictechnology.kidfriendly.domain.entity.Company;
+import com.holictechnology.kidfriendly.ejb.interfaces.CharacteristicLocal;
 import com.holictechnology.kidfriendly.ejb.interfaces.CompanyLocal;
+import com.holictechnology.kidfriendly.ejb.interfaces.WeekLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 
@@ -32,6 +36,12 @@ public class CompanyController extends AbstractController {
 
     @EJB
     private CompanyLocal companyLocal;
+
+    @EJB
+    private WeekLocal weekLocal;
+
+    @EJB
+    private CharacteristicLocal characteristicLocal;
 
     @POST
     @Path("/register-company")
@@ -74,5 +84,21 @@ public class CompanyController extends AbstractController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editCompany(Company company) {
         return ok(companyLocal.editCompany(company));
+    }
+
+    @GET
+    @Path(value = "/details/{idCompany}")
+    public Response details(@PathParam(value = "idCompany") Long idCompany) throws KidFriendlyException {
+        Map<String, Object> details = new HashMap<String, Object>();
+
+        try {
+            details.put("phones", companyLocal.listPhonesByCompany(idCompany));
+            details.put("weeks", weekLocal.listByCompany(idCompany));
+            details.put("characteristics", characteristicLocal.listByCompanyCategory(idCompany, null));
+        } catch (Exception e) {
+            error(getClass(), e, KidFriendlyMessages.ERROR_COMPANY_DETAILS);
+        }
+
+        return ok(details);
     }
 }

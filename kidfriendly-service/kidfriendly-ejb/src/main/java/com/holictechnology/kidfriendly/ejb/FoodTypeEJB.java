@@ -4,6 +4,8 @@ package com.holictechnology.kidfriendly.ejb;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import com.holictechnology.kidfriendly.domain.entity.FoodType;
 import com.holictechnology.kidfriendly.ejb.interfaces.FoodTypeLocal;
@@ -24,6 +26,7 @@ public class FoodTypeEJB extends AbstractEJB implements FoodTypeLocal {
      * com.holictechnology.kidfriendly.ejb.interfaces.TypeFoodLocal#listAll()
      */
     @Override
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public List<FoodType> listAll() {
         return entityManager.createQuery("SELECT foodType FROM FoodType AS foodType ORDER BY foodType.dsFoodType ASC", FoodType.class).getResultList();
     }
@@ -35,6 +38,7 @@ public class FoodTypeEJB extends AbstractEJB implements FoodTypeLocal {
      * listByCompany(java.lang.Long)
      */
     @Override
+    @Transactional(value = TxType.NOT_SUPPORTED)
     public List<FoodType> listByCompany(Long idCompany) {
         StringBuffer hql = new StringBuffer();
         hql.append("SELECT foodType ");
