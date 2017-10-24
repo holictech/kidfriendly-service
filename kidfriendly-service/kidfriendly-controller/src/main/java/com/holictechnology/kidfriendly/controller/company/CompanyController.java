@@ -92,6 +92,7 @@ public class CompanyController extends AbstractController {
         Map<String, Object> details = new HashMap<String, Object>();
 
         try {
+            details.put("address", companyLocal.findAddressByCompany(idCompany));
             details.put("phones", companyLocal.listPhonesByCompany(idCompany));
             details.put("weeks", weekLocal.listByCompany(idCompany));
             details.put("characteristics", characteristicLocal.listByCompanyCategory(idCompany, null));

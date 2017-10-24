@@ -10,6 +10,7 @@ import com.holictechnology.kidfriendly.domain.dto.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dto.ImageDto;
 import com.holictechnology.kidfriendly.domain.dto.filter.CompanyFilterDto;
 import com.holictechnology.kidfriendly.domain.dto.result.ResultDto;
+import com.holictechnology.kidfriendly.domain.entity.Address;
 import com.holictechnology.kidfriendly.domain.entity.Company;
 import com.holictechnology.kidfriendly.domain.entity.Phone;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
@@ -99,4 +100,12 @@ public interface CompanyLocal {
      * @return
      */
     List<Phone> listPhonesByCompany(Long idCompany);
+
+    /**
+     * Method that searches the company's address.
+     * 
+     * @param idCompany
+     * @return
+     */
+    Address findAddressByCompany(Long idCompany);
 }

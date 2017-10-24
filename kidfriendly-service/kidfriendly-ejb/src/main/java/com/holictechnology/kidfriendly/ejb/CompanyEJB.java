@@ -67,7 +67,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT TEMP.* FROM (");
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.NUM_RATE, company.MG_HOME, company.IMG_LOGO, company.ST_HIGHLIGHT ");
+        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.MG_HOME, company.IMG_LOGO, company.NUM_RATE, company.DES_SITE, company.ST_HIGHLIGHT ");
         sql.append("FROM COMPANY AS company ");
         sql.append("WHERE company.ST_ACTIVE = 1 AND company.MG_HOME IS NOT NULL ");
         sql.append("ORDER BY RAND() LIMIT :limit ");
@@ -90,7 +90,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     public Collection<CompanyDto> listNextToMe(final Integer limit, final Double longitude, final Double latitude) throws KidFriendlyException {
         illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.NUM_RATE, company.MG_HOME, company.IMG_LOGO ");
+        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.MG_HOME, company.IMG_LOGO, company.NUM_RATE, company.DES_SITE ");
         sql.append("FROM COMPANY AS company INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
         sql.append("WHERE company.ST_ACTIVE = 1 AND company.IMG_LOGO IS NOT NULL ");
         sql.append("AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude-("
@@ -128,29 +128,21 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             setParametersSqlSearch(query, companyFilterDto);
             setParametersPaginator(query, companyFilterDto.getPaginatorDto());
             CompanyDto companyDto = null;
-            int index = 0;
+            int index = -1;
 
             for (Object [] item : (List<Object []>) query.getResultList()) {
                 companyDto = new CompanyDto();
-                companyDto.setIdCompany(new BigInteger(String.valueOf(item[0])).longValue());
+                companyDto.setIdCompany(new BigInteger(String.valueOf(item[++index])).longValue());
                 companyDto.setDesName((String) item[++index]);
-                companyDto.setNumRate((Short) item[++index]);
-                companyDto.setMgHome((byte []) item[++index]);
                 companyDto.setImgLogo((byte []) item[++index]);
+                companyDto.setNumRate((Short) item[++index]);
                 companyDto.setDesSite((String) item[++index]);
                 companyDto.setAddressDto(new AddressDto());
-                companyDto.getAddressDto().setDesStreet((String) item[++index]);
-                companyDto.getAddressDto().setNumStreet((Integer) item[++index]);
-                companyDto.getAddressDto().setDesComplement((String) item[++index]);
-                companyDto.getAddressDto().setDesNeighborhood((String) item[++index]);
-                companyDto.getAddressDto().setDescCode((String) item[++index]);
-                companyDto.getAddressDto().setNumLatitude((Double) item[++index]);
-                companyDto.getAddressDto().setNumLongitude((Double) item[++index]);
                 companyDto.getAddressDto().setCityDto(new CityDto());
                 companyDto.getAddressDto().getCityDto().setDesCity((String) item[++index]);
                 companyDto.getAddressDto().getCityDto().setDesState((String) item[++index]);
                 listCompanyDto.add(companyDto);
-                index = 0;
+                index = -1;
             }
         }
 
@@ -167,11 +159,15 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      */
     private StringBuffer createSqlSearch(final CompanyFilterDto companyFilterDto, final boolean isCounter) {
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY" + ((!isCounter) ? ", company.DES_NAME, company.NUM_RATE, company.MG_HOME, company.IMG_LOGO, company.DES_SITE, address.DES_STREET, address.NUM_STREET, address.DES_COMPLEMENT, address.DES_NEIGHBORHOOD, address.DES_CODE, address.NUM_LATITUDE, address.NUM_LONGITUDE, city.DES_CITY, state.DES_SIGLA ": " "));
+        sql.append("SELECT company.ID_COMPANY" + ((!isCounter)
+                ? ", company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.DES_SITE, city.DES_CITY, state.DES_SIGLA "
+                : " "));
         sql.append("FROM COMPANY AS company ");
         sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "") + ") ");
-        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE" + ((companyFilterDto.getIdState() != null) ? " AND state.ID_STATE = :idState" : "") + ") ");
+        sql.append("INNER JOIN CITY AS city ON (city.ID_CITY = address.ID_CITY" + ((companyFilterDto.getIdCity() != null) ? " AND city.ID_CITY = :idCity" : "")
+                + ") ");
+        sql.append("INNER JOIN STATE AS state ON (state.ID_STATE = city.ID_STATE"
+                + ((companyFilterDto.getIdState() != null) ? " AND state.ID_STATE = :idState" : "") + ") ");
         sql.append(createSqlSearch(companyFilterDto.getIdCategory(), companyFilterDto.getCharacteristics()));
         sql.append("WHERE company.ST_ACTIVE = 1 ");
         sql.append((ObjectUtilities.isNotEmptyOrNull(companyFilterDto.getDesNameCompany()) ? "AND company.DES_NAME LIKE :desNameCompany " : ""));
@@ -181,7 +177,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
                         + KM_DISTANCE + "/" + KM_DEGREE + ")))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) "
                 : ""));
         sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : ""));
-        sql.append("GROUP BY company.ID_COMPANY" + ((!isCounter) ? ", company.DES_NAME, company.NUM_RATE, company.MG_HOME, company.IMG_LOGO, company.DES_SITE, address.DES_STREET, address.NUM_STREET, address.DES_COMPLEMENT, address.DES_NEIGHBORHOOD, address.DES_CODE, address.NUM_LATITUDE, address.NUM_LONGITUDE, city.DES_CITY, state.DES_SIGLA ": " "));
+        sql.append("GROUP BY company.ID_COMPANY" + ((!isCounter)
+                ? ", company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.DES_SITE, city.DES_CITY, state.DES_SIGLA "
+                : " "));
         sql.append(((!isCounter) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : ""));
 
         return sql;
@@ -265,15 +263,18 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     private Collection<CompanyDto> createResult(Query query) {
         Collection<CompanyDto> listCompanyDto = new LinkedList<CompanyDto>();
         CompanyDto companyDto = null;
+        int index = -1;
 
         for (Object [] item : (List<Object []>) query.getResultList()) {
             companyDto = new CompanyDto();
-            companyDto.setIdCompany(new BigInteger(String.valueOf(item[0])).longValue());
-            companyDto.setDesName((String) item[1]);
-            companyDto.setNumRate((Short) item[2]);
-            companyDto.setMgHome((byte []) item[3]);
-            companyDto.setImgLogo((byte []) item[4]);
+            companyDto.setIdCompany(new BigInteger(String.valueOf(item[++index])).longValue());
+            companyDto.setDesName((String) item[++index]);
+            companyDto.setMgHome((byte []) item[++index]);
+            companyDto.setImgLogo((byte []) item[++index]);
+            companyDto.setNumRate((Short) item[++index]);
+            companyDto.setDesSite((String) item[++index]);
             listCompanyDto.add(companyDto);
+            index = -1;
         }
 
         return listCompanyDto;
@@ -527,7 +528,20 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         hql.append("FROM Phone AS phone ");
         hql.append("INNER JOIN phone.company AS company ");
         hql.append("WHERE company.idCompany = :idCompany");
-        
+
         return entityManager.createQuery(hql.toString(), Phone.class).setParameter("idCompany", idCompany).getResultList();
+    }
+
+    @Override
+    public Address findAddressByCompany(Long idCompany) {
+        StringBuffer hql = new StringBuffer();
+        hql.append("SELECT address ");
+        hql.append("FROM Company AS company ");
+        hql.append("INNER JOIN company.address AS address ");
+        hql.append("INNER JOIN FETCH address.city AS city ");
+        hql.append("INNER JOIN FETCH city.state ");
+        hql.append("WHERE company.idCompany = :idCompany");
+
+        return entityManager.createQuery(hql.toString(), Address.class).setParameter("idCompany", idCompany).getSingleResult();
     }
 }
