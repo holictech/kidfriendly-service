@@ -67,7 +67,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
         illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT TEMP.* FROM (");
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.MG_HOME, company.IMG_LOGO, company.NUM_RATE, company.DES_SITE, company.ST_HIGHLIGHT ");
+        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.MG_HOME, company.NUM_RATE, company.DES_SITE, company.ST_HIGHLIGHT ");
         sql.append("FROM COMPANY AS company ");
         sql.append("WHERE company.ST_ACTIVE = 1 AND company.MG_HOME IS NOT NULL ");
         sql.append("ORDER BY RAND() LIMIT :limit ");
@@ -90,9 +90,9 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     public Collection<CompanyDto> listNextToMe(final Integer limit, final Double longitude, final Double latitude) throws KidFriendlyException {
         illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.MG_HOME, company.IMG_LOGO, company.NUM_RATE, company.DES_SITE ");
+        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.MG_HOME, company.NUM_RATE, company.DES_SITE ");
         sql.append("FROM COMPANY AS company INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
-        sql.append("WHERE company.ST_ACTIVE = 1 AND company.IMG_LOGO IS NOT NULL ");
+        sql.append("WHERE company.ST_ACTIVE = 1 AND company.MG_HOME IS NOT NULL ");
         sql.append("AND ST_CONTAINS(ST_ENVELOPE(LineString(POINT(:longitude-" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude-("
                 + KM_DISTANCE + "/" + KM_DEGREE + ")), POINT(:longitude+" + KM_DISTANCE + "/ABS(COS(RADIANS(:latitude))*" + KM_DEGREE + "), :latitude+("
                 + KM_DISTANCE + "/" + KM_DEGREE + ")))), POINT(address.NUM_LONGITUDE, address.NUM_LATITUDE)) ");
@@ -134,7 +134,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
                 companyDto = new CompanyDto();
                 companyDto.setIdCompany(new BigInteger(String.valueOf(item[++index])).longValue());
                 companyDto.setDesName((String) item[++index]);
-                companyDto.setImgLogo((byte []) item[++index]);
                 companyDto.setNumRate((Short) item[++index]);
                 companyDto.setDesSite((String) item[++index]);
                 companyDto.setAddressDto(new AddressDto());
@@ -160,7 +159,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     private StringBuffer createSqlSearch(final CompanyFilterDto companyFilterDto, final boolean isCounter) {
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY" + ((!isCounter)
-                ? ", company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.DES_SITE, city.DES_CITY, state.DES_SIGLA "
+                ? ", company.DES_NAME, company.NUM_RATE, company.DES_SITE, city.DES_CITY, state.DES_SIGLA "
                 : " "));
         sql.append("FROM COMPANY AS company ");
         sql.append("INNER JOIN ADDRESS AS address ON (address.ID_ADDRESS = company.ID_ADDRESS) ");
@@ -178,7 +177,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
                 : ""));
         sql.append(((companyFilterDto.isSuperKidFriendly()) ? "AND company.NUM_RATE = :superKidFriendly " : ""));
         sql.append("GROUP BY company.ID_COMPANY" + ((!isCounter)
-                ? ", company.DES_NAME, company.IMG_LOGO, company.NUM_RATE, company.DES_SITE, city.DES_CITY, state.DES_SIGLA "
+                ? ", company.DES_NAME, company.NUM_RATE, company.DES_SITE, city.DES_CITY, state.DES_SIGLA "
                 : " "));
         sql.append(((!isCounter) ? "ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME " : ""));
 
@@ -270,7 +269,6 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
             companyDto.setIdCompany(new BigInteger(String.valueOf(item[++index])).longValue());
             companyDto.setDesName((String) item[++index]);
             companyDto.setMgHome((byte []) item[++index]);
-            companyDto.setImgLogo((byte []) item[++index]);
             companyDto.setNumRate((Short) item[++index]);
             companyDto.setDesSite((String) item[++index]);
             listCompanyDto.add(companyDto);
