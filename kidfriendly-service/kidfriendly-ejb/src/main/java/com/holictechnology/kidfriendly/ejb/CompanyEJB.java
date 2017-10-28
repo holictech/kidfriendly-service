@@ -4,6 +4,7 @@ package com.holictechnology.kidfriendly.ejb;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,21 +62,28 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
      * @see com.holictechnology.kidfriendly.ejbs.interfaces.CompanyLocal#
      * listSuggestions(java.lang.Integer)
      */
+    @SuppressWarnings("unchecked")
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<CompanyDto> listSuggestions(final Integer limit) throws KidFriendlyException {
-        illegalArgument(limit);
+        illegalArgument(limit);        
         StringBuffer sql = new StringBuffer();
-        sql.append("SELECT TEMP.* FROM (");
-        sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.MG_HOME, company.NUM_RATE, company.DES_SITE, company.ST_HIGHLIGHT ");
-        sql.append("FROM COMPANY AS company ");
+        sql.append("SELECT company.ID_COMPANY FROM COMPANY company ");
         sql.append("WHERE company.ST_ACTIVE = 1 AND company.MG_HOME IS NOT NULL ");
-        sql.append("ORDER BY RAND() LIMIT :limit ");
-        sql.append(") AS TEMP ORDER BY TEMP.ST_HIGHLIGHT DESC, TEMP.NUM_RATE DESC, TEMP.DES_NAME ");
-        Query query = entityManager.createNativeQuery(sql.toString());
-        query.setParameter("limit", limit);
+        sql.append("ORDER BY RAND() LIMIT :limit");
+        List<Number> listIdCompany = entityManager.createNativeQuery(sql.toString()).setParameter("limit", limit).getResultList();
 
-        return createResult(query);
+        if (!listIdCompany.isEmpty()) {
+            sql = new StringBuffer();
+            sql.append("SELECT company.ID_COMPANY, company.DES_NAME, company.MG_HOME, company.NUM_RATE, company.DES_SITE, company.ST_HIGHLIGHT ");
+            sql.append("FROM COMPANY AS company ");
+            sql.append("WHERE company.ID_COMPANY IN(:listIdCompany) ");
+            sql.append("ORDER BY company.ST_HIGHLIGHT DESC, company.NUM_RATE DESC, company.DES_NAME ");
+
+            return createResult(entityManager.createNativeQuery(sql.toString()).setParameter("listIdCompany", listIdCompany));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     /*
