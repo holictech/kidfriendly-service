@@ -21,8 +21,8 @@ import com.holictechnology.kidfriendly.controller.AbstractController;
 import com.holictechnology.kidfriendly.domain.dto.CompanyDto;
 import com.holictechnology.kidfriendly.domain.dto.ImageDto;
 import com.holictechnology.kidfriendly.domain.entity.Company;
-import com.holictechnology.kidfriendly.ejb.interfaces.CharacteristicLocal;
 import com.holictechnology.kidfriendly.ejb.interfaces.CompanyLocal;
+import com.holictechnology.kidfriendly.ejb.interfaces.FoodTypeLocal;
 import com.holictechnology.kidfriendly.ejb.interfaces.WeekLocal;
 import com.holictechnology.kidfriendly.library.exceptions.KidFriendlyException;
 import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
@@ -41,7 +41,7 @@ public class CompanyController extends AbstractController {
     private WeekLocal weekLocal;
 
     @EJB
-    private CharacteristicLocal characteristicLocal;
+    private FoodTypeLocal foodTypeLocal;
 
     @POST
     @Path("/register-company")
@@ -95,7 +95,7 @@ public class CompanyController extends AbstractController {
             details.put("address", companyLocal.findAddressByCompany(idCompany));
             details.put("phones", companyLocal.listPhonesByCompany(idCompany));
             details.put("weeks", weekLocal.listByCompany(idCompany));
-            details.put("characteristics", characteristicLocal.listByCompanyCategory(idCompany, null));
+            details.put("foodTypes", foodTypeLocal.listByCompany(idCompany));
         } catch (Exception e) {
             error(getClass(), e, KidFriendlyMessages.ERROR_COMPANY_DETAILS);
         }
