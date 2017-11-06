@@ -25,7 +25,7 @@ import com.holictechnology.kidfriendly.library.messages.KidFriendlyMessages;
 public class HomeController extends AbstractController {
 
     private static final long serialVersionUID = -8310756154712464910L;
-    private static final Integer DEFAULT_LIMIT = 20;
+    private static final Integer DEFAULT_LIMIT = 5;
 
     @EJB
     private CompanyLocal companyLocal;

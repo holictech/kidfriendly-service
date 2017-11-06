@@ -20,7 +20,7 @@ public class PaginatorDto implements Serializable {
     @QueryParam(value = "currentPage")
     private Long currentPage;
 
-    @DefaultValue(value = "20")
+    @DefaultValue(value = "10")
     @QueryParam(value = "pageSize")
     private Long pageSize;
 
