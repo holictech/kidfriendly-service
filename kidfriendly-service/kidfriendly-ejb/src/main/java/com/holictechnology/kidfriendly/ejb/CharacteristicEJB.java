@@ -75,4 +75,20 @@ public class CharacteristicEJB extends AbstractEJB implements CharacteristicLoca
 
         return typedQuery.getResultList();
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.holictechnology.kidfriendly.ejb.interfaces.CharacteristicLocal#
+     * listAll()
+     */
+    @Override
+    @Transactional(value = TxType.NOT_SUPPORTED)
+    public Collection<Characteristic> listAll() throws KidFriendlyException {
+        StringBuffer hql = new StringBuffer();
+        hql.append("SELECT characteristic FROM Characteristic AS characteristic ORDER BY characteristic.desCharacteristic");
+        TypedQuery<Characteristic> typedQuery = entityManager.createQuery(hql.toString(), Characteristic.class);
+
+        return typedQuery.getResultList();
+    }
 }

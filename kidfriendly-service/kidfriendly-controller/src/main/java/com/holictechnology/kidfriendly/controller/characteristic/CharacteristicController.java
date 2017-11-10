@@ -65,4 +65,19 @@ public class CharacteristicController extends AbstractController {
 
         return ok(characteristics);
     }
+
+    @GET
+    @Path(value = "/listall")
+    @Produces(value = MediaType.APPLICATION_JSON)
+    public Response listAll() throws KidFriendlyException {
+        Collection<Characteristic> characteristics = null;
+
+        try {
+            characteristics = characteristicLocal.listAll();
+        } catch (Exception exception) {
+            error(getClass(), exception, KidFriendlyMessages.ERROR_LIST_CHARACTERISTIC);
+        }
+
+        return ok(characteristics);
+    }
 }

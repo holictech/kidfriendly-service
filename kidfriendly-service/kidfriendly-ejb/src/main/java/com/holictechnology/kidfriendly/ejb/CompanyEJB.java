@@ -66,7 +66,7 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     @Override
     @Transactional(value = TxType.NOT_SUPPORTED)
     public Collection<CompanyDto> listSuggestions(final Integer limit) throws KidFriendlyException {
-        illegalArgument(limit);        
+        illegalArgument(limit);
         StringBuffer sql = new StringBuffer();
         sql.append("SELECT company.ID_COMPANY FROM COMPANY company ");
         sql.append("WHERE company.ST_ACTIVE = 1 AND company.MG_HOME IS NOT NULL ");
@@ -199,17 +199,19 @@ public class CompanyEJB extends AbstractEJB implements CompanyLocal {
     private StringBuffer createSqlSearch(final Integer idCategory, final List<Long> characteristics) {
         StringBuffer sql = new StringBuffer();
 
-        if (idCategory != null && ObjectUtilities.isNotEmptyOrNull(characteristics)) {
+        if (idCategory != null && ObjectUtilities.isEmptyOrNull(characteristics)) {
+            sql.append(
+                    "INNER JOIN COMPANY_CATEGORY_CHARACTERISTIC AS companyCategoryCharacteristic ON (company.ID_COMPANY = companyCategoryCharacteristic.ID_COMPANY AND companyCategoryCharacteristic.ID_CATEGORY = :idCategory) ");
+        } else if (ObjectUtilities.isNotEmptyOrNull(characteristics)) {
             int size = characteristics.size();
 
             for (int index = 0; index < size; index++) {
                 sql.append("INNER JOIN COMPANY_CATEGORY_CHARACTERISTIC AS companyCategoryCharacteristic" + index
-                        + " ON (company.ID_COMPANY = companyCategoryCharacteristic" + index + ".ID_COMPANY and companyCategoryCharacteristic" + index
-                        + ".ID_CATEGORY = :idCategory and companyCategoryCharacteristic" + index + ".ID_CHARACTERISTIC = :characteristc" + index + ") ");
+                        + " ON (company.ID_COMPANY = companyCategoryCharacteristic" + index + ".ID_COMPANY AND companyCategoryCharacteristic" + index
+                        + ".ID_CHARACTERISTIC = :characteristc" + index + "");
+                sql.append((idCategory != null) ? " AND companyCategoryCharacteristic" + index + ".ID_CATEGORY = :idCategory" : "");
+                sql.append(") ");
             }
-        } else if (idCategory != null) {
-            sql.append(
-                    "INNER JOIN COMPANY_CATEGORY_CHARACTERISTIC AS companyCategoryCharacteristic ON (company.ID_COMPANY = companyCategoryCharacteristic.ID_COMPANY and companyCategoryCharacteristic.ID_CATEGORY = :idCategory) ");
         }
 
         return sql;

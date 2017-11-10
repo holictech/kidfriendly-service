@@ -35,4 +35,12 @@ public interface CharacteristicLocal {
      * @throws KidFriendlyException
      */
     Collection<Characteristic> listByCompanyCategory(Long idCompany, Integer idCategory) throws KidFriendlyException;
+
+    /**
+     * Method that lists all the characteristics.
+     * 
+     * @return
+     * @throws KidFriendlyException
+     */
+    Collection<Characteristic> listAll() throws KidFriendlyException;
 }
